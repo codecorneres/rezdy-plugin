@@ -1,0 +1,47 @@
+<?php
+
+namespace CC_RezdyAPI\Rezdy\Requests;
+
+/**
+ * Creates and verifies the SessionCreate Request
+ *
+ * @package Resources
+ * @author Brad Ploeger
+ */
+class SessionCreate extends BaseRequest implements RequestInterface
+{
+
+    public function __construct($params = '')
+    {
+        //Set the required properties of the object and the required datatype
+        $this->requiredParams = [
+            'productCode'     => 'string',
+            'seats'            => 'integer',
+        ];
+
+        //Set the optional properties of the object and the required datatype
+        $this->optionalParams = [
+            'allDay'         => 'boolean',
+            'endTime'        => 'ISO8601',
+            'endTimeLocal'    => 'date-time',
+            'startTime'        => 'ISO8601',
+            'startTimeLocal' => 'date-time'
+        ];
+
+        //Sets the class mapping for multiple item sets to the request 				
+        $this->addClassMap  =     [
+            'CC_RezdyAPI\Rezdy\Requests\Objects\PriceOption'    => 'priceOptions',
+
+        ];
+        if (is_array($params)) {
+            $this->buildFromArray($params);
+        }
+
+        $this->priceOptions = array();
+    }
+
+    public function isValid()
+    {
+        return $this->isValidRequest();
+    }
+}

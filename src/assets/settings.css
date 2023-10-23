@@ -1,0 +1,11 @@
+.cc-rezdy-wrapper form {
+        border: 1px solid rgb(96, 125, 139);
+        padding: 4px 13px;
+        display: table;
+        width: 100%;
+        max-width: 600px;
+}
+.cc-rezdy-wrapper form a{
+        text-decoration: none;
+        font-size: 15px;
+}

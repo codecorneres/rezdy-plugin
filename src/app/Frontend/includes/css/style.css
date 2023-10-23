@@ -1,0 +1,127 @@
+.booking-sidebar-widget-box h5{
+  font-size: 14px;
+  font-weight: 700;
+}
+.booking-sidebar-widget-box h6{
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.booking-sidebar-widget-box{
+  padding: 20px;
+  -webkit-box-shadow: 0px 3px 6px #00000029;
+    box-shadow: 0px 3px 6px #00000029;
+}
+.booking-form-list .title h5{
+  margin-bottom: 5px;
+}
+.booking-form-list .title h5 span{
+  color:red;
+}
+.booking-form-list .label-box p{
+  font-size: 11px;
+  margin: 0;
+}
+.booking-form-list .form-flex{
+  display: flex;
+  justify-content: space-between;
+}
+.booking-form-list .form-flex:not(:last-child){
+  margin-bottom: 17px;
+}
+.booking-form-list select{
+  width: 50px;
+  height: 35px;
+  border: 1px solid rgba(152,163,148,0.5);
+  padding: 0 4px;
+}
+.booking-form-list .booking-single{
+  margin-bottom: 15px;
+}
+
+/* Calender Widget Style */
+.calender-widget .weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
+}
+
+.calender-widget .weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+
+.calender-widget .days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+.calender-widget .days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
+
+.calender-widget .days li .active {
+  padding: 5px;
+  background: #1abc9c;
+  color: white !important
+}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+  .calender-widget .weekdays li, .calender-widget .days li {width: 13.1%;}
+}
+
+@media screen and (max-width: 420px) {
+  .calender-widget .weekdays li, .calender-widget .days li {width: 12.5%;}
+  .calender-widget .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+  .calender-widget .weekdays li, .calender-widget .days li {width: 12.2%;}
+}
+/* Calender Widget Style Ends */
+
+.booking-form-list .choose-time-form select{
+  width: 100%;
+  font-weight: 700;
+}
+.booking-form-list .price-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.booking-form-list .price-box h4{
+  font-size: 18px;
+  margin-bottom: 0;
+}
+.booking-form-list .price-box h5{
+  margin-bottom: 0;
+}
+.booking-form-list .btn-submit{
+  padding: 10px 15px;
+  min-width: 160px;
+  background-color: rgba(255, 92, 0, 1);
+  border: 0;
+  color:#fff;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.booking-form-list .btn-submit-box{
+  text-align: center;
+  margin: 15px 0;
+}
+.booking-form-list .form-note p{
+  font-size: 13px;
+}
