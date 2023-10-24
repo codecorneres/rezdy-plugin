@@ -6,6 +6,7 @@ use CC_RezdyAPI\App;
 use CC_RezdyAPI\Rezdy\Requests\Objects\PriceOption;
 use CC_RezdyAPI\Rezdy\Requests\Product;
 use CC_RezdyAPI\Rezdy\Requests\ProductUpdate;
+use CC_RezdyAPI\Rezdy\Requests\SessionBatchUpdate;
 use CC_RezdyAPI\RezdyAPI;
 use CC_RezdyAPI\Rezdy\Requests\SessionCreate;
 use CC_RezdyAPI\Rezdy\Requests\SessionSearch;
@@ -59,42 +60,6 @@ class Page
             $guzzleClient = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
             $product_get = $guzzleClient->products->get($rezdy_product_code);
 
-            $array = [];
-            for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-
-                // $sessionParams = [
-                //     'productCode'                   => $rezdy_product_code,
-                //     'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                //     'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
-                //     'startTimeLocal'                => get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true),
-                //     'endTimeLocal'                  => get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true),
-                //     'startTime'                     => get_post_meta($post_id, "tg_availability_{$i}_start_time", true),
-                //     'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
-                //     // 'priceOptions'                  => $sessionPriceOptionParams
-                // ];
-            }
-
-            $array = ['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5];
-
-            $firstKey = key($array);
-            end($array);
-            $lastKey = key($array);
-            reset($array);
-
-            echo "First Key: " . $firstKey . "\n";
-            echo "Last Key: " . $lastKey . "\n";
-
-
-
-            $prm = [
-                'productCode' => $rezdy_product_code,
-                'startTimeLocal' => '2023-09-21 00:00:00',
-                'endTimeLocal' => '2024-01-01 02:00:00'
-            ];
-            $sessionSearch = new SessionSearch($prm);
-            $product_session_get = $guzzleClient->availability->search($sessionSearch);
-            App::sendMail('asdasdasd' . json_encode($product_session_get));
-            // die;
             if (!empty($product_get->product)) {
 
                 $priceOptionParams = [
@@ -107,19 +72,51 @@ class Page
                     'shortDescription'              => $shortDescription,
                     'productType'                   => 'PRIVATE_TOUR',
                     'durationMinutes'               => $tour_hour * 60,
-                    // 'priceOptions'                  => $priceOptions
                 ];
                 $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $priceOptionParams);
 
+                // for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
+                //     // Create the array of session update parameters 
+                //     $sessionParams = [
+                //         'sessionId'                     => get_post_meta($post_id, "tg_availability_{$i}_session_id", true),
+                //         'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
+                //         'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
+                //     ];
+                //     // Create the Session Update Request
+                //     $this->availability_update($guzzleClient, $sessionParams);
+                // }
+                for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
 
-                // Create the array of session update parameters 
-                $sessionParams = [
-                    'sessionId'                     => get_post_meta($post_id, 'tg_availability_session_id', true),
-                    'seats'                         => get_post_meta($post_id, 'tg_availability_seats', true),
-                    'allDay'                        => get_post_meta($post_id, 'tg_availability_all_day', true),
-                ];
-                // Create the Session Update Request
-                $this->availability_update($guzzleClient, $sessionParams);
+                    //tg_availability_0_price_options_1_price
+                    $sessionPriceOptionParams = [];
+                    for ($p = 0; $p < get_post_meta($post_id, "tg_availability_{$i}_price_options", true); $p++) {
+                        $sessionPriceOptionParams[] = [
+                            'price' => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_price", true),
+                            "label" => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_label", true)
+                        ];
+                    }
+
+                    $sessionParams = [
+                        'productCode'                   => $rezdy_product_code,
+                        'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
+                        'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
+                        'startTimeLocal'                => get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true),
+                        'endTimeLocal'                  => get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true),
+                        'startTime'                     => get_post_meta($post_id, "tg_availability_{$i}_start_time", true),
+                        'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
+                    ];
+                    $session = new SessionBatchUpdate($sessionParams);
+                    $sessionPriceOptions = [];
+                    foreach ($sessionPriceOptionParams as $params) {
+                        $sessionPriceOptions[] = new PriceOption($params);
+                    }
+
+                    foreach ($sessionPriceOptions as $sessionPriceOption) {
+                        $session->attach($sessionPriceOption);
+                    }
+
+                    $response[] = $guzzleClient->availability->update_availability_batch($session);
+                }
             } else {
                 $productParams = [
                     'description'                    => $description,
@@ -208,6 +205,7 @@ class Page
 
         // $session->attach($sessionPriceOption);
         $response = $guzzleClient->availability->create($session);
+
         return $response;
     }
     function availability_update($guzzleClient, $sessionParams)
@@ -215,6 +213,7 @@ class Page
         $session = new SessionUpdate($sessionParams);
         // Send the request to the API
         $response = $guzzleClient->availability->update($session);
-        $response = $guzzleClient->availability->update_availability_batch($session);
+        // $response = $guzzleClient->availability->update_availability_batch($session);
+        App::sendMail('responseupdate' . json_encode($response));
     }
 }

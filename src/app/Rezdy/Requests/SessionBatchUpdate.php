@@ -3,37 +3,41 @@
 namespace CC_RezdyAPI\Rezdy\Requests;
 
 /**
- * Creates and verifies the SessionCreateRequest resource
+ * Creates and verifies the SessionBatchUpdate Request
  *
  * @package Resources
  * @author Brad Ploeger
  */
-class SessionUpdate extends BaseRequest implements RequestInterface
+class SessionBatchUpdate extends BaseRequest implements RequestInterface
 {
-
-    public $sessionId;
 
     public function __construct($params = '')
     {
         //Set the required properties of the object and the required datatype
         $this->requiredParams = [
-            'sessionId'            => 'integer'
+            'productCode'     => 'string',
+            'seats'            => 'integer',
         ];
+
         //Set the optional properties of the object and the required datatype
         $this->optionalParams = [
-            'allDay'             => 'boolean',
-            'seats'                => 'integer',
-            'seatsAvailable'    => 'integer'
+            'allDay'         => 'boolean',
+            'endTime'        => 'ISO8601',
+            'endTimeLocal'    => 'date-time',
+            'startTime'        => 'ISO8601',
+            'startTimeLocal' => 'date-time'
         ];
-        //Sets the class mapping for multiple item sets to the request 	
+
+        //Sets the class mapping for multiple item sets to the request 				
         $this->addClassMap  =     [
-            'CC_RezdyAPI\Rezdy\Requests\Objects\SessionPriceOption'    => 'fields',
             'CC_RezdyAPI\Rezdy\Requests\Objects\PriceOption'    => 'priceOptions',
+
         ];
-        // Populate the fields from a array passed at construction
         if (is_array($params)) {
             $this->buildFromArray($params);
         }
+
+        $this->priceOptions = array();
     }
 
     public function isValid()

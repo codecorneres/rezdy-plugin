@@ -77,4 +77,34 @@ class ProductServices extends BaseService
     public function searchMarketplace()
     {
     }
+
+
+    public function image_update(string $productCode, ProductUpdate $request)
+    {
+        $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.product_get') . $productCode;
+
+        try {
+            // Initialize Guzzle client
+            $client = new Client();
+
+            // Prepare the form data
+            $formData = $request->all(); // Modify this to suit your form data
+
+            // Make the PUT request with multipart/form-data
+            $response = $client->request('PUT', $baseUrl, [
+                'multipart' => [
+                    [
+                        'name' => 'field_name', // Replace with the field name
+                        'contents' => 'field_value' // Replace with the field value
+                    ],
+                    // Add more fields as needed
+                ]
+            ]);
+        } catch (TransferException $e) {
+            // Handle the error case here
+            return $this->returnExceptionAsErrors($e, $request);
+        }
+
+        return new ResponseStandard($response->getBody(), 'product');
+    }
 }

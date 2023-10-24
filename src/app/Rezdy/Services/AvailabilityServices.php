@@ -14,6 +14,7 @@ use CC_RezdyAPI\Rezdy\Responses\ResponseList;
 
 use CC_RezdyAPI\GuzzleHttp\Exception\TransferException;
 use CC_RezdyAPI\GuzzleHttp\Psr7;
+use CC_RezdyAPI\Rezdy\Requests\SessionBatchUpdate;
 
 /**
  * Performs all actions pertaining to the Rezdy API Availability Service Calls
@@ -137,7 +138,7 @@ class AvailabilityServices extends BaseService
 
 
 
-    public function update_availability_batch(SessionCreate $request)
+    public function update_availability_batch(SessionBatchUpdate $request)
     {
         // Build the request URL
         $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.update_availability_batch');
