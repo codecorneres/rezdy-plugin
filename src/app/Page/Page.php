@@ -21,16 +21,15 @@ class Page
 
         $this->pageContext = $pageContext;
 
-        if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
-            // add hooks for page updates
-            add_action('save_post', [$this, 'handlePostUpdate'], 999, 3);
-        }
+        add_action('save_post', [$this, 'handlePostUpdate'], 10, 3);
 
         return $this;
     }
 
     public function handlePostUpdate($post_id, $post, $update)
     {
+        //wp_die('Custom error message. Post not updated.');
+
         // Check for autosave
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return $post_id;
@@ -75,16 +74,6 @@ class Page
                 ];
                 $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $priceOptionParams);
 
-                // for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-                //     // Create the array of session update parameters 
-                //     $sessionParams = [
-                //         'sessionId'                     => get_post_meta($post_id, "tg_availability_{$i}_session_id", true),
-                //         'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                //         'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
-                //     ];
-                //     // Create the Session Update Request
-                //     $this->availability_update($guzzleClient, $sessionParams);
-                // }
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
 
                     //tg_availability_0_price_options_1_price
@@ -128,6 +117,7 @@ class Page
                 $priceOptionParams = [
                     'price' => $tour_price
                 ];
+
                 $this->product_create($guzzleClient, $post_id, $productParams, $priceOptionParams);
 
                 sleep(2);
@@ -175,6 +165,12 @@ class Page
 
         $rezdy_res = $guzzleClient->products->create($product);
 
+        if ($rezdy_res->hadError ==  true) {
+            App::sendMail('responseupdate' . json_encode($rezdy_res));
+
+            wp_die(implode(',', $rezdy_res->error));
+        }
+        //App::sendMail('responseupdate' . json_encode($rezdy_res));
         update_post_meta($post_id, 'rezdy_product_code', $rezdy_res->product->productCode);
     }
 
@@ -184,6 +180,7 @@ class Page
         $priceOptions = new PriceOption($priceOptionParams);
         $productUpdate->attach($priceOptions);
         $rezdy_res = $guzzleClient->products->update($rezdy_product_code, $productUpdate);
+        App::sendMail('responseupdate' . json_encode($rezdy_res));
     }
 
 
