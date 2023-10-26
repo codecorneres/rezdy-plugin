@@ -21,12 +21,6 @@ class Booking
     public function enqueue_scripts()
     {
         return $this->callPageScreenMethod('scripts');
-        // wp_enqueue_script('booking-form-script', plugin_dir_url(__FILE__) . 'includes/js/booking-form.js', array('jquery'), '1.0', true);
-        // wp_enqueue_style('booking-form-styles', plugin_dir_url(__FILE__) . 'includes/css/style.css', array(), '1.0', 'all');
-
-        // wp_enqueue_script('rezdy-date-picker-jquery', "https://code.jquery.com/jquery-2.2.4.min.js", ['jquery'],  '1.0', true);
-
-        // wp_enqueue_script('rezdy-date-picker', "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js", ['jquery'],  '1.0', true);
     }
 
     public function rezdy_booking_shortcode()
