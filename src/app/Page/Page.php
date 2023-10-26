@@ -61,10 +61,6 @@ class Page
 
             if (!empty($product_get->product)) {
 
-                $priceOptionParams = [
-                    'label' => '',
-                    'price' => $tour_price
-                ];
                 $product_update_params = [
                     'name'                          => $post_title,
                     'description'                   => $description,
@@ -72,18 +68,9 @@ class Page
                     'productType'                   => 'PRIVATE_TOUR',
                     'durationMinutes'               => $tour_hour * 60,
                 ];
-                $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $priceOptionParams);
+                $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $post_id);
 
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-
-                    //tg_availability_0_price_options_1_price
-                    $sessionPriceOptionParams = [];
-                    for ($p = 0; $p < get_post_meta($post_id, "tg_availability_{$i}_price_options", true); $p++) {
-                        $sessionPriceOptionParams[] = [
-                            'price' => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_price", true),
-                            "label" => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_label", true)
-                        ];
-                    }
 
                     $sessionParams = [
                         'productCode'                   => $rezdy_product_code,
@@ -95,15 +82,6 @@ class Page
                         'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
                     ];
                     $session = new SessionBatchUpdate($sessionParams);
-                    $sessionPriceOptions = [];
-                    foreach ($sessionPriceOptionParams as $params) {
-                        $sessionPriceOptions[] = new PriceOption($params);
-                    }
-
-                    foreach ($sessionPriceOptions as $sessionPriceOption) {
-                        $session->attach($sessionPriceOption);
-                    }
-
                     $response[] = $guzzleClient->availability->update_availability_batch($session);
                 }
             } else {
@@ -114,27 +92,10 @@ class Page
                     'productType'                    => 'ACTIVITY',
                     'shortDescription'               => $shortDescription,
                 ];
-                $priceOptionParams = [
-                    'price' => $tour_price
-                ];
-
-                $this->product_create($guzzleClient, $post_id, $productParams, $priceOptionParams);
-
+                $this->product_create($guzzleClient, $post_id, $productParams);
                 sleep(2);
                 $rezdy_product_code = get_post_meta($post_id, 'rezdy_product_code', true);
-
-
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-
-                    //tg_availability_0_price_options_1_price
-                    $sessionPriceOptionParams = [];
-                    for ($p = 0; $p < get_post_meta($post_id, "tg_availability_{$i}_price_options", true); $p++) {
-                        $sessionPriceOptionParams[] = [
-                            'price' => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_price", true),
-                            "label" => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_label", true)
-                        ];
-                    }
-
                     $sessionParams = [
                         'productCode'                   => $rezdy_product_code,
                         'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
@@ -143,11 +104,9 @@ class Page
                         'endTimeLocal'                  => get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true),
                         'startTime'                     => get_post_meta($post_id, "tg_availability_{$i}_start_time", true),
                         'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
-                        // 'priceOptions'                  => $sessionPriceOptionParams
                     ];
-                    $response = $this->availability_create($guzzleClient, $sessionParams, $sessionPriceOptionParams);
+                    $response = $this->availability_create($guzzleClient, $sessionParams);
                     App::sendMail('response' . json_encode($response));
-
                     update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
                 }
             }
@@ -157,11 +116,24 @@ class Page
     }
 
 
-    public function product_create($guzzleClient, $post_id, $productParams, $priceOptionParams)
+    public function product_create($guzzleClient, $post_id, $productParams)
     {
         $product = new Product($productParams);
-        $priceOption = new PriceOption($priceOptionParams);
-        $product->attach($priceOption);
+        $priceOptionParams = [];
+        for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
+            $priceOptionParams[] = [
+                'price' => get_post_meta($post_id, "tg_price_options_{$p}_price", true),
+                "label" => get_post_meta($post_id, "tg_price_options_{$p}_label", true)
+            ];
+        }
+        $sessionPriceOptions = [];
+        foreach ($priceOptionParams as $params) {
+            $sessionPriceOptions[] = new PriceOption($params);
+        }
+
+        foreach ($sessionPriceOptions as $sessionPriceOption) {
+            $product->attach($sessionPriceOption);
+        }
 
         $rezdy_res = $guzzleClient->products->create($product);
 
@@ -170,39 +142,38 @@ class Page
 
             wp_die(implode(',', $rezdy_res->error));
         }
-        //App::sendMail('responseupdate' . json_encode($rezdy_res));
         update_post_meta($post_id, 'rezdy_product_code', $rezdy_res->product->productCode);
     }
 
-    public function product_update($guzzleClient, $rezdy_product_code, $productParams, $priceOptionParams)
+    public function product_update($guzzleClient, $rezdy_product_code, $productParams, $post_id)
     {
         $productUpdate = new ProductUpdate($productParams);
-        $priceOptions = new PriceOption($priceOptionParams);
-        $productUpdate->attach($priceOptions);
-        $rezdy_res = $guzzleClient->products->update($rezdy_product_code, $productUpdate);
-        App::sendMail('responseupdate' . json_encode($rezdy_res));
-    }
-
-
-    function availability_create($guzzleClient, $sessionParams, $sessionPriceOptionParams)
-    {
-        $session = new SessionCreate($sessionParams);
-
-
+        // $priceOptions = new PriceOption($priceOptionParams);
+        // $productUpdate->attach($priceOptions);
+        $priceOptionParams = [];
+        for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
+            $priceOptionParams[] = [
+                'price' => get_post_meta($post_id, "tg_price_options_{$p}_price", true),
+                "label" => get_post_meta($post_id, "tg_price_options_{$p}_label", true)
+            ];
+        }
         $sessionPriceOptions = [];
-        foreach ($sessionPriceOptionParams as $params) {
+        foreach ($priceOptionParams as $params) {
             $sessionPriceOptions[] = new PriceOption($params);
         }
 
         foreach ($sessionPriceOptions as $sessionPriceOption) {
-            $session->attach($sessionPriceOption);
+            $productUpdate->attach($sessionPriceOption);
         }
+        $rezdy_res = $guzzleClient->products->update($rezdy_product_code, $productUpdate);
+        // App::sendMail('responseupdate' . json_encode($rezdy_res));
+    }
 
-        // $sessionPriceOption = new PriceOption($sessionPriceOptionParams);
 
-        // $session->attach($sessionPriceOption);
+    function availability_create($guzzleClient, $sessionParams)
+    {
+        $session = new SessionCreate($sessionParams);
         $response = $guzzleClient->availability->create($session);
-
         return $response;
     }
     function availability_update($guzzleClient, $sessionParams)

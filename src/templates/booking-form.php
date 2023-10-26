@@ -1,7 +1,7 @@
 <?php defined('ABSPATH') || exit; ?>
 
-<div class="booking-sidebar-widget-box">
-    <div class="booking-inner">
+<div class="booking-sidebar-widget-box in calendar-widget">
+    <div class="booking-inner availability-container">
         <div class="booking-form-list">
             <form action="">
                 <div class="booking-group">
@@ -13,34 +13,29 @@
                             <div class="form-flex">
                                 <div class="label-box">
                                     <h6><?php echo $value->label; ?></h6>
-                                    <p><?php echo '€' . $value->price . '.00'; ?></p>
+                                    <p class="price" data-currency-base="<?php echo $product->product->currency; ?>" data-original-amount="<?php echo $value->price; ?>"><?php echo '€' . $value->price . '.00'; ?></p>
                                 </div>
                                 <div class="options-box">
-                                    <select name="" id="">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
-                                        <option value="">4</option>
-                                        <option value="">5</option>
-                                        <option value="">6</option>
-                                        <option value="">7</option>
+                                    <select name="quantity" id="" class="quantity">
+                                        <?php for ($i = 1; $i <= 20; $i++) : ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php endfor; ?>
+                                        <option value="21">>20</option>
                                     </select>
+                                    <input type="text" name="" id="" class="quantity-input" style="display: none;">
                                 </div>
+
+
                             </div>
                         <?php  } ?>
                         <div class="booking-single">
                             <div class="title">
                                 <h5>Choose a Date <span class="required">*</span></h5>
                             </div>
-                            <div class="choose-time-form form-flex">
-                                <div class="calendar">
-
-                                    <div id="datepicker"></div>
+                            <div class="choose-time-form form-flex ">
+                                <div class="calendar datepicker-container">
+                                    <div id="datepicker" class="availabilitypicker"></div>
                                 </div>
-                                <!-- <select name="" id="">
-                                    <option value="">09:30 - Available</option>
-                                    <option value="">14:30 - Available</option>
-                                </select> -->
                             </div>
                         </div>
                         <div class="booking-single">
@@ -49,15 +44,20 @@
                             </div>
                             <div class="choose-time-form form-flex">
                                 <select name="" id="">
-                                    <option value="">09:30 - Available</option>
-                                    <option value="">14:30 - Available</option>
+                                    <?php
+                                    foreach ($availabilities as $key => $availability) {
+                                    ?>
+                                        <option value="<?php echo date('h:i', strtotime($availability->startTime)) ?>"><?php echo date('h:i', strtotime($availability->startTime)) ?>- Available</option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="price-box price-summary">
                         <h5>Price(EUR)</h5>
-                        <h4>€89.00</h4>
+                        <h4 class="total-price-value">€0</h4>
                     </div>
                     <div class="btn-submit-box">
                         <button type="submit" class="btn-submit">Book Now</button>
@@ -75,8 +75,8 @@
     }
 </style>
 <?php
-$firstDate = date('Y-m-d', strtotime($availability[0]->startTimeLocal));
-$lastDate = date('Y-m-d', strtotime($availability[count($availability) - 1]->endTimeLocal)); //$availability[count($availability) - 1]->endTimeLocal;
+$firstDate = date('Y-m-d', strtotime($availabilities[0]->startTimeLocal));
+$lastDate = date('Y-m-d', strtotime($availabilities[count($availabilities) - 1]->endTimeLocal));
 
 ?>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -84,20 +84,24 @@ $lastDate = date('Y-m-d', strtotime($availability[count($availability) - 1]->end
     $(function() {
         var startDate = new Date("<?php echo $firstDate; ?>");
         var endDate = new Date("<?php echo $lastDate; ?>");
+        var currentDate = new Date();
+        var currentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
 
         function enableDates(date) {
             return date >= startDate && date <= endDate;
         }
 
         $("#datepicker").datepicker({
-            // firstDay: 1,
-            // changeMonth: true,
-            // changeYear: true,
-            prevText: '<i class="fa fa-fw fa-angle-left"></i>',
-            nextText: '<i class="fa fa-fw fa-angle-right"></i>',
+            prevText: "←",
+            nextText: "→",
+            minDate: 0,
             beforeShowDay: function(date) {
                 if (enableDates(date)) {
                     return [true, ""];
+
+                    // } else if (date.toDateString() === new Date().toDateString() && enableDates(date)) {
+                    //     return [true, "ui-state-highlight", "Today"];
                 } else {
                     return [false, "disabled"];
                 }

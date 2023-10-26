@@ -1,27 +1,58 @@
-// $("#datepicker").datepicker({
-//     firstDay: 1,
-//     // changeMonth: true,
-//     // changeYear: true,
-//     prevText: '<i class="fa fa-fw fa-angle-left"></i>',
-//     nextText: '<i class="fa fa-fw fa-angle-right"></i>',
+$(document).ready(function () {
+    $('body').on('change', '.quantity', function () {
+        var selectedValue = parseInt($(this).val());
 
-//     //bg
+        if (selectedValue > 20) {
+            $(this).hide();
+            var inputElement = $(this).siblings('.quantity-input');
+            inputElement.show().focus();
+            recalculateTotalPrice(inputElement.val());
 
-//     onSelect: function () {
-//         var dateText = $.datepicker.formatDate("MM dd, yy", $(this).datepicker("getDate"));
-//         $('p.bgText').text(dateText);
-//     }
+        } else {
+            $(this).show();
+            $(this).siblings('.quantity-input').hide();
+            recalculateTotalPrice($(this).val());
+        }
+    });
 
-// });
+    $('body').on('keyup', '.quantity-input', function () {
+        recalculateTotalPrice($(this).val());
+    });
 
-// //getting today's date
-// var currentDate = $.datepicker.formatDate('MM dd, yy', new Date());
+    function recalculateTotalPrice(value) {
+        var total = 0;
 
-// $('#monthAndDate').text(currentDate);
+        $('.quantity').each(function () {
+            var quantity = $(this).is(':visible') ? parseInt($(this).val()) : parseInt(value);
+            var price = $(this).closest('.form-flex').find('.price').data('original-amount');
+            var itemTotal = quantity * price;
+            total += itemTotal;
+        });
 
-// //setting bgText to current Date
-// $('p.bgText').text("Select a date");
+        var currencyCode = $('.form-flex:first .price').data('currency-base');
+        var currencySymbol = getCurrencySymbol(currencyCode);
+        console.log('Total Price for all items: ' + total);
+        console.log('Total Price for all items: ' + total.toFixed(2));
+        // if (total.isNumeric)
 
-// var currentWeekday = $.datepicker.formatDate('DD', new Date());
+        if (!isNaN(total)) {
+            $('.total-price-value').text(currencySymbol + total.toFixed(2));
 
-// $('#dayOfWeek').text(currentWeekday);
+        } else {
+            total = 0;
+            $('.total-price-value').text(currencySymbol + total.toFixed(2));
+
+        }
+    }
+
+    function getCurrencySymbol(currencyCode) {
+        const currencySymbols = {
+            USD: '$',
+            EUR: '€',
+            GBP: '£',
+            JPY: '¥',
+        };
+
+        return currencySymbols[currencyCode] || currencyCode;
+    }
+});
