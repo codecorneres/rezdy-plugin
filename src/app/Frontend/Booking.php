@@ -14,29 +14,31 @@ class Booking
     {
 
         $this->bookingContext = $bookingContext;
-        add_action('init', array($this, 'wpdocs_add_custom_shortcode'));
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('init', [$this, 'rezdy_booking_shortcode']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
     public function enqueue_scripts()
     {
         return $this->callPageScreenMethod('scripts');
-
         // wp_enqueue_script('booking-form-script', plugin_dir_url(__FILE__) . 'includes/js/booking-form.js', array('jquery'), '1.0', true);
         // wp_enqueue_style('booking-form-styles', plugin_dir_url(__FILE__) . 'includes/css/style.css', array(), '1.0', 'all');
+
+        // wp_enqueue_script('rezdy-date-picker-jquery', "https://code.jquery.com/jquery-2.2.4.min.js", ['jquery'],  '1.0', true);
+
+        // wp_enqueue_script('rezdy-date-picker', "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js", ['jquery'],  '1.0', true);
     }
 
-    public function wpdocs_add_custom_shortcode()
+    public function rezdy_booking_shortcode()
     {
 
-        add_shortcode('booking_form', array($this, 'booking_form_shortcode'));
+        add_shortcode('rezdy_booking_form', [$this, 'booking_form_shortcode']);
     }
 
     public function booking_form_shortcode()
     {
 
-        $html = $this->callPageScreenMethod('render_booking_form');
-        return $html;
+        return $this->callPageScreenMethod('render_booking_form');
     }
 
     private function callPageScreenMethod(string $method)
