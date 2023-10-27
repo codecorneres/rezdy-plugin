@@ -9,6 +9,7 @@
                         <div class="title">
                             <h5>Enter Number of Participants <span class="required">*</span></h5>
                         </div>
+                        <input type="text" name="productCode" value="<?= $product->product->productCode; ?>" id="productCode">
                         <?php foreach ($priceOptions as $key => $value) { ?>
                             <div class="form-flex">
                                 <div class="label-box">
@@ -17,7 +18,7 @@
                                 </div>
                                 <div class="options-box">
                                     <select name="quantity" id="" class="quantity">
-                                        <?php for ($i = 1; $i <= 20; $i++) : ?>
+                                        <?php for ($i = 0; $i <= 20; $i++) : ?>
                                             <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                         <?php endfor; ?>
                                         <option value="21">>20</option>
@@ -43,13 +44,13 @@
                                 <h5>Choose a Time <span class="required">*</span></h5>
                             </div>
                             <div class="choose-time-form form-flex">
-                                <select name="" id="">
+                                <select name="" id="availability">
                                     <?php
-                                    foreach ($availabilities as $key => $availability) {
+                                    // foreach ($availabilities as $key => $availability) {
                                     ?>
-                                        <option value="<?php echo date('h:i', strtotime($availability->startTime)) ?>"><?php echo date('h:i', strtotime($availability->startTime)) ?>- Available</option>
+                                    <!-- <option value="<?php echo date('h:i', strtotime($availability->startTime)) ?>"><?php echo date('h:i', strtotime($availability->startTime)) ?>- Available</option> -->
                                     <?php
-                                    }
+                                    // }
                                     ?>
                                 </select>
                             </div>
@@ -60,7 +61,7 @@
                         <h4 class="total-price-value">€0</h4>
                     </div>
                     <div class="btn-submit-box">
-                        <button type="submit" class="btn-submit">Book Now</button>
+                        <button type="button" class="btn-submit form-submit">Book Now</button>
                     </div>
                     <div class="form-note">
                         <p><b>Please note:</b> After your purchase is confirmed we will email you a confirmation.</p>
@@ -75,22 +76,25 @@
     }
 </style>
 <?php
-$firstDate = date('Y-m-d', strtotime($availabilities[0]->startTimeLocal));
-$lastDate = date('Y-m-d', strtotime($availabilities[count($availabilities) - 1]->endTimeLocal));
+$dates = [];
+foreach ($availabilities as $key => $value) {
+    $dates[] = date('Y-m-d', strtotime($value->startTimeLocal));
+}
+$dates = array_unique($dates);
 
 ?>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script>
     $(function() {
-        var startDate = new Date("<?php echo $firstDate; ?>");
-        var endDate = new Date("<?php echo $lastDate; ?>");
-        var currentDate = new Date();
-        var currentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
+        var enabledDates = <?php echo json_encode($dates); ?>;
+        let datesArray = Object.keys(enabledDates).map(key => enabledDates[key]);
+        // console.log(datesArray);
 
         function enableDates(date) {
-            return date >= startDate && date <= endDate;
+            var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+            return datesArray.indexOf(formattedDate) !== -1;
         }
+
 
         $("#datepicker").datepicker({
             prevText: "←",
@@ -111,6 +115,32 @@ $lastDate = date('Y-m-d', strtotime($availabilities[count($availabilities) - 1]-
                 console.log(dateText);
             }
 
+        });
+
+
+
+
+        ///
+        // $(".quantity").on("click", function() {
+        //     var selectedDate = $("#datepicker").datepicker("getDate");
+        //     if (selectedDate) {
+        //         var formattedDate = $.datepicker.formatDate("yy-mm-dd", selectedDate);
+        //         console.log("Selected date: " + formattedDate);
+        //     } else {
+        //         console.log("No date selected");
+        //     }
+        // });
+
+        var datePicker = document.getElementById('datepicker');
+        var customButton = document.querySelector('.quantity');
+
+        customButton.addEventListener('click', function() {
+            var selectedDate = datePicker.value;
+            if (selectedDate) {
+                console.log('Selected date:', selectedDate);
+            } else {
+                console.log('No date selected');
+            }
         });
 
     });
