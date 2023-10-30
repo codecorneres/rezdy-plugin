@@ -29,13 +29,10 @@ class FormSettings extends Screen
         $availabilitySearch     = new SessionSearch([
             'productCode'       => $rezdy_api_product_code,
             'startTimeLocal'    => $selected_date,
-            'endTimeLocal'      =>  $lastDateTime
-            // 'startTimeLocal'    => date('Y-m-01 H:i:s'),
-            // 'endTimeLocal'      => $lastDateOfMonth
+            'endTimeLocal'      => $lastDateTime
         ]);
 
         $availability           = $guzzleClient->availability->search($availabilitySearch);
-        // print_r(json_encode($availability->sessions));
         $name                   = $product->product->name;
         $priceOptions           = $product->product->priceOptions;
 
@@ -73,7 +70,7 @@ class FormSettings extends Screen
         $guzzleClient           = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
 
 
-        $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate']));
+        $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate'] . ' ' . date('H:i:s')));
         $lastDate = date("Y-m-t", strtotime("$selected_date"));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
 
@@ -84,7 +81,7 @@ class FormSettings extends Screen
             'endTimeLocal'      =>  $lastDateTime
         ]);
 
-        $availabilities           = $guzzleClient->availability->search($availabilitySearch);
+        $availabilities         = $guzzleClient->availability->search($availabilitySearch);
 
 
         $response = [];
@@ -96,5 +93,79 @@ class FormSettings extends Screen
             $response[$date][] = $availability;
         }
         wp_send_json(array('availability' => $response));
+    }
+
+
+
+    function ajax_action_2_callback()
+    {
+        $guzzleClient           = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
+        $selected_date =  date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
+        $lastDate = date("Y-m-t", strtotime("$selected_date"));
+        $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
+        $availabilitySearch     = new SessionSearch([
+            'productCode'       =>  $_POST['OrderItem']['productCode'],
+            'startTimeLocal'    =>  $selected_date,
+            'endTimeLocal'      =>  $lastDateTime
+        ]);
+        $availabilities         = $guzzleClient->availability->search($availabilitySearch);
+        $quantity = 0;
+        foreach ($_POST['ItemQuantity'][$_POST['OrderItem']['productCode']] as $key => $value) {
+            $quantity += $value['quantity'];
+        }
+        $sessionsId = [];
+        foreach ($availabilities->sessions as $availability) {
+            $sessionsId[] = $availability->id;
+        }
+        $sessionTimeLabel = [];
+        $activeSession = [];
+        foreach ($availabilities->sessions as $availability) {
+            $date = date('Y-m-d', strtotime($availability->startTimeLocal));
+            $select_date =  date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+            if ($date == $select_date)
+                if ($quantity <= $availability->seatsAvailable) {
+                    $sessionTimeLabel[] = date('H:i', strtotime($availability->startTimeLocal)) . ' - ' . 'Available';
+                    $activeSession[$availability->id][] = true;
+                } elseif ($quantity > $availability->seatsAvailable) {
+                    $sessionTimeLabel[] = date('H:i', strtotime($availability->startTimeLocal)) . ' - ' . 'Not enough evailablity';
+                    $activeSession[$availability->id][] = false;
+                } elseif ($availability->seatsAvailable == 0) {
+                    $sessionTimeLabel[] = date('H:i', strtotime($availability->startTimeLocal)) . ' - ' . 'Sold Out';
+                    $activeSession[$availability->id][] = false;
+                }
+        }
+
+
+        // $activeSession = [];
+        // foreach ($availabilities->sessions as $availability) {
+        //     $date = date('Y-m-d', strtotime($availability->startTimeLocal));
+        //     $select_date =  date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+        //     if ($date == $select_date)
+        //         if ($quantity <= $availability->seatsAvailable)
+        //             $activeSession[$availability->id][] = true;
+        //         elseif ($quantity > $availability->seatsAvailable)
+        //             $activeSession[$availability->id][] = false;
+        //         elseif ($availability->seatsAvailable == 0)
+        //             $activeSession[$availability->id][] = false;
+        // }
+        $totalPrice = [];
+        foreach ($availabilities->sessions as $availability) {
+            $date = date('Y-m-d', strtotime($availability->startTimeLocal));
+            $select_date =  date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+            if ($date == $select_date)
+                foreach ($availability->priceOptions as $key => $value) {
+                    $totalPrice[] = $totalPrice[$availability->id] += $quantity * $value->price;
+                }
+        }
+
+
+        $response = [
+            'sessions' => $sessionsId,
+            'sessionTimeLabel' => $sessionTimeLabel,
+            'activeSession'     => $activeSession,
+            'totalPrice' => $totalPrice
+        ];
+        // wp_send_json(array('availability' => $_POST['ItemQuantity'][$_POST['OrderItem']['productCode']][0]['quantity']));
+        wp_send_json($response);
     }
 }

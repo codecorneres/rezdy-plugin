@@ -19,12 +19,19 @@ class Booking
 
         add_action('wp_ajax_ajax_action', [$this, 'ajax_action_callback']);
         add_action('wp_ajax_nopriv_ajax_action', [$this, 'ajax_action_callback']);
+
+        add_action('wp_ajax_ajax_action_2', [$this, 'ajax_action_2_callback']);
+        add_action('wp_ajax_nopriv_ajax_action_2', [$this, 'ajax_action_2_callback']);
     }
 
 
     function ajax_action_callback()
     {
         return $this->callPageScreenMethod('ajax_action_callback');
+    }
+    function ajax_action_2_callback()
+    {
+        return $this->callPageScreenMethod('ajax_action_2_callback');
     }
 
     public function enqueue_scripts()

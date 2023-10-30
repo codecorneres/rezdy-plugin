@@ -205,28 +205,22 @@
 .product.forum .form-right{
   background-color: #fff;
 }
-
-/* .ui-datepicker-prev:before,
-.ui-datepicker-next:before {
-  font-family: FontAwesome;
+.rezdy-overlay-loader {
   position: absolute;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  display: flex;
-  font-weight: normal;
-  align-items: center;
-  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  /* display: none; */
 }
 
-.ui-datepicker-prev:before {
-  content: "\f060";
+.rezdy-overlay-loader i.fa.fa-circle-o-notch.fa-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
-.ui-datepicker-next:before {
-  content: "\f061";
-} */
-
 /* Datepicker Css */
 
