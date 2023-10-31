@@ -86,32 +86,6 @@ $dates = array_unique($dates);
 ?>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script>
-    // var customButton = document.querySelector('.quantity');
-
-    // customButton.addEventListener('click', function() {
-    //     var form = document.querySelector('.session-form');
-
-    //     var formData = new FormData(form);
-    //     var requestData = {};
-
-    //     formData.forEach(function(value, key) {
-    //         requestData[key] = value;
-    //     });
-    //     console.log(requestData)
-    // });
-    // window.onload = function() {
-    //     var selectElements = document.querySelector('.quantity');
-    //     for (var i = 0; i < selectElements.length; i++) {
-    //         selectElements[i].selectedIndex = 1; // Set the first option as selected
-    //     }
-    // };
-    // window.onload = function() {
-
-    //     var selectElements = document.querySelectorAll('.quantity');
-    //     // Select 'Option B' for the first select element
-    //     selectElements[0].selectedIndex = 1;
-    // };
-
     $(function() {
         var enabledDates = <?php echo json_encode($dates); ?>;
         let datesArray = Object.keys(enabledDates).map(key => enabledDates[key]);
@@ -185,12 +159,31 @@ $dates = array_unique($dates);
                 .then(function(data) {
                     var select = document.querySelector("#availability");
                     select.innerHTML = '';
-                    data.sessionTimeLabel.map((session) => {
-                        var option = document.createElement("option");
-                        option.text = `${session}`;
-                        option.value = `${session}`;
-                        select.add(option);
-                    });
+                    var firstDisabled = true;
+                    var firstKey;
+                    for (const key in data.sessionTimeLabel) {
+                        if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
+                            const value = data.sessionTimeLabel[key];
+                            const price = data.totalPrice[key];
+                            const activeSession = data.activeSession[key];
+
+                            var option = document.createElement("option");
+                            option.text = `${value}`;
+                            option.value = `${key}`;
+                            option.setAttribute("data-price", price);
+                            option.setAttribute("data-disabled", activeSession);
+                            if (activeSession === true && !selectedOption) {
+
+                                option.selected = true;
+                                selectedOption = true;
+                            } else {
+                                option.selected = false;
+                                selectedOption = false;
+                            }
+
+                            select.add(option);
+                        }
+                    }
                     hideLoading();
 
                 })

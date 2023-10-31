@@ -25,54 +25,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('#selectedDate').value = selectedDate;
 
-    // var data = {
-    //     action: 'ajax_action',
-    //     productCode: productCode,
-    //     firstDate: selectedDate
-    // };
 
-    // var formData = new FormData();
-    // for (var key in data) {
-    //     formData.append(key, data[key]);
-    // }
 
     fetching_sessions(selectedDate);
     fetching_availabilities();
-    // showLoading()
-    // var response = fetch(ajax_object.ajax_url, {
-    //     method: 'POST',
-    //     body: formData
-    // })
-    //     .then(function (response) {
-    //         return response.json();
-    //     })
-    //     .then(function (data) {
-    //         var select = document.querySelector("#availability");
-    //         select.innerHTML = '';
-    //         for (var key in data) {
-    //             if (data.hasOwnProperty(key)) {
 
-    //                 var date = new Date(selectedDate);
-    //                 var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-
-    //                 data.availability[formattedDate].map((session) => {
-    //                     var date = new Date(session.startTime);
-    //                     var time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
-    //                     var option = document.createElement("option");
-    //                     option.text = time;
-    //                     option.value = `${key} - Available`;
-    //                     select.add(option);
-
-    //                 });
-
-    //             }
-    //             hideLoading()
-    //         }
-
-    //     })
-    //     .catch(function (error) {
-    //         return error;
-    //     });
 
 
     document.body.addEventListener('change', async function (event) {
@@ -97,59 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 fetching_sessions(selectedDate);
                 fetching_availabilities();
-                // var data = {
-                //     action: 'ajax_action',
-                //     productCode: productCode,
-                //     firstDate: selectedDate
-                // };
-
-                // var formData = new FormData();
-                // for (var key in data) {
-                //     formData.append(key, data[key]);
-                // }
-                // showLoading()
-                // var response = await fetch(ajax_object.ajax_url, {
-                //     method: 'POST',
-                //     body: formData
-                // })
-                //     .then(function (response) {
-                //         return response.json();
-                //     })
-                //     .then(function (data) {
-                //         return data;
-                //     })
-                //     .catch(function (error) {
-                //         return error;
-                //     });
-
-                // var select = document.querySelector("#availability");
-                // select.innerHTML = '';
-
-                // for (var key in response) {
-
-
-                //     if (response.hasOwnProperty(key)) {
-
-                //         var date = new Date(selectedDate);
-                //         var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-
-                //         response.availability[formattedDate].map((session) => {
-                //             var date = new Date(session.startTime);
-                //             var time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
-                //             var option = document.createElement("option");
-                //             option.text = time;
-                //             option.value = `${key} - Available`;
-                //             select.add(option);
-
-                //         });
-
-                //     }
-                // }
-
-
-                // hideLoading()
-
-
                 target.style.display = 'block';
                 target.nextElementSibling.style.display = 'none';
                 recalculateTotalPrice(target.value);
@@ -160,37 +64,43 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('keyup', function (event) {
         var target = event.target;
         if (target.classList.contains('quantity-input')) {
-            recalculateTotalPrice(target.value);
+            // recalculateTotalPrice(target.value);
+            var datePicker = document.querySelector('#datepicker');
+            var productCode = document.querySelector('#productCode').value;
+            var selectedDate = datePicker.value;
+
+            fetching_sessions(selectedDate);
+            fetching_availabilities();
         }
     });
 
     function recalculateTotalPrice(value) {
         var total = 0;
 
-        var quantities = document.querySelectorAll('.quantity');
+        // var quantities = document.querySelectorAll('.quantity');
 
-        quantities.forEach(function (quantity) {
-            var currentQuantity = quantity.style.display === 'none' ? parseInt(value) : parseInt(quantity.value);
-            var price = parseFloat(quantity.closest('.form-flex').querySelector('.price').dataset.originalAmount);
-            var itemTotal = currentQuantity * price;
-            total += itemTotal;
-        });
+        // quantities.forEach(function (quantity) {
+        //     var currentQuantity = quantity.style.display === 'none' ? parseInt(value) : parseInt(quantity.value);
+        //     var price = parseFloat(quantity.closest('.form-flex').querySelector('.price').dataset.originalAmount);
+        //     var itemTotal = currentQuantity * price;
+        //     total += itemTotal;
+        // });
 
-        // var currencyCode = document.querySelector('.form-flex:first .price').dataset.currencyBase;
-        var currencyCode = document.querySelector('.form-flex .price').getAttribute('data-currency-base');
+        // // var currencyCode = document.querySelector('.form-flex:first .price').dataset.currencyBase;
+        // var currencyCode = document.querySelector('.form-flex .price').getAttribute('data-currency-base');
 
-        var currencySymbol = getCurrencySymbol(currencyCode);
-        console.log('Total Price for all items: ' + total);
-        console.log('Total Price for all items: ' + total.toFixed(2));
+        // var currencySymbol = getCurrencySymbol(currencyCode);
+        // console.log('Total Price for all items: ' + total);
+        // console.log('Total Price for all items: ' + total.toFixed(2));
 
-        if (!isNaN(total)) {
-            document.querySelector('.total-price-value').textContent = currencySymbol + total.toFixed(2);
+        // if (!isNaN(total)) {
+        //     document.querySelector('.total-price-value').textContent = currencySymbol + total.toFixed(2);
 
-        } else {
-            total = 0;
-            document.querySelector('.total-price-value').textContent = currencySymbol + total.toFixed(2);
+        // } else {
+        //     total = 0;
+        //     document.querySelector('.total-price-value').textContent = currencySymbol + total.toFixed(2);
 
-        }
+        // }
     }
 
     function getCurrencySymbol(currencyCode) {
@@ -221,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.forEach(function (value, key) {
             requestData[key] = value;
         });
-        console.log(requestData)
         showLoading();
         var response = fetch(ajax_object.ajax_url, {
             method: 'POST',
@@ -231,15 +140,63 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(function (data) {
-                console.log(data)
+
+                // console.log(data)
+                // var select = document.querySelector("#availability");
+                // select.innerHTML = '';
+                // for (const key in data.sessionTimeLabel) {
+                //     if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
+                //         const value = data.sessionTimeLabel[key];
+                //         const price = data.totalPrice[key];
+                //         const activeSession = data.activeSession[key];
+                //         var option = document.createElement("option");
+                //         option.text = `${value}`;
+                //         option.value = `${key}`;
+                //         option.setAttribute("data-price", price);
+                //         option.setAttribute("data-disabled", activeSession);
+                //         select.add(option);
+                //     }
+                // }
+
                 var select = document.querySelector("#availability");
                 select.innerHTML = '';
-                data.sessionTimeLabel.map((session) => {
-                    var option = document.createElement("option");
-                    option.text = `${session}`;
-                    option.value = `${session}`;
-                    select.add(option);
-                });
+                var selectedOption = false; // Variable to track if any option is selected
+
+                for (const key in data.sessionTimeLabel) {
+                    if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
+                        const value = data.sessionTimeLabel[key];
+                        const price = data.totalPrice[key];
+                        const activeSession = data.activeSession[key];
+
+                        var option = document.createElement("option");
+                        option.text = `${value}`;
+                        option.value = `${key}`;
+                        option.setAttribute("data-price", price);
+                        option.setAttribute("data-disabled", activeSession);
+                        if (activeSession === true && !selectedOption) {
+
+                            option.selected = true;
+                            selectedOption = true;
+                        } else {
+                            option.selected = false;
+                            selectedOption = false;
+                        }
+
+                        select.add(option);
+                    }
+                }
+
+                var selectedOption = select.options[select.selectedIndex];
+                var selectedValue = select.value;
+                var selectedAttribute = selectedOption.getAttribute('data-price'); // Replace 'data-price' with the desired attribute name
+
+
+
+                console.log(selectedAttribute);
+                document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+                console.log(select.value);
+
+
                 hideLoading();
 
             })
@@ -270,27 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(function (data) {
-                // var select = document.querySelector("#availability");
-                // select.innerHTML = '';
 
-                // for (var key in data) {
-                //     if (data.hasOwnProperty(key)) {
-                //         var date = new Date(selectedDate);
-                //         var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-
-                //         data.availability[formattedDate].map((session) => {
-                //             var date = new Date(session.startTime);
-                //             var time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
-                //             var option = document.createElement("option");
-                //             option.text = time;
-                //             option.value = `${key} - Available`;
-                //             select.add(option);
-                //             console.log(data, 'datadatadatadata');
-
-                //         });
-
-                //     }
-                // }
                 hideLoading();
 
             })
@@ -298,4 +235,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 return error;
             });
     }
+
+
+
+
+    var select = document.querySelector("#availability");
+    var submitButton = document.querySelector(".form-submit"); // Replace with the ID of your submit button
+
+    select.addEventListener("change", function () {
+        var selectedOption = select.options[select.selectedIndex];
+        var selectedAttribute = selectedOption.getAttribute('data-price');
+        document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+        console.log(selectedOption.getAttribute("data-disabled"));
+        if (selectedOption.getAttribute("data-disabled") == "true") {
+            console.log('first')
+            submitButton.innerText = 'Book now';
+            submitButton.removeAttribute('disabled');
+            submitButton.classList.remove('disabled');
+        } else {
+            console.log('second')
+
+            submitButton.innerText = 'No availability';
+            submitButton.classList.add('disabled');
+            submitButton.setAttribute('disabled', true);
+
+        }
+    });
 });
