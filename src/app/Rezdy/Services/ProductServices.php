@@ -23,9 +23,11 @@ class ProductServices extends BaseService
 
         if (!$request->isValid()) return $request;
 
+
         try {
 
             $response = parent::sendRequestWithBody('POST', $baseUrl, $request);
+
         } catch (TransferException $e) {
 
             return $this->returnExceptionAsErrors($e, $request);

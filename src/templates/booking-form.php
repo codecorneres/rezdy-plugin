@@ -51,7 +51,7 @@
                                 <h5>Choose a Time <span class="required">*</span></h5>
                             </div>
                             <div class="choose-time-form form-flex">
-                                <select name="" id="availability">
+                                <select name="schedule_time" id="availability">
 
                                 </select>
                             </div>
@@ -63,7 +63,9 @@
                     </div>
                     <div class="btn-submit-box">
                         <button type="button" class="btn-submit form-submit">Book Now</button>
+                        <!-- <a href="<?php echo esc_url(site_url('/checkout/' . $product->product->productCode))  ?>" class="btn-submit">Book</a> -->
                     </div>
+
                     <div class="form-note">
                         <p><b>Please note:</b> After your purchase is confirmed we will email you a confirmation.</p>
                     </div>
@@ -71,6 +73,7 @@
         </div>
     </div>
 </div>
+
 <style>
     .ui-datepicker-unselectable {
         cursor: default !important;
@@ -88,7 +91,9 @@ $dates = array_unique($dates);
 <script>
     $(function() {
         var enabledDates = <?php echo json_encode($dates); ?>;
+        var enableasdadDates = "<?php echo  date('Y-m-d H:i:s'); ?>";
         let datesArray = Object.keys(enabledDates).map(key => enabledDates[key]);
+        console.log(datesArray);
 
         function enableDates(date) {
             var formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
@@ -127,8 +132,9 @@ $dates = array_unique($dates);
                 var selectedDate = $.datepicker.formatDate("yy-m-d", $(this).datepicker("getDate"));
                 document.querySelector('#selectedDate').value = selectedDate;
 
-                // fetching_sessions(selectedDate);
                 fetching_availabilities();
+                fetching_sessions(selectedDate);
+
             }
 
         });
@@ -137,7 +143,7 @@ $dates = array_unique($dates);
         function fetching_availabilities() {
             var form = document.querySelector('.session-form');
             var data = {
-                action: 'ajax_action_2'
+                action: 'fetching_availabilities'
             };
             var formData = new FormData(form);
             for (var key in data) {
@@ -197,7 +203,7 @@ $dates = array_unique($dates);
             showLoading();
             var productCode = document.querySelector('#productCode').value;
             var data = {
-                action: 'ajax_action',
+                action: 'fetching_sessions',
                 productCode: productCode,
                 firstDate: selectedDate
             };
@@ -242,6 +248,41 @@ $dates = array_unique($dates);
                     return error;
                 });
         }
+
+
+
+        document.querySelector('.form-submit').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var form = document.querySelector('.session-form');
+            var data = {
+                action: 'fetching_availabilities'
+            };
+            var formData = new FormData(form);
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            var requestData = {};
+
+            formData.forEach(function(value, key) {
+                requestData[key] = value;
+            });
+            console.log(requestData)
+            var response = fetch(ajax_object.ajax_url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    window.location.href = `<?= esc_url(site_url('/checkout/' . $product->product->productCode)); ?>`;
+
+                })
+                .catch(function(error) {
+                    return error;
+                });
+        });
 
     });
 </script>

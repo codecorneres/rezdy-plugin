@@ -9,6 +9,7 @@ use CC_RezdyAPI\Rezdy\Requests\Objects\SessionPriceOption;
 use CC_RezdyAPI\Rezdy\Requests\Product;
 use CC_RezdyAPI\RezdyAPI;
 use CC_RezdyAPI\Rezdy\Requests\ProductUpdate;
+use CC_RezdyAPI\Rezdy\Requests\SessionBatchUpdate;
 use CC_RezdyAPI\Rezdy\Requests\SessionCreate;
 use CC_RezdyAPI\Rezdy\Requests\SessionSearch;
 use CC_RezdyAPI\Rezdy\Requests\SessionUpdate;
@@ -88,15 +89,72 @@ class Settings extends Screen
         // $product_get = $guzzleClient->products->get('asdsd');
         $rezdy_product_code = get_post_meta('5767', 'rezdy_product_code', true);
 
-        $prm = [
-            'productCode' =>   $rezdy_product_code,
-            'startTimeLocal' => '2023-09-21 00:00:00',
-            'endTimeLocal' => '2024-01-01 02:00:00'
-        ];
-        $sessionSearch = new SessionSearch($prm);
-        $product_get = $guzzleClient->availability->search($sessionSearch);
         echo "<pre>";
-        print_r($product_get);
+        print_r(get_the_post_thumbnail_url('5767'));
+        die;
+
+        // $sessionParams = [
+        //     // 'sessionId'                     => get_post_meta('5767', "tg_availability_0_session_id", true),
+        //     // 'seats'                         => get_post_meta('5767', "tg_availability_0_seats", true),
+        //     // 'allDay'                        => get_post_meta('5767', "tg_availability_0_all_day", true),
+        // ];
+        // $sessionParams = [
+        //     'sessionId' => get_post_meta('5767', "tg_availability_0_session_id", true),
+        //     'seats' => 500
+        // ];
+
+        // // Create the Session Update Request
+        // $session = new SessionUpdate($sessionParams);
+        // $response = $guzzleClient->availability->update($session);
+
+        $response = [];
+        for ($i = 0; $i <  get_post_meta("5767", 'tg_availability', true); $i++) {
+
+            //tg_availability_0_price_options_1_price
+            $sessionPriceOptionParams = [];
+            for ($p = 0; $p < get_post_meta("5767", "tg_availability_{$i}_price_options", true); $p++) {
+                $sessionPriceOptionParams[] = [
+                    'price' => get_post_meta("5767", "tg_availability_{$i}_price_options_{$p}_price", true),
+                    "label" => get_post_meta("5767", "tg_availability_{$i}_price_options_{$p}_label", true)
+                ];
+            }
+
+            $sessionParams = [
+                'productCode'                   => $rezdy_product_code,
+                'seats'                         => get_post_meta("5767", "tg_availability_{$i}_seats", true),
+                'allDay'                        => get_post_meta("5767", "tg_availability_{$i}_all_day", true),
+                'startTimeLocal'                => get_post_meta("5767", "tg_availability_{$i}_start_time_local", true),
+                'endTimeLocal'                  => get_post_meta("5767", "tg_availability_{$i}_end_time_local", true),
+                'startTime'                     => get_post_meta("5767", "tg_availability_{$i}_start_time", true),
+                'endTime'                       => get_post_meta("5767", "tg_availability_{$i}_end_time", true),
+                // 'priceOptions'                  => $sessionPriceOptionParams
+            ];
+            $session = new SessionBatchUpdate($sessionParams);
+            $sessionPriceOptions = [];
+            foreach ($sessionPriceOptionParams as $params) {
+                $sessionPriceOptions[] = new PriceOption($params);
+            }
+
+            foreach ($sessionPriceOptions as $sessionPriceOption) {
+                $session->attach($sessionPriceOption);
+            }
+
+            $response[] = $guzzleClient->availability->update_availability_batch($session);
+        }
+
+        echo "<pre>";
+        print_r(new PriceOption());
+        die;
+
+        // $prm = [
+        //     'productCode' =>   $rezdy_product_code,
+        //     'startTimeLocal' => '2023-09-21 00:00:00',
+        //     'endTimeLocal' => '2024-01-01 02:00:00'
+        // ];
+        // $sessionSearch = new SessionSearch($prm);
+        // $product_get = $guzzleClient->availability->search($sessionSearch);
+        echo "<pre>";
+        print_r(get_post_meta('5767'));
         die;
 
 

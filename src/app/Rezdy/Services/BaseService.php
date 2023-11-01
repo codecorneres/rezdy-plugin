@@ -50,9 +50,35 @@ abstract class BaseService {
         ]);    
     }
 
-    protected function convertException($exception) { }
+    protected function convertException($exception) {
 
-    protected function returnExceptionAsErrors(TransferException $e, $request = null) {  }
+         if ($exception instanceof ClientException || $exception instanceof ServerException) {
+            $rezdyException = new RezdyException($exception->getResponse()->getReasonPhrase(), $exception->getCode());
+        } else {
+            $rezdyException = new RezdyException("Something went wrong", $exception->getCode());
+        }
+
+        $rezdyException->setUrl($exception->getRequest()->getUri());
+
+        $errors = $exception->getResponse()->getBody()->getContents();
+
+        $rezdyException->setErrors(json_decode($errors));
+        return $rezdyException;
+    }
+
+    protected function returnExceptionAsErrors(TransferException $e, $request = null) {
+
+         // See if a request was passed, if a request was not passed create an empty request.
+        $request = $request ?: new EmptyRequest;
+       
+        $rezdyException = $this->convertException($e);
+
+        $request->appendTransferErrors($rezdyException);
+
+        $request->hadError = true;
+
+        return $request;
+    }
 
     private function buildQueryString(array $queryParams) {
 

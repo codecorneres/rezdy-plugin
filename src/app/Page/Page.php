@@ -69,7 +69,7 @@ class Page
                     'durationMinutes'               => $tour_hour * 60,
                 ];
                 $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $post_id);
-
+                sleep(2);
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
                     if (get_post_meta($post_id, "tg_availability_{$i}_start_time", true) && get_post_meta($post_id, "tg_availability_{$i}_end_time", true)) {
                         $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) . ' ' . get_post_meta($post_id, "tg_availability_{$i}_start_time", true)));
@@ -91,6 +91,10 @@ class Page
                     ];
                     $session = new SessionBatchUpdate($sessionParams);
                     $response[] = $guzzleClient->availability->update_availability_batch($session);
+
+                    // $response = $this->availability_create($guzzleClient, $sessionParams);
+                    // App::sendMail('response' . json_encode($response));
+                    // update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
                 }
             } else {
                 $productParams = [

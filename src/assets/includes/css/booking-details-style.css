@@ -1,0 +1,484 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+::selection {
+    color: #fff;
+    background: rgba(255, 92, 0, 1);
+}
+
+small {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.checkout-details {
+    display: flex;
+    justify-content: space-around;
+}
+
+@media(max-width:991px) {
+    .checkout-details {
+        flex-direction: column;
+    }
+}
+
+.checkout-block {
+    padding: 30px;
+    max-width: 540px;
+}
+
+.checkout h3 small {
+    display: inline-block;
+}
+
+.checkout h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.checkout .form-wrapper .checkout-participants .first,
+.second {
+    display: block;
+}
+
+.checkout .form-wrapper .checkout-participants .third a {
+    color: rgba(255, 92, 0, 1);
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.checkout .form-wrapper .checkout-participants {
+    padding-left: 50px;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.checkout .form-wrapper .checkout-participants::before {
+    content: '1';
+    position: absolute;
+    font-size: 24px;
+    width: 10px;
+    text-align: center;
+    position: absolute;
+    left: 0px;
+    top: 0;
+    height: 100%;
+    padding-right: 15px;
+    border-right: 1px solid rgba(152, 163, 148, 0.5);
+
+}
+
+fieldset {
+    padding: 60px 30px 15px;
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    position: relative;
+}
+
+fieldset.Billing_Contact.intro {
+    padding-top: 25px;
+}
+
+fieldset .first,
+fieldset .last {
+    margin-bottom: 15px;
+}
+
+fieldset .first .fields:focus,
+fieldset .last .fields:focus {
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    border-width: 2px;
+}
+
+.toggle {
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(152, 163, 148, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    padding: 0 30px 0 15px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 40px;
+}
+
+legend.toggle::after {
+    content: '1';
+    position: absolute;
+    top: 0;
+    left: 82px;
+}
+
+.Billing_Contact::before {
+    content: '';
+    position: absolute;
+    background-image: url('images/next.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 9px;
+    right: 15px;
+    width: 100%;
+    max-width: 12px;
+    height: 12px;
+    transform: rotate(90deg);
+    transition: all .3s;
+
+}
+
+.intro::before {
+    transform: rotate(270deg);
+}
+
+.statement::after {
+    display: none;
+}
+
+label {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: 600;
+}
+
+.fields {
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    color: #333;
+    background: #fff;
+    display: block;
+    height: 40px;
+    line-height: inherit;
+    padding: 2px 10px 2px 40px;
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    border-radius: 0;
+    text-align: left;
+    cursor: text;
+    outline: 0;
+}
+
+.Billing_Contact {
+    width: 480px;
+}
+
+@media(max-width:767px) {
+    .Billing_Contact {
+        width: auto;
+    }
+}
+
+.Billing_Contact .first input {
+    position: relative;
+}
+
+.input-icon::before {
+    content: '';
+    position: absolute;
+    background-image: url('/images/input-icon.png');
+    background-size: cover;
+    background-position: center;
+    width: 12px;
+    height: 12px;
+    top: 15px;
+    left: 10px;
+    z-index: 1;
+}
+
+.Billing_Contact .input-addon {
+    position: absolute;
+    line-height: 30px;
+    font-size: 14px;
+    top: 5px;
+    left: 1px;
+    bottom: 5px;
+    width: 30px;
+    text-align: center;
+    border-right: 1px solid rgba(152, 163, 148, 0.5);
+    font-weight: 400;
+}
+
+.input-icon {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.Billing_Contact input:focus {
+    border-color: #b43c3c;
+    border-width: 2px;
+}
+
+select.country-select.fields:focus {
+    border-color: rgba(152, 163, 148, 0.5);
+    border-width: 2px;
+}
+
+.country {
+    margin-bottom: 15px;
+}
+
+.country .country-select {
+    padding-left: 10px;
+    max-width: 100%;
+}
+
+.Billing_Contact .text-area .fields {
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.Billing_Contact .text-area .fields:focus {
+    border-color: rgba(152, 163, 148, 0.5);
+    border-width: 2px;
+}
+
+.payment-third {
+    padding: 30px 30px 10px;
+}
+
+.payment-third::before {
+    display: none;
+}
+
+input[type='radio'] {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    outline: none;
+    box-shadow: 0 0 0 2px #b43c3c;
+}
+
+input[type='radio']:checked:before {
+    appearance: none;
+    background: #333;
+    box-shadow: 0 0 0 2px #333;
+}
+
+input[type='radio']:before {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 50%;
+    margin: 16% auto;
+    position: relative;
+    top: 1px;
+    border-radius: 20px;
+}
+
+.Billing_Contact .first label.mls {
+    display: flex;
+    position: relative;
+    top: -20px;
+    justify-content: space-between;
+    padding: 10px 10px 10px 35px;
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    border-bottom: 1px solid #b43c3c;
+    margin: 0;
+    align-items: flex-start;
+}
+
+.Billing_Contact .first label.mls .payment-content {
+    font-weight: 400;
+}
+
+.Billing_Contact .first #radio {
+    position: relative;
+    left: 15px;
+    top: 10px;
+    z-index: 1;
+    height: 12px;
+    width: 12px;
+}
+
+.Billing_Contact .first label .mls-2 {
+    border-top: 0px !important;
+}
+
+.checkout .mt {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.checkout .mt2 {
+    margin-top: 40px;
+}
+
+.checkout .mt small.nmt {
+    position: relative;
+    color: #fff;
+    border-radius: 2px;
+    padding: 5px 7px 5px 27px;
+    background: green;
+    font-size: 12px;
+}
+
+.checkout .mt small.nmt:after {
+    content: '';
+    position: absolute;
+    background-image: url('images/icons8-lock-26.png');
+    background-position: center;
+    background-size: cover;
+    height: 15px;
+    width: 15px;
+    left: 5px;
+    top: 3px;
+}
+
+.btn-payment.btn-invalid {
+    background-color: rgba(255, 92, 0, 0.75);
+    color: #FFF;
+    width: 100%;
+    border: none;
+    margin: 20px 0px;
+    display: block;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 15px;
+}
+
+
+.voucher-card {
+    max-width: 450px;
+    width: 100%;
+    padding: 30px;
+}
+
+.voucher-card .card-inner {
+    padding: 30px 30px 0;
+    margin-top: 30px;
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    border-bottom: none;
+}
+
+.voucher-card .card-inner .card .text-right {
+    text-align: end;
+    margin-bottom: 5px;
+}
+
+.voucher-card .card-inner .card .main-item {
+    border-top: 1px solid rgba(152, 163, 148, 0.5);
+    border-bottom: 1px solid rgba(152, 163, 148, 0.5);
+    padding: 15px 0px;
+    font-size: 14px;
+    position: relative;
+}
+
+.voucher-card .card-inner .card .main-item .item-delete {
+    position: absolute;
+    right: -20px;
+    top: 13px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #f9515f;
+}
+
+.voucher-card .card-inner .card .main-item .product-close {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.voucher-card .card-inner .card .main-item .product-close .content {
+    width: 66%;
+    padding-right: 15px;
+}
+
+.voucher-card .card-inner .card .main-item .product-close .eur-price {
+    width: 33%;
+    text-align: end;
+}
+
+.voucher-card .card-inner .card .main-item .sub-itm {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px 0px 0px;
+    border-top: 1px solid rgba(152, 163, 148, 0.5);
+}
+
+.voucher-card .card-inner .card .button {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.voucher-card .card-inner .card .button a {
+    background-color: rgba(255, 92, 0, 1);
+    padding: 8px 20px;
+    color: #FFF;
+    font-size: 12PX;
+    border-radius: 2px;
+}
+
+.voucher-card .card-inner .card .button a:hover {
+    background-color: rgba(255, 92, 0, 0.75);
+    cursor: pointer;
+}
+
+.voucher-card .cart-total .subtotal .subtotal-content {
+    width: 58%;
+    padding-right: 15px;
+}
+
+.voucher-card .cart-total .subtotal .price {
+    width: 41%;
+    text-align: end;
+
+}
+
+.voucher-card .cart-total .subtotal .subtotal-content a {
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.voucher-card .cart-total .subtotal .subtotal-content a .info-image {
+    height: 13px;
+    width: 13px;
+}
+
+
+.voucher-card .cart-total .subtotal {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(152, 163, 148, 0.5);
+}
+
+.voucher-card .cart-total .subtotal .price strong {
+    font-size: 14px;
+}
+
+.voucher-card .cart-total .total {
+    padding-top: 15px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.voucher-card .cart-total .total .total_eur {
+    width: 58%;
+    padding-right: 15px
+}
+
+.voucher-card .cart-total .total .price {
+    width: 41%;
+    text-align: end;
+}
+
+.voucher-card .cart-total {
+    border: 1px solid rgba(152, 163, 148, 0.5);
+    border-top: none;
+    background-color: rgba(152, 163, 148, 0.1);
+    padding: 15px 30px;
+}

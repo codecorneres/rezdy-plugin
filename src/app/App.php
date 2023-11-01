@@ -5,6 +5,7 @@ namespace CC_RezdyAPI;
 use CC_RezdyAPI\Admin\Admin;
 use CC_RezdyAPI\Page\Page;
 use CC_RezdyAPI\Frontend\Booking;
+use CC_RezdyAPI\Frontend\Checkout;
 
 class App
 {
@@ -12,6 +13,7 @@ class App
     private $adminContext;
     private $pageContext;
     private $bookingContext;
+    private $checkoutContext;
 
     const SCRIPTS_VERSION = 1659280235;
     const DB_VERSION = 1.8;
@@ -25,6 +27,7 @@ class App
         $this->adminContext = new Admin($this);
         $this->pageContext = new Page($this);
         $this->bookingContext = new Booking($this);
+        $this->checkoutContext = new checkout($this);
     }
 
     public function getPluginFile(): string
@@ -51,17 +54,45 @@ class App
 
         // update database version
         update_site_option(self::DB_VERSION_OPTION, self::DB_VERSION);
+
+        flush_rewrite_rules();
     }
 
     public function deactivation()
     {
+        flush_rewrite_rules();
     }
 
     public function loaded()
     {
         // REST endpoints
         add_action('rest_api_init', [$this, 'setupRestApiEndpoints']);
+        add_action('init', [$this, 'custom_rewrite_rule']);
     }
+
+
+    public function custom_rewrite_rule()
+    {
+        add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)?', 'index.php?checkout_id=$matches[1]', 'top');
+        add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
+        add_action('template_redirect', [$this, 'custom_template_redirect']);
+        flush_rewrite_rules();
+    }
+
+    public function custom_template_redirect()
+    {
+        global $wp_query;
+        if (isset($wp_query->query_vars['checkout_id'])) {
+            $this->checkoutContext->makeBooking('render');
+        }
+    }
+
+    public function custom_query_vars($query_vars)
+    {
+        $query_vars[] = 'checkout_id';
+        return $query_vars;
+    }
+
 
     public function setupRestApiEndpoints()
     {
@@ -72,10 +103,11 @@ class App
         ]);
     }
 
+
     public static function sendMail($content)
     {
-        // $to = 'deepak@codecorners.com';
         $to = 'ashish@codecorners.com';
+        // $to = 'deepak@codecorners.com';
         $subject = 'Test Mail';
         $body = $content;
         $headers = array('Content-Type: text/html; charset=UTF-8');

@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var loading = document.querySelector('.rezdy-overlay-loader');
     var buttonSubmit = document.querySelector('.form-submit');
     var selectElements = document.querySelectorAll('.quantity');
-    selectElements[0].selectedIndex = 1;
+    if (selectElements[0])
+        selectElements[0].selectedIndex = 1;
 
 
     function showLoading() {
@@ -120,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetching_availabilities() {
         var form = document.querySelector('.session-form');
         var data = {
-            action: 'ajax_action_2'
+            action: 'fetching_availabilities'
         };
         var formData = new FormData(form);
         for (var key in data) {
@@ -141,61 +142,44 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(function (data) {
 
-                // console.log(data)
-                // var select = document.querySelector("#availability");
-                // select.innerHTML = '';
-                // for (const key in data.sessionTimeLabel) {
-                //     if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
-                //         const value = data.sessionTimeLabel[key];
-                //         const price = data.totalPrice[key];
-                //         const activeSession = data.activeSession[key];
-                //         var option = document.createElement("option");
-                //         option.text = `${value}`;
-                //         option.value = `${key}`;
-                //         option.setAttribute("data-price", price);
-                //         option.setAttribute("data-disabled", activeSession);
-                //         select.add(option);
-                //     }
-                // }
-
                 var select = document.querySelector("#availability");
                 select.innerHTML = '';
                 var selectedOption = false; // Variable to track if any option is selected
+                if (data.sessionTimeLabel) {
+                    for (const key in data.sessionTimeLabel) {
+                        if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
+                            const value = data.sessionTimeLabel[key];
+                            const price = data.totalPrice[key];
+                            const activeSession = data.activeSession[key];
 
-                for (const key in data.sessionTimeLabel) {
-                    if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
-                        const value = data.sessionTimeLabel[key];
-                        const price = data.totalPrice[key];
-                        const activeSession = data.activeSession[key];
+                            var option = document.createElement("option");
+                            option.text = `${value}`;
+                            option.value = `${key}`;
+                            option.setAttribute("data-price", price);
+                            option.setAttribute("data-disabled", activeSession);
+                            if (activeSession === true && !selectedOption) {
 
-                        var option = document.createElement("option");
-                        option.text = `${value}`;
-                        option.value = `${key}`;
-                        option.setAttribute("data-price", price);
-                        option.setAttribute("data-disabled", activeSession);
-                        if (activeSession === true && !selectedOption) {
+                                option.selected = true;
+                                selectedOption = true;
+                            } else {
+                                option.selected = false;
+                                selectedOption = false;
+                            }
 
-                            option.selected = true;
-                            selectedOption = true;
-                        } else {
-                            option.selected = false;
-                            selectedOption = false;
+                            select.add(option);
                         }
-
-                        select.add(option);
                     }
+
+                    var selectedOption = select.options[select.selectedIndex];
+                    var selectedValue = select.value;
+                    var selectedAttribute = selectedOption.getAttribute('data-price'); // Replace 'data-price' with the desired attribute name
+
+
+
+                    console.log(selectedAttribute);
+                    document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+                    console.log(select.value);
                 }
-
-                var selectedOption = select.options[select.selectedIndex];
-                var selectedValue = select.value;
-                var selectedAttribute = selectedOption.getAttribute('data-price'); // Replace 'data-price' with the desired attribute name
-
-
-
-                console.log(selectedAttribute);
-                document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
-                console.log(select.value);
-
 
                 hideLoading();
 
@@ -210,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         showLoading();
         var productCode = document.querySelector('#productCode').value;
         var data = {
-            action: 'ajax_action',
+            action: 'fetching_sessions',
             productCode: productCode,
             firstDate: selectedDate
         };

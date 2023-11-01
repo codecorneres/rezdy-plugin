@@ -1,12 +1,12 @@
 var select = document.getElementById('colorName');
-    
+
 function myFunction(event) {
     var color = 'No color selected';
 
     if (select.selectedIndex > 0) {
         color = select.item(select.selectedIndex).textContent;
     }
-    
+
     document.getElementById('myText').value = color;
 }
 
@@ -28,7 +28,7 @@ const dateOptions = {
 // Event listener to update date options when the number is changed
 selectNumber.addEventListener('change', function () {
     const selectedNumber = selectNumber.value;
-    
+
     // Clear existing date options
     selectDate.innerHTML = '';
 
@@ -40,3 +40,7 @@ selectNumber.addEventListener('change', function () {
         selectDate.appendChild(option);
     });
 });
+
+
+
+
