@@ -3,7 +3,7 @@
 <div class="booking-sidebar-widget-box in calendar-widget">
     <div class="booking-inner availability-container">
         <div class="booking-form-list">
-            <form action="" class="session-form">
+            <form action="<?= esc_url(site_url('/checkout/' . $product->product->productCode)); ?>" method="post" class="session-form">
                 <div class="booking-group">
                     <div class="booking-single">
                         <div class="title">
@@ -62,7 +62,7 @@
                         <h4 class="total-price-value">€0</h4>
                     </div>
                     <div class="btn-submit-box">
-                        <button type="button" class="btn-submit form-submit">Book Now</button>
+                        <button type="submit" class="btn-submit form-submit">Book Now</button>
                         <!-- <a href="<?php echo esc_url(site_url('/checkout/' . $product->product->productCode))  ?>" class="btn-submit">Book</a> -->
                     </div>
 
@@ -220,27 +220,7 @@ $dates = array_unique($dates);
                     return response.json();
                 })
                 .then(function(data) {
-                    // var select = document.querySelector("#availability");
-                    // select.innerHTML = '';
 
-                    // for (var key in data) {
-                    //     if (data.hasOwnProperty(key)) {
-                    //         var date = new Date(selectedDate);
-                    //         var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-
-                    //         data.availability[formattedDate].map((session) => {
-                    //             var date = new Date(session.startTime);
-                    //             var time = ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2);
-                    //             var option = document.createElement("option");
-                    //             option.text = time;
-                    //             option.value = `${key} - Available`;
-                    //             select.add(option);
-                    //             console.log(data, 'datadatadatadata');
-
-                    //         });
-
-                    //     }
-                    // }
                     hideLoading();
 
                 })
@@ -248,41 +228,6 @@ $dates = array_unique($dates);
                     return error;
                 });
         }
-
-
-
-        document.querySelector('.form-submit').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            var form = document.querySelector('.session-form');
-            var data = {
-                action: 'fetching_availabilities'
-            };
-            var formData = new FormData(form);
-            for (var key in data) {
-                formData.append(key, data[key]);
-            }
-            var requestData = {};
-
-            formData.forEach(function(value, key) {
-                requestData[key] = value;
-            });
-            console.log(requestData)
-            var response = fetch(ajax_object.ajax_url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    window.location.href = `<?= esc_url(site_url('/checkout/' . $product->product->productCode)); ?>`;
-
-                })
-                .catch(function(error) {
-                    return error;
-                });
-        });
 
     });
 </script>

@@ -10,6 +10,11 @@
     background: rgba(255, 92, 0, 1);
 }
 
+/* :root, ::after,
+::before {
+    --process-number: '1';
+} */
+
 small {
     font-size: 12px;
     font-weight: 400;
@@ -59,7 +64,7 @@ small {
 }
 
 .checkout .form-wrapper .checkout-participants::before {
-    content: '1';
+    content: var(--process-number);
     position: absolute;
     font-size: 24px;
     width: 10px;
@@ -109,7 +114,7 @@ fieldset .last .fields:focus {
 }
 
 legend.toggle::after {
-    content: '1';
+    content: var(--feild-number);
     position: absolute;
     top: 0;
     left: 82px;
@@ -118,7 +123,7 @@ legend.toggle::after {
 .Billing_Contact::before {
     content: '';
     position: absolute;
-    background-image: url('images/next.png');
+    background-image: url('../../images/next.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -182,7 +187,7 @@ label {
 .input-icon::before {
     content: '';
     position: absolute;
-    background-image: url('/images/input-icon.png');
+    background-image: url('../../images/input-icon.png');
     background-size: cover;
     background-position: center;
     width: 12px;
@@ -324,7 +329,7 @@ input[type='radio']:before {
 .checkout .mt small.nmt:after {
     content: '';
     position: absolute;
-    background-image: url('images/icons8-lock-26.png');
+    background-image: url('../../images/icons8-lock-26.png');
     background-position: center;
     background-size: cover;
     height: 15px;

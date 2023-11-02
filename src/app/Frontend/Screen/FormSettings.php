@@ -99,11 +99,11 @@ class FormSettings extends Screen
 
     function fetching_availabilities_callback()
     {
-        if (!session_id()) {
-            session_start();
-        }
+        // if (!session_id()) {
+        //     session_start();
+        // }
 
-        $_SESSION['form_data'] = $_POST;
+        // $_SESSION['form_data'] = $_POST;
         $guzzleClient = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
         $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
         $lastDate = date("Y-m-t", strtotime($selected_date));

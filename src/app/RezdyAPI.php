@@ -4,6 +4,7 @@ namespace CC_RezdyAPI;
 
 use CC_RezdyAPI\Rezdy\Services\ProductServices;
 use CC_RezdyAPI\Rezdy\Services\AvailabilityServices;
+use CC_RezdyAPI\Rezdy\Services\BookingServices;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
@@ -82,5 +83,6 @@ class RezdyAPI
           $client = $client ?: new GuzzleClient();
           $this->products         = new ProductServices($apiKey, $client);
           $this->availability         = new AvailabilityServices($apiKey, $client);
+          $this->bookings         = new BookingServices($apiKey, $client);
      }
 }

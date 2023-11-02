@@ -1,6 +1,7 @@
 <?php defined('ABSPATH') || exit; ?>
 
-<form action="">
+<form action="" class="booking-checkout">
+
     <div class="checkout-details">
         <div class="checkout-block">
             <!-- 1st -->
@@ -9,38 +10,41 @@
                     <small>Step 1 of 3</small>
                     Booking Details
                 </h3>
-                <div class="form-wrapper">
-                    <p class="checkout-participants">
-                        <strong><?= $product->product->name; ?></strong>
-                        <small class="first">
-                            <small class="two">
-                                Date:
-                                26 Oct 2023 &nbsp;
-                                17:00
+                <?php $counter = 1; ?>
+                <?php foreach ($response as $k => $detail) : ?>
+                    <div class="form-wrapper">
+                        <p class=" checkout-participants" style="--process-number: '<?= $counter++ ?>';">
+                            <strong><?= $detail['name']; ?></strong>
+                            <input type="hidden" value="<?= $detail['productCode']; ?>" name="order[<?= $k; ?>][productCode]">
+                            <small class="first">
+                                <small class="two">
+                                    <input type="hidden" value="<?= $detail['sessionDate']; ?>" name="order[<?= $k; ?>][sessionDate]">
+                                    Date:&nbsp;<?= $detail['sessionDate']; ?>
+                                </small>
                             </small>
-                        </small>
-                        <small class="third">
-                            <a class="pointer">Edit Booking</a>
-                        </small>
-                    </p>
-                </div>
-                <!-- form-data -->
-                <fieldset class="Billing_Contact">
-                    <legend class="toggle">Participant</legend>
-                    <div class="content">
-                        <div class="first">
-                            <label for="fname">First Name</label>
-                            <!-- <textarea name="" id="" cols="30" rows="10">
-                                <?= json_encode($session); ?>
-                            </textarea> -->
-                            <input class="fields" type="text" id="fname" name="fname">
-                        </div>
-                        <div class="last">
-                            <label for="lname">Last Name</label>
-                            <input class="fields" type="text" id="lname" name="lname">
-                        </div>
+                            <small class="third">
+                                <a class="pointer">Edit Booking</a>
+                            </small>
+                        </p>
                     </div>
-                </fieldset>
+                    <!-- form-data -->
+                    <?php for ($i = 0; $i < $detail['totalQuantity']; $i++) : ?>
+                        <fieldset class="Billing_Contact" style="--feild-number: '<?= $i + 1 ?>';">
+                            <legend class="toggle">Participant</legend>
+                            <div class="content">
+                                <div class="first">
+                                    <label for="fname">First Name</label>
+
+                                    <input class="fields" type="text" id="fname" name="participant[<?= $k; ?>][<?= $i; ?>][first_name]">
+                                </div>
+                                <div class="last">
+                                    <label for="lname">Last Name</label>
+                                    <input class="fields" type="text" id="lname" name="participant[<?= $k; ?>][<?= $i; ?>][last_name]">
+                                </div>
+                            </div>
+                        </fieldset>
+                    <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
 
             <!-- 2nd -->
@@ -56,14 +60,14 @@
                         <div class="first">
                             <label for="fname">First Name</label>
                             <div class="input-icon">
-                                <input class="fields" type="text" id="fname" name="fname">
+                                <input class="fields" type="text" required id="fname" name="fname">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
                         <div class="last">
                             <label for="lname">Last Name</label>
                             <div class="input-icon">
-                                <input class="fields" type="text" id="lname" name="lname">
+                                <input class="fields" type="text" required id="lname" name="lname">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
@@ -77,13 +81,13 @@
                         <div class="email">
                             <label for="email">Email</label>
                             <div class="input-icon">
-                                <input class="fields" type="email" id="email" name="email">
+                                <input class="fields" type="email" required id="email" name="email">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
                         <div class="country">
                             <label for="country">Country</label>
-                            <select data-fieldtype="COUNTRY" class="country-select fields">
+                            <select data-fieldtype="COUNTRY" name="country" class="country-select fields">
                                 <option value="">Select...</option>
                                 <option value="af">Afghanistan</option>
                                 <option value="ax">Aland Islands</option>
@@ -338,7 +342,7 @@
                         </div>
                         <div class="text-area">
                             <label for="text-area">Special requirements </label>
-                            <textarea class="fields" id="text-area" name="text-area" rows="10" cols="50"></textarea>
+                            <textarea class="fields" id="text-area" name="comments" rows="10" cols="50"></textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -381,7 +385,7 @@
                 </fieldset>
             </div>
             <!-- button -->
-            <button class="btn btn-payment btn-submit pointer btn-invalid">
+            <button type="submit" class="btn btn-payment btn-submit pointer btn-invalid">
                 <div class="btn-payment-total">
                     Pay <span class="update-on-order-total-change price" data-currency-base="EUR" data-original-amount="€59.00" title="Estimated conversion from 59">€59.00</span> </div>
 
@@ -398,39 +402,43 @@
                     <div class="text-right">
                         <small class="price-label">EUR</small>
                     </div>
-                    <div class="main-item">
-                        <a class="item-delete" href="#">×</a>
-                        <div class="product-close">
-                            <div class="contents">
-                                <strong class="product-name">
-                                    <?= $product->product->name; ?>
-                                </strong>
-                                <br>
-                                <small>
+                    <?php foreach ($response as $k => $detail) : ?>
+                        <div class="main-item">
+                            <a class="item-delete" href="#">×</a>
+                            <div class="product-close">
+                                <div class="contents">
+                                    <strong class="product-name">
+                                        <?= $detail['name']; ?>
+                                    </strong>
+                                    <br>
                                     <small>
-                                        Date:
-                                        27 Oct 2023 &nbsp;
-                                        13:00
+                                        <small>
+                                            Date:&nbsp;<?= $detail['sessionDate']; ?>
+                                        </small>
                                     </small>
-                                </small>
+                                </div>
+                                <div class="eur-price">
+                                    <strong class="price">€<?= $detail['totalPrice']; ?></strong>
+                                </div>
                             </div>
-                            <div class="eur-price">
-                                <strong class="price">€59.00</strong>
-                            </div>
+                            <?php foreach ($detail['priceOptions'] as $i => $options) : ?>
+                                <div class="sub-itm">
+                                    <div class="price_left">
+                                        <input type="hidden" value="<?= $options['label']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][optionLabel]" id="">
+                                        <small><?= $options['label']; ?> <br><small class="price">€<?= $options['price']; ?></small>
+                                        </small>
+                                    </div>
+                                    <div class="center-digit">
+                                        <input type="hidden" value="<?= $options['quantity']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][value]" id="">
+                                        <small><?= $options['quantity']; ?></small>
+                                    </div>
+                                    <div class="price_right">
+                                        <small class="price">€<?= $options['sessionTotalPrice']; ?></small>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <div class="sub-itm">
-                            <div class="price_left">
-                                <small>Adult <br><small class="price">€59.00</small>
-                                </small>
-                            </div>
-                            <div class="center-digit">
-                                <small>1</small>
-                            </div>
-                            <div class="price_right">
-                                <small class="price">€59.00</small>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                     <div class="button">
                         <small>
                             <a class="btn_pointer">Add Promo code / Voucher</a>
@@ -462,4 +470,40 @@
             </div>
         </div>
     </div>
+    <!-- <input type="hidden" name="action" value="booking_checkout"> -->
 </form>
+
+
+
+<script>
+    var form = document.querySelector('.booking-checkout');
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var data = {
+            action: 'booking_checkout'
+        };
+        var formData = new FormData(form);
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        var requestData = {};
+
+        formData.forEach(function(value, key) {
+            requestData[key] = value;
+        });
+        console.log(requestData)
+        var response = fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data)
+            })
+            .catch(function(error) {
+                console.log(error)
+            });
+    });
+</script>
