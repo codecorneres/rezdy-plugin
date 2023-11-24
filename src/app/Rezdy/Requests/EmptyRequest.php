@@ -1,5 +1,5 @@
 <?php
-namespace CC_RezdyAPI\Requests;
+namespace CC_RezdyAPI\Rezdy\Requests;
 
 class EmptyRequest extends BaseRequest {	
 

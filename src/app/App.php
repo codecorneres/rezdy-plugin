@@ -106,12 +106,27 @@ class App
 
     public static function sendMail($content)
     {
-        $to = 'ashish@codecorners.com';
-        // $to = 'deepak@codecorners.com';
+        $to = 'deepak@codecorners.com';
         $subject = 'Test Mail';
         $body = $content;
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
         return wp_mail($to, $subject, $body, $headers);
+    }
+
+    public static function custom_logs($message) { 
+        if (is_array($message)) { 
+            $message = json_encode($message); 
+        } 
+    
+        $logMessage = "\n" . date('Y-m-d h:i:s') . " :: " . $message;
+    
+        // Use error handling
+        try {
+            file_put_contents("../custom_logs.log", $logMessage, FILE_APPEND);
+           // echo 'Log entry added successfully.';
+        } catch (Exception $e) {
+            //echo 'Error writing to log: ' . $e->getMessage();
+        }
     }
 }

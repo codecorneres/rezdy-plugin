@@ -86,6 +86,10 @@ class Settings extends Screen
     public function setRezdyClient($rezdy_api_key)
     {
         $guzzleClient = new RezdyAPI($rezdy_api_key);
+        $product_get = $guzzleClient->products->get('PJJN1G');
+        echo "<pre>";
+        print_r($product_get);
+        die;
         // $product_get = $guzzleClient->products->get('asdsd');
         $rezdy_product_code = get_post_meta('5767', 'rezdy_product_code', true);
 

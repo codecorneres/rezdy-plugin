@@ -16,10 +16,11 @@ class BookingDetails extends Screen
 
     public function render()
     {
-        $guzzleClient           = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
+        $guzzleClient           = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
         $rezdy_api_product_code = $_POST['OrderItem']['productCode'];
         $product                = $guzzleClient->products->get($rezdy_api_product_code);
 
+        
         $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
         $lastDate = date("Y-m-t", strtotime($selected_date));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
@@ -98,7 +99,7 @@ class BookingDetails extends Screen
 
     function booking_checkout_callback()
     {
-        $rezdyAPI = new RezdyAPI('6ac1101abf47440fb7014c8fe378c9d9');
+        $rezdyAPI = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
 
         $bookingParams = [
             'comments' => $_POST['comments'],
