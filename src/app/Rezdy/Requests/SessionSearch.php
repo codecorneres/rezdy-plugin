@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Requests;
  * Creates and verifies the SessionSearch request
  *
  * @package Resources
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class SessionSearch extends BaseRequest implements RequestInterface
 {

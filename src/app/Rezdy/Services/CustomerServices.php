@@ -18,7 +18,7 @@ use GuzzleHttp\Psr7;
  * Performs all actions pertaining to Rezdy API Customer Service Calls
  *
  * @package Services
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class CustomerServices extends BaseService
 {

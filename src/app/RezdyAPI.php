@@ -82,7 +82,7 @@ class RezdyAPI
           // Create a GuzzleHTTP Client if one is not passed   
           $client = $client ?: new GuzzleClient();
           $this->products         = new ProductServices($apiKey, $client);
-          $this->availability         = new AvailabilityServices($apiKey, $client);
+          $this->availability     = new AvailabilityServices($apiKey, $client);
           $this->bookings         = new BookingServices($apiKey, $client);
      }
 }

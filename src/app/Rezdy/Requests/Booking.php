@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Requests;
  * Creates and verifies the BookingRequest resource
  *
  * @package Resources
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class Booking extends BaseRequest implements RequestInterface
 {

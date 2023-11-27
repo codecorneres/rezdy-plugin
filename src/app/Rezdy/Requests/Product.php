@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Requests;
  * Creates and verifies the Product request
  *
  * @package Requests
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class Product extends BaseRequest implements RequestInterface
 {

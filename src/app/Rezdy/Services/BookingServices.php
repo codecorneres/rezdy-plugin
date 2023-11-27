@@ -19,7 +19,7 @@ use GuzzleHttp\Psr7;
  * Performs all actions pertaining to Rezdy API Booking Service Calls
  *
  * @package Services
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class BookingServices extends BaseService
 {

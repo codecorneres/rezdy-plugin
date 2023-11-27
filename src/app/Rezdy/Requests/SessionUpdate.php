@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Requests;
  * Creates and verifies the SessionCreateRequest resource
  *
  * @package Resources
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class SessionUpdate extends BaseRequest implements RequestInterface
 {

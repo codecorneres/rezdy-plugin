@@ -60,7 +60,7 @@ class Page
             $guzzleClient = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
             $product_get = $guzzleClient->products->get($rezdy_product_code);
 
-            if (!empty($product_get->product)) {
+            if (!empty($product_get->product) && $update) {
 
                 $product_update_params = [
                     'name'                          => $post_title,
@@ -70,9 +70,10 @@ class Page
                     'durationMinutes'               => $tour_hour * 60,
                 ];
                 
-                $res = $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $post_id);
+                $this->product_update($guzzleClient, $rezdy_product_code, $product_update_params, $post_id);
                 
                 sleep(2);
+                
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
                     if (get_post_meta($post_id, "tg_availability_{$i}_start_time", true) && get_post_meta($post_id, "tg_availability_{$i}_end_time", true)) {
                         $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) . ' ' . get_post_meta($post_id, "tg_availability_{$i}_start_time", true)));
@@ -81,47 +82,45 @@ class Page
                         $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) . ' ' . '00:00:00'));
                         $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true) . ' ' . '23:59:59'));
                     }
-
+                
                     $sessionPriceOptionParams = [];
-                    for ($p = 0; $p < get_post_meta($post_id, "tg_availability_{$i}_price_options", true); $p++) {
+                    for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
                         $sessionPriceOptionParams[] = [
-                            'price' => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_price", true),
-                            "label" => get_post_meta($post_id, "tg_availability_{$i}_price_options_{$p}_label", true)
+                            'price' => get_post_meta($post_id, "tg_price_options_{$p}_price", true),
+                            "label" => get_post_meta($post_id, "tg_price_options_{$p}_label", true)
                         ];
                     }
 
-                    App::custom_logs($sessionPriceOptionParams);
+                    
                     $sessionPriceOptions = [];
-                    // foreach ($sessionPriceOptionParams as $params) {
-                    //     $sessionPriceOptions[] = new PriceOption($params);
-                    // }
+                    foreach ($sessionPriceOptionParams as $params) {
+                        $sessionPriceOptions[] = new PriceOption($params);
+                    }
+
                     $sessionParams = [
                         'productCode'                   => $rezdy_product_code,
                         'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                        'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
+                        'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true) ? true : false,
                         'startTimeLocal'                => $startTimeLocal,
-                        'endTimeLocal'                  => $endTimeLocal,
-                        // 'startTimeLocal'                => get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true),
-                        // 'endTimeLocal'                  => get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true),
-                        // 'startTime'                     => get_post_meta($post_id, "tg_availability_{$i}_start_time", true),
-                        // 'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
+                        'endTimeLocal'                  => $endTimeLocal
                     ];
 
-                    //App::sendMail('response' . json_encode($sessionPriceOptionParams));
+                    if(get_post_meta($post_id, "tg_availability_{$i}_session_id", true)){
+                        $sessionParams['sessionId'] = get_post_meta($post_id, "tg_availability_{$i}_session_id", true);
+                        $response = $this->availability_update($guzzleClient, $sessionParams);
+                    }else{
+                        $response = $this->availability_create($guzzleClient, $sessionParams);
+                        update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
+                    }
 
-                    // $session = new SessionBatchUpdate($sessionParams);
-                    // $response[] = $guzzleClient->availability->update_availability_batch($session);
-
-                    // $response = $this->availability_create($guzzleClient, $sessionParams);
-                    // App::sendMail('response' . json_encode($response));
-                    // update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
+                    App::custom_logs($sessionParams);
                 }
             } else {
                 $productParams = [
                     'description'                    => $description,
                     'durationMinutes'                => $tour_hour * 60,
                     'name'                           => $post_title,
-                    'productType'                    => 'ACTIVITY',
+                    'productType'                    => 'PRIVATE_TOUR',
                     'shortDescription'               => $shortDescription,
                 ];
                 $this->product_create($guzzleClient, $post_id, $productParams);
@@ -139,14 +138,11 @@ class Page
                         'productCode'                   => $rezdy_product_code,
                         'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
                         'seatsAvailable'                => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                        'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true),
+                        'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true) ? true : false,
                         'startTimeLocal'                => $startTimeLocal,
                         'endTimeLocal'                  => $endTimeLocal,
-                        // 'startTime'                     => get_post_meta($post_id, "tg_availability_{$i}_start_time", true),
-                        // 'endTime'                       => get_post_meta($post_id, "tg_availability_{$i}_end_time", true),
                     ];
                     $response = $this->availability_create($guzzleClient, $sessionParams);
-                    //App::sendMail('response' . json_encode($response));
                     update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
                 }
             }
@@ -212,15 +208,12 @@ class Page
     function availability_create($guzzleClient, $sessionParams)
     {
         $session = new SessionCreate($sessionParams);
-        $response = $guzzleClient->availability->create($session);
-        return $response;
+        return $guzzleClient->availability->create($session);
     }
     function availability_update($guzzleClient, $sessionParams)
     {
         $session = new SessionUpdate($sessionParams);
-        // Send the request to the API
-        $response = $guzzleClient->availability->update($session);
+        return $guzzleClient->availability->update($session);
         // $response = $guzzleClient->availability->update_availability_batch($session);
-        App::sendMail('responseupdate' . json_encode($response));
     }
 }

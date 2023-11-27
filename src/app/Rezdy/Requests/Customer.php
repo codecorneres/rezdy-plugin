@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Requests;
  * Creates and verifies the BookingCustomer request
  *
  * @package Requests
- * @author Brad Ploeger
+ * @author Code Corners
  */
 class Customer extends BaseRequest implements RequestInterface
 {

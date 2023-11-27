@@ -21,12 +21,12 @@ class ResponseStandard extends BaseResponse {
 	}
 
 	public function toRequest() {
-		$typeToClass = 	[	'booking'		=> 'Rezdy\Requests\Booking',
-							'session'		=> 'Rezdy\Requests\SessionUpdate',
-							'customer'		=> 'Rezdy\Requests\Customer',
-							'extra'			=> 'Rezdy\Requests\Extra',
-							'pickupList'	=> 'Rezdy\Requests\PickupList',
-							'product'		=> 'Rezdy\Requests\Product',
+		$typeToClass = 	[	'booking'		=> 'CC_RezdyAPI\Rezdy\Requests\Booking',
+							'session'		=> 'CC_RezdyAPI\Rezdy\Requests\SessionUpdate',
+							'customer'		=> 'CC_RezdyAPI\Rezdy\Requests\Customer',
+							'extra'			=> 'CC_RezdyAPI\Rezdy\Requests\Extra',
+							'pickupList'	=> 'CC_RezdyAPI\Rezdy\Requests\PickupList',
+							'product'		=> 'CC_RezdyAPI\Rezdy\Requests\Product',
 						];
 		$itemType = $this->itemType;
 		if (array_key_exists($itemType, $typeToClass)) {

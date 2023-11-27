@@ -6,7 +6,7 @@ namespace CC_RezdyAPI\Rezdy\Util;
  * Validation class for Requests.
  *
  * @package     Util
- * @author      Brad Ploeger
+ * @author      Code Corners
  */
 
 class Validate
