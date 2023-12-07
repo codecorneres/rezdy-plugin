@@ -74,7 +74,8 @@ class App
 
 
     public function custom_rewrite_rule()
-    {
+    {   
+        self::createToursPostTypes();
         add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)?', 'index.php?checkout_id=$matches[1]', 'top');
         add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
         add_action('template_redirect', [$this, 'custom_template_redirect']);
@@ -130,5 +131,154 @@ class App
         } catch (Exception $e) {
             //echo 'Error writing to log: ' . $e->getMessage();
         }
+    }
+
+    public static function createToursPostTypes(){
+        $labels = [
+            "name" => esc_html__( "Tours", "custom-post-type-ui" ),
+            "singular_name" => esc_html__( "Tour", "custom-post-type-ui" ),
+        ];
+    
+        $args = [
+            "label" => esc_html__( "Tours", "custom-post-type-ui" ),
+            "labels" => $labels,
+            "description" => "",
+            "public" => true,
+            "publicly_queryable" => true,
+            "show_ui" => true,
+            "show_in_rest" => true,
+            "rest_base" => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "rest_namespace" => "wp/v2",
+            "has_archive" => false,
+            "show_in_menu" => true,
+            "show_in_nav_menus" => true,
+            "delete_with_user" => false,
+            "exclude_from_search" => false,
+            "capability_type" => "post",
+            "map_meta_cap" => true,
+            "hierarchical" => false,
+            "can_export" => true,
+            "rewrite" => [ "slug" => "tours", "with_front" => false ],
+            "query_var" => true,
+            "supports" => [ "title", "editor", "thumbnail", "excerpt" ],
+            "show_in_graphql" => false,
+        ];
+    
+        register_post_type( "tours", $args );
+    
+        /**
+         * Post Type: Rome Tours.
+         */
+    
+        $labels = [
+            "name" => esc_html__( "Rome Tours", "custom-post-type-ui" ),
+            "singular_name" => esc_html__( "Rome", "custom-post-type-ui" ),
+        ];
+    
+        $args = [
+            "label" => esc_html__( "Rome Tours", "custom-post-type-ui" ),
+            "labels" => $labels,
+            "description" => "",
+            "public" => true,
+            "publicly_queryable" => true,
+            "show_ui" => true,
+            "show_in_rest" => true,
+            "rest_base" => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "rest_namespace" => "wp/v2",
+            "has_archive" => false,
+            "show_in_menu" => true,
+            "show_in_nav_menus" => true,
+            "delete_with_user" => false,
+            "exclude_from_search" => false,
+            "capability_type" => "post",
+            "map_meta_cap" => true,
+            "hierarchical" => false,
+            "can_export" => false,
+            "rewrite" => [ "slug" => "rome", "with_front" => true ],
+            "query_var" => true,
+            "supports" => [ "title", "editor", "thumbnail", "excerpt", "custom-fields" ],
+            "taxonomies" => [ "loactions", "locations_type", "offer" ],
+            "show_in_graphql" => false,
+        ];
+    
+        register_post_type( "rome", $args );
+    
+        /**
+         * Post Type: Florence Tours.
+         */
+    
+        $labels = [
+            "name" => esc_html__( "Florence Tours", "custom-post-type-ui" ),
+            "singular_name" => esc_html__( "Florence", "custom-post-type-ui" ),
+        ];
+    
+        $args = [
+            "label" => esc_html__( "Florence Tours", "custom-post-type-ui" ),
+            "labels" => $labels,
+            "description" => "",
+            "public" => true,
+            "publicly_queryable" => true,
+            "show_ui" => true,
+            "show_in_rest" => true,
+            "rest_base" => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "rest_namespace" => "wp/v2",
+            "has_archive" => false,
+            "show_in_menu" => true,
+            "show_in_nav_menus" => true,
+            "delete_with_user" => false,
+            "exclude_from_search" => false,
+            "capability_type" => "post",
+            "map_meta_cap" => true,
+            "hierarchical" => false,
+            "can_export" => false,
+            "rewrite" => [ "slug" => "florence", "with_front" => true ],
+            "query_var" => true,
+            "supports" => [ "title", "editor", "thumbnail", "excerpt", "custom-fields" ],
+            "taxonomies" => [ "loactions", "offer" ],
+            "show_in_graphql" => false,
+        ];
+    
+        register_post_type( "florence", $args );
+    
+        /**
+         * Post Type: Barcelona Tours.
+         */
+    
+        $labels = [
+            "name" => esc_html__( "Barcelona Tours", "custom-post-type-ui" ),
+            "singular_name" => esc_html__( "Barcelona", "custom-post-type-ui" ),
+        ];
+    
+        $args = [
+            "label" => esc_html__( "Barcelona Tours", "custom-post-type-ui" ),
+            "labels" => $labels,
+            "description" => "",
+            "public" => true,
+            "publicly_queryable" => true,
+            "show_ui" => true,
+            "show_in_rest" => true,
+            "rest_base" => "",
+            "rest_controller_class" => "WP_REST_Posts_Controller",
+            "rest_namespace" => "wp/v2",
+            "has_archive" => false,
+            "show_in_menu" => true,
+            "show_in_nav_menus" => true,
+            "delete_with_user" => false,
+            "exclude_from_search" => false,
+            "capability_type" => "post",
+            "map_meta_cap" => true,
+            "hierarchical" => true,
+            "can_export" => false,
+            "rewrite" => [ "slug" => "barcelona", "with_front" => true ],
+            "query_var" => true,
+            "supports" => [ "title", "editor", "thumbnail", "page-attributes" ],
+            "taxonomies" => [ "loactions", "offer" ],
+            "show_in_graphql" => false,
+        ];
+    
+        register_post_type( "barcelona", $args );
     }
 }
