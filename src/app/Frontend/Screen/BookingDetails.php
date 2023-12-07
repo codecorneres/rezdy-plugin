@@ -16,7 +16,7 @@ class BookingDetails extends Screen
 
     public function render()
     {
-        $guzzleClient           = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+        $guzzleClient           = new RezdyAPI($this->appContext::API_KEY);
         $rezdy_api_product_code = $_POST['OrderItem']['productCode'];
         $product                = $guzzleClient->products->get($rezdy_api_product_code);
 
@@ -99,7 +99,7 @@ class BookingDetails extends Screen
 
     function booking_checkout_callback()
     {
-        $rezdyAPI = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+        $rezdyAPI = new RezdyAPI($this->appContext::API_KEY);
 
         $bookingParams = [
             'comments' => $_POST['comments'],

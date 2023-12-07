@@ -57,7 +57,7 @@ class Page
             $rezdy_product_code     = get_post_meta($post_id, 'rezdy_product_code', true);
             $post_title             = $post_data->post_title;
 
-            $guzzleClient = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+            $guzzleClient = new RezdyAPI($this->pageContext::API_KEY);
             $product_get = $guzzleClient->products->get($rezdy_product_code);
 
             if (!empty($product_get->product) && $update) {

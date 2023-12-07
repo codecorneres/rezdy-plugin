@@ -14,15 +14,17 @@ class App
     private $pageContext;
     private $bookingContext;
     private $checkoutContext;
+    private $apiKey;
 
     const SCRIPTS_VERSION = 1659280235;
     const DB_VERSION = 1.8;
     const DB_VERSION_OPTION = 'cc:db_version';
     const SETTINGS_TABLE = 'cc_settings';
     const ALLOWED_POST_TYPE = ['rome', 'florence', 'barcelona'];
+    const API_KEY = 'bbd855b6152a4bcdb9f4ab1eff1c3b94';
 
     public function __construct(string $plugin_file)
-    {
+    {   
         $this->plugin_file = $plugin_file;
         $this->adminContext = new Admin($this);
         $this->pageContext = new Page($this);

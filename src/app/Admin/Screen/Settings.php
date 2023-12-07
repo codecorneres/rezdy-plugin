@@ -77,7 +77,7 @@ class Settings extends Screen
         update_option('cc_rezdy_api_key', $rezdy_api_key);
         update_option('cc_rezdy_api_url', $rezdy_api_url);
 
-        $this->setRezdyClient($rezdy_api_key);
+        //$this->setRezdyClient($rezdy_api_key);
 
         return $this->success(__('Rezdy settings updated successfully.', 'cc-rezdy-api'));
     }
@@ -102,7 +102,7 @@ class Settings extends Screen
             $rezdy_product_code     = get_post_meta($post_id, 'rezdy_product_code', true);
             $post_title             = $post_data->post_title;
 
-            $guzzleClient = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+            $guzzleClient = new RezdyAPI($this->appContext::API_KEY);
             $product_get = $guzzleClient->products->get($rezdy_product_code);
 
             if (!empty($product_get->product)) {

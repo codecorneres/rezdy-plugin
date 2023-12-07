@@ -15,7 +15,7 @@ class FormSettings extends Screen
     {
 
 
-        $guzzleClient           = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+        $guzzleClient           = new RezdyAPI($this->appContext::API_KEY);
         $page_id                = get_the_ID();
         $rezdy_api_product_code = get_post_meta($page_id, 'rezdy_product_code', true);
 
@@ -72,7 +72,7 @@ class FormSettings extends Screen
 
     function fetching_sessions_callback()
     {
-        $guzzleClient           = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+        $guzzleClient           = new RezdyAPI($this->appContext::API_KEY);
 
 
         $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate'] . ' ' . date('H:i:s')));
@@ -105,7 +105,7 @@ class FormSettings extends Screen
     function fetching_availabilities_callback()
     {
 
-        $guzzleClient = new RezdyAPI('bbd855b6152a4bcdb9f4ab1eff1c3b94');
+        $guzzleClient = new RezdyAPI($this->appContext::API_KEY);
         $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
         $lastDate = date("Y-m-t", strtotime($selected_date));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
