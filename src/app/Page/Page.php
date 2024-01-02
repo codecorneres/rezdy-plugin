@@ -75,26 +75,12 @@ class Page
                 sleep(2);
                 
                 for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-                    if (get_post_meta($post_id, "tg_availability_{$i}_start_time", true) && get_post_meta($post_id, "tg_availability_{$i}_end_time", true)) {
-                        $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) . ' ' . get_post_meta($post_id, "tg_availability_{$i}_start_time", true)));
-                        $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true) . ' ' . get_post_meta($post_id, "tg_availability_{$i}_end_time", true)));
-                    } else {
-                        $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) . ' ' . '00:00:00'));
-                        $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true) . ' ' . '23:59:59'));
-                    }
-                
-                    $sessionPriceOptionParams = [];
-                    for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
-                        $sessionPriceOptionParams[] = [
-                            'price' => get_post_meta($post_id, "tg_price_options_{$p}_price", true),
-                            "label" => get_post_meta($post_id, "tg_price_options_{$p}_label", true)
-                        ];
-                    }
-
+                    $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true)));
+                    $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true)));
                     
-                    $sessionPriceOptions = [];
-                    foreach ($sessionPriceOptionParams as $params) {
-                        $sessionPriceOptions[] = new PriceOption($params);
+                    if(get_post_meta($post_id, "tg_availability_{$i}_all_day", true)){
+                        $endTime = strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true));
+                        $endTimeLocal = date('Y-m-d H:i:s', strtotime('+1 day', $endTime));
                     }
 
                     $sessionParams = [
@@ -107,13 +93,11 @@ class Page
 
                     if(get_post_meta($post_id, "tg_availability_{$i}_session_id", true)){
                         $sessionParams['sessionId'] = get_post_meta($post_id, "tg_availability_{$i}_session_id", true);
-                        $response = $this->availability_update($guzzleClient, $sessionParams);
+                        $this->availability_update($guzzleClient, $sessionParams);
                     }else{
                         $response = $this->availability_create($guzzleClient, $sessionParams);
                         update_post_meta($post_id, "tg_availability_{$i}_session_id", $response->session->id);
                     }
-
-                    App::custom_logs($sessionParams);
                 }
             } else {
                 $productParams = [
@@ -184,36 +168,60 @@ class Page
     public function product_update($guzzleClient, $rezdy_product_code, $productParams, $post_id)
     {
         $productUpdate = new ProductUpdate($productParams);
-        // $priceOptions = new PriceOption($priceOptionParams);
-        // $productUpdate->attach($priceOptions);
-        $priceOptionParams = [];
-        for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
-            $priceOptionParams[] = [
-                'price' => get_post_meta($post_id, "tg_price_options_{$p}_price", true),
-                "label" => get_post_meta($post_id, "tg_price_options_{$p}_label", true)
-            ];
-        }
-        $sessionPriceOptions = [];
-        foreach ($priceOptionParams as $params) {
-            $sessionPriceOptions[] = new PriceOption($params);
+        
+
+        $sessionPriceOptions = $this->priceOptions($post_id);
+
+        $sessionPriceOptionParams = [];
+        foreach ($sessionPriceOptions as $params) {
+            $sessionPriceOptionParams[] = new PriceOption($params);
         }
 
-        foreach ($sessionPriceOptions as $sessionPriceOption) {
+        foreach ($sessionPriceOptionParams as $sessionPriceOption) {
             $productUpdate->attach($sessionPriceOption);
         }
+        
         return $guzzleClient->products->update($rezdy_product_code, $productUpdate);
     }
 
 
-    function availability_create($guzzleClient, $sessionParams)
+    public function availability_create($guzzleClient, $sessionParams)
     {
         $session = new SessionCreate($sessionParams);
         return $guzzleClient->availability->create($session);
     }
-    function availability_update($guzzleClient, $sessionParams)
+    
+    public function availability_update($guzzleClient, $sessionParams)
     {
         $session = new SessionUpdate($sessionParams);
         return $guzzleClient->availability->update($session);
-        // $response = $guzzleClient->availability->update_availability_batch($session);
+        //return $guzzleClient->availability->update_availability_batch($session);
+    }
+
+    public function priceOptions($post_id){
+        $sessionPriceOptions = [];
+        for ($p = 0; $p < get_post_meta($post_id, "tg_price_options", true); $p++) {
+            $price = get_post_meta($post_id, "tg_price_options_{$p}_price", true);
+            $label = get_post_meta($post_id, "tg_price_options_{$p}_label", true);
+            $priceOption = [
+                'price' => $price,
+                "label" => $label
+            ];
+
+            $minQuantity = get_post_meta($post_id, "tg_price_options_{$p}_minQuantity", true);
+            $maxQuantity = get_post_meta($post_id, "tg_price_options_{$p}_maxQuantity", true);
+            $priceGroupType = get_post_meta($post_id, "tg_price_options_{$p}_priceGroupType", true);
+
+            if(isset($priceGroupType) && !empty($priceGroupType) && $label == 'GROUP'){
+                $priceOption['minQuantity'] = $minQuantity;
+                $priceOption['maxQuantity'] = $maxQuantity;
+                $priceOption['priceGroupType'] = $priceGroupType;
+            }
+
+            $sessionPriceOptions[] = $priceOption;
+        }
+
+
+        return $sessionPriceOptions;
     }
 }
