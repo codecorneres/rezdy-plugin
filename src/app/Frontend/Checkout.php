@@ -17,11 +17,25 @@ class Checkout
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('wp_ajax_booking_checkout', [$this, 'booking_checkout_callback']);
         add_action('wp_ajax_nopriv_booking_checkout', [$this, 'booking_checkout_callback']);
+
+        add_action('wp_ajax_delete_db_sessions', [$this, 'delete_db_sessions_callback']);
+        add_action('wp_ajax_nopriv_delete_db_sessions', [$this, 'delete_db_sessions_callback']);
+
+        add_action('wp_ajax_edit_booking', [$this, 'edit_booking_callback']);
+        add_action('wp_ajax_nopriv_edit_booking', [$this, 'edit_booking_callback']);
     }
 
     function booking_checkout_callback()
     {
         return $this->callPageScreenMethod('booking_checkout_callback');
+    }
+    function delete_db_sessions_callback()
+    {
+        return $this->callPageScreenMethod('delete_db_sessions_callback');
+    }
+    function edit_booking_callback()
+    {
+        return $this->callPageScreenMethod('edit_booking_callback');
     }
     public function enqueue_scripts()
     {

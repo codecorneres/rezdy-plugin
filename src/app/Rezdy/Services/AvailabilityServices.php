@@ -3,7 +3,7 @@
 namespace CC_RezdyAPI\Rezdy\Services;
 
 use CC_RezdyAPI\Rezdy\Util\Config;
-
+use CC_RezdyAPI\App;
 use CC_RezdyAPI\Rezdy\Requests\SessionCreate;
 use CC_RezdyAPI\Rezdy\Requests\SessionUpdate;
 use CC_RezdyAPI\Rezdy\Requests\SessionSearch;

@@ -70,16 +70,18 @@ class App
         // REST endpoints
         add_action('rest_api_init', [$this, 'setupRestApiEndpoints']);
         add_action('init', [$this, 'custom_rewrite_rule']);
+
     }
 
 
     public function custom_rewrite_rule()
     {   
         self::createToursPostTypes();
-        add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)?', 'index.php?checkout_id=$matches[1]', 'top');
+        add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)', 'index.php?checkout_id=$matches[1]', 'top');
         add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
         add_action('template_redirect', [$this, 'custom_template_redirect']);
         flush_rewrite_rules();
+
     }
 
     public function custom_template_redirect()
@@ -109,7 +111,7 @@ class App
 
     public static function sendMail($content)
     {
-        $to = 'deepak@codecorners.com';
+        $to = 'rahul@codecorners.com';
         $subject = 'Test Mail';
         $body = $content;
         $headers = array('Content-Type: text/html; charset=UTF-8');

@@ -3,7 +3,13 @@
 <div class="booking-sidebar-widget-box in calendar-widget">
     <div class="booking-inner availability-container">
         <div class="booking-form-list">
-            <form action="<?= esc_url(site_url('/checkout/' . $product->product->productCode)); ?>" method="post" class="session-form">
+            <?php
+            //$product->product->productCode;
+            if (!session_id()) {
+                session_start();
+            }
+            ?>
+            <form action="<?= esc_url(site_url('/checkout/' . session_id())); ?>" method="post" class="session-form" onsubmit="return validateForm()">
                 <div class="booking-group">
                     <div class="booking-single">
                         <div class="title">
@@ -25,7 +31,7 @@
                                         <?php endfor; ?>
                                         <option value="21">>20</option>
                                     </select>
-                                    <input type="text" name="" id="" class="quantity-input" style="display: none;">
+                                    <input type="number" name="" id="" class="quantity-input" style="display: none;">
                                 </div>
 
 
@@ -62,8 +68,8 @@
                         <h4 class="total-price-value">€0</h4>
                     </div>
                     <div class="btn-submit-box">
+                        <input type="hidden" name="tour_url" id="tour_url" value="">
                         <button type="submit" class="btn-submit form-submit">Book Now</button>
-                        <!-- <a href="<?php echo esc_url(site_url('/checkout/' . $product->product->productCode))  ?>" class="btn-submit">Book</a> -->
                     </div>
 
                     <div class="form-note">
@@ -83,7 +89,19 @@
 $dates = [];
 foreach ($availabilities as $key => $value) {
     $dates[] = date('Y-m-d', strtotime($value->startTimeLocal));
+    // if($value->allDay){
+    //     $dates[] = date('Y-m-d', strtotime($value->startTimeLocal));
+    // }else{
+    //     $startTimeLocal = date('Y-m-d', strtotime($value->startTimeLocal));
+    //     $dates[] = $startTimeLocal;
+    //     $endTimeLocal = date('Y-m-d', strtotime($value->endTimeLocal));
+    //     for ($i = 0; $startTimeLocal <  $endTimeLocal; $i++) {
+    //         $startTimeLocal = date('Y-m-d', strtotime($startTimeLocal . ' +1 day'));
+    //         $dates[] = $startTimeLocal;
+    //     }
+    // }
 }
+
 $dates = array_unique($dates);
 
 ?>
@@ -128,7 +146,7 @@ $dates = array_unique($dates);
                 }
             },
             onSelect: function() {
-
+                
                 var selectedDate = $.datepicker.formatDate("yy-m-d", $(this).datepicker("getDate"));
                 document.querySelector('#selectedDate').value = selectedDate;
 
@@ -146,6 +164,7 @@ $dates = array_unique($dates);
                 action: 'fetching_availabilities'
             };
             var formData = new FormData(form);
+            
             for (var key in data) {
                 formData.append(key, data[key]);
             }
@@ -163,16 +182,23 @@ $dates = array_unique($dates);
                     return response.json();
                 })
                 .then(function(data) {
+                    console.log('here we are!!');
+                    console.log(data);
                     var select = document.querySelector("#availability");
                     select.innerHTML = '';
                     var firstDisabled = true;
                     var firstKey;
+
+                    // Initialize selectedOption
+                    var selectedOption = false;
+                    
                     for (const key in data.sessionTimeLabel) {
                         if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
                             const value = data.sessionTimeLabel[key];
                             const price = data.totalPrice[key];
                             const activeSession = data.activeSession[key];
-
+                            console.log("activeSession " + activeSession);
+                            console.log("selectedOption " + selectedOption);
                             var option = document.createElement("option");
                             option.text = `${value}`;
                             option.value = `${key}`;
@@ -190,6 +216,28 @@ $dates = array_unique($dates);
                             select.add(option);
                         }
                     }
+                    var selectedOption = select.options[select.selectedIndex];
+                    var selectedValue = select.value;
+                    var selectedAttribute = selectedOption.getAttribute('data-price'); // Replace 'data-price' with the desired attribute name
+
+                    var submitButton = document.querySelector(".form-submit"); // Replace with the ID of your submit button
+
+                    if (selectedOption.getAttribute("data-disabled") == "true") {
+                        //console.log('first')
+                        submitButton.innerText = 'Book now';
+                        submitButton.removeAttribute('disabled');
+                        submitButton.classList.remove('disabled');
+                    } else {
+                        //console.log('second')
+
+                        submitButton.innerText = 'No availability';
+                        submitButton.classList.add('disabled');
+                        submitButton.setAttribute('disabled', true);
+
+                    }
+
+                    document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+
                     hideLoading();
 
                 })
@@ -198,7 +246,7 @@ $dates = array_unique($dates);
                 });
 
         }
-
+        
         function fetching_sessions(selectedDate) {
             showLoading();
             var productCode = document.querySelector('#productCode').value;
@@ -229,5 +277,19 @@ $dates = array_unique($dates);
                 });
         }
 
+        
     });
+
+    function validateForm() {   
+                var submitButton = document.querySelector(".form-submit");
+                if(submitButton.classList.contains('disabled')){
+                    return false;
+                }
+                else{
+                    var currentURL = window.location.href;
+                    document.querySelector('#tour_url').value = currentURL;
+                    return true;
+                }
+        }
+
 </script>

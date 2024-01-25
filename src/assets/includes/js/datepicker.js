@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     var loading = document.querySelector('.rezdy-overlay-loader');
     var buttonSubmit = document.querySelector('.form-submit');
     var selectElements = document.querySelectorAll('.quantity');
@@ -35,41 +36,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.addEventListener('change', async function (event) {
         var target = event.target;
-
-
+        
         if (target.classList.contains('quantity')) {
             var selectedValue = parseInt(target.value);
-
             if (selectedValue > 20) {
                 target.style.display = 'none';
                 var inputElement = target.nextElementSibling;
                 inputElement.style.display = 'block';
                 inputElement.focus();
-                recalculateTotalPrice(inputElement.value);
-
             } else {
-
                 var datePicker = document.querySelector('#datepicker');
                 var productCode = document.querySelector('#productCode').value;
                 var selectedDate = datePicker.value;
-
+        
                 fetching_sessions(selectedDate);
                 fetching_availabilities();
                 target.style.display = 'block';
                 target.nextElementSibling.style.display = 'none';
-                recalculateTotalPrice(target.value);
+                // recalculateTotalPrice(target.value);
             }
         }
     });
 
     document.body.addEventListener('keyup', function (event) {
         var target = event.target;
+
         if (target.classList.contains('quantity-input')) {
-            // recalculateTotalPrice(target.value);
+            var quantitySelect = document.querySelector('.quantity');
+
+            if( quantitySelect.value == 21 ){
+                
+                var optionToUpdate = Array.from(quantitySelect.options).find(option => option.value === '21');
+                if (optionToUpdate) {
+                    optionToUpdate.value = target.value;
+                }
+            }
+            
             var datePicker = document.querySelector('#datepicker');
             var productCode = document.querySelector('#productCode').value;
             var selectedDate = datePicker.value;
-
             fetching_sessions(selectedDate);
             fetching_availabilities();
         }
@@ -119,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function fetching_availabilities() {
+
         var form = document.querySelector('.session-form');
         var data = {
             action: 'fetching_availabilities'
@@ -132,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.forEach(function (value, key) {
             requestData[key] = value;
         });
+        console.log(requestData);
         showLoading();
         var response = fetch(ajax_object.ajax_url, {
             method: 'POST',
@@ -141,8 +148,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(function (data) {
-
+                console.log(data);
                 var select = document.querySelector("#availability");
+                console.log('rahul1');
+                console.log(select);
+                console.log('rahu21');
                 select.innerHTML = '';
                 var selectedOption = false; // Variable to track if any option is selected
                 if (data.sessionTimeLabel) {
@@ -169,16 +179,36 @@ document.addEventListener('DOMContentLoaded', function () {
                             select.add(option);
                         }
                     }
-
+                    //console.log(selectedOption);    
                     var selectedOption = select.options[select.selectedIndex];
                     var selectedValue = select.value;
                     var selectedAttribute = selectedOption.getAttribute('data-price'); // Replace 'data-price' with the desired attribute name
 
+                    var submitButton = document.querySelector(".form-submit"); // Replace with the ID of your submit button
 
+                    console.log(selectedOption);
+                    console.log(submitButton);
+                    if (selectedOption.getAttribute("data-disabled") == "true") {
+                        console.log('first')
+                        submitButton.innerText = 'Book now';
+                        submitButton.removeAttribute('disabled');
+                        submitButton.classList.remove('disabled');
+                    } else {
+                        console.log('second')
 
-                    console.log(selectedAttribute);
+                        submitButton.innerText = 'No availability';
+                        submitButton.classList.add('disabled');
+                        //submitButton.setAttribute('disabled', true);
+                        console.log("Before setting disabled:", submitButton.disabled);
+                        submitButton.setAttribute('disabled', 'true');
+                        console.log("After setting disabled:", submitButton.disabled);
+
+                    }
+                    console.log(submitButton);
+
+                    //console.log(selectedAttribute);
                     document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
-                    console.log(select.value);
+                    //console.log(select.value);
                 }
 
                 hideLoading();
@@ -230,14 +260,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var selectedOption = select.options[select.selectedIndex];
         var selectedAttribute = selectedOption.getAttribute('data-price');
         document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
-        console.log(selectedOption.getAttribute("data-disabled"));
+        //console.log(selectedOption.getAttribute("data-disabled"));
         if (selectedOption.getAttribute("data-disabled") == "true") {
-            console.log('first')
+            //console.log('first')
             submitButton.innerText = 'Book now';
             submitButton.removeAttribute('disabled');
             submitButton.classList.remove('disabled');
         } else {
-            console.log('second')
+            //console.log('second')
 
             submitButton.innerText = 'No availability';
             submitButton.classList.add('disabled');
@@ -245,4 +275,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
     });
+
+
 });

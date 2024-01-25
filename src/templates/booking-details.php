@@ -1,5 +1,20 @@
 <?php defined('ABSPATH') || exit; ?>
 
+<?php
+if (!session_id()) {
+    session_start();
+}
+if(isset($response) && !empty($response)){
+    // echo '<pre>';
+    // print_r($response);
+    // exit();
+    global $wp_query;
+    $checkout_id = $wp_query->query_vars['checkout_id'];
+}else{
+    wp_redirect( home_url());
+    exit();
+}
+?>
 <form action="" class="booking-checkout">
 
     <div class="checkout-details">
@@ -10,12 +25,12 @@
                     <small>Step 1 of 3</small>
                     Booking Details
                 </h3>
-                <?php $counter = 1; ?>
+                <?php $counter = 1; $totalPrice = 0;?>
                 <?php foreach ($response as $k => $detail) : ?>
-                    <div class="form-wrapper">
-                        <p class=" checkout-participants" style="--process-number: '<?= $counter++ ?>';">
+                    <div class="form-wrapper tour_<?= $k;?>_schedule_time">
+                        
                             <strong><?= $detail['name']; ?></strong>
-                            <input type="hidden" value="<?= $detail['productCode']; ?>" name="order[<?= $k; ?>][productCode]">
+                            <input type="hidden" value="<?= $detail['productCode']; ?>" name="order[<?= $k; ?>][product_code]">
                             <small class="first">
                                 <small class="two">
                                     <input type="hidden" value="<?= $detail['sessionDate']; ?>" name="order[<?= $k; ?>][sessionDate]">
@@ -23,28 +38,63 @@
                                 </small>
                             </small>
                             <small class="third">
-                                <a class="pointer">Edit Booking</a>
+                                <a href="<?= $detail['tour_url']; ?>" class="pointer editbooking" data-target="edit-<?= $k; ?>">Edit Booking</a>
                             </small>
-                        </p>
+                        
                     </div>
+
+                    <!-- Edit Booking toggle-->
+                    <div class="order-edit-item edit-<?= $k; ?>" style="display:none;">
+                        
+                            <fieldset class="no-legend edit_booking_<?= $detail['productCode']; ?>_<?= $detail['schedule_time']; ?>">
+                                <?php foreach ($detail['priceOptions'] as $key => $options) { ?>
+                                    <div class="form-flex">
+                                        <div class="label-box">
+                                            <input type="hidden" name="ItemQuantity[<?= $detail['productCode']; ?>][<?= $key; ?>][priceOption][id]" id="" value="<?= $options['priceOptionID']; ?>">
+                                            <h6><?php echo $options['label']; ?></h6>
+                                            <p class="price" data-currency-base="" data-original-amount="<?php echo $options['price']; ?>"><?php echo '€' . $options['price']; ?></p>
+                                        </div>
+                                        <div class="options-box">
+                                            <select name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]" id="" class="quantity">
+                                                <?php for ($i = 0; $i <= 20; $i++) : ?>
+                                                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                <?php endfor; ?>
+                                                <option value="21">>20</option>
+                                            </select>
+                                            <input type="number" name="" id="" class="quantity-input" style="display: none;">
+                                        </div>
+
+
+                                    </div>
+                                <?php  } ?>
+                                
+                                <div class="update-container">
+                                    <input name="btn-update-item" id="btn-update-item" class="update-item btn fl mt-sm mb-sm" type="button" value="Update" data-product-code="<?= $detail['productCode']; ?>" data-schedule-time="<?= $detail['schedule_time']; ?>" data-session-date="<?= $detail['sessionDate']; ?>" style="background-color: rgba(255, 92, 0, 1);">		
+                                </div>
+                            </fieldset>
+                        
+                    </div>
+                    
                     <!-- form-data -->
                     <?php for ($i = 0; $i < $detail['totalQuantity']; $i++) : ?>
-                        <fieldset class="Billing_Contact" style="--feild-number: '<?= $i + 1 ?>';">
+                        <fieldset class="Billing_Contact participant_details tour_<?= $k;?>_schedule_time" style="--feild-number: '<?= $i + 1 ?>';">
                             <legend class="toggle">Participant</legend>
                             <div class="content">
                                 <div class="first">
                                     <label for="fname">First Name</label>
 
-                                    <input class="fields" type="text" id="fname" name="participant[<?= $k; ?>][<?= $i; ?>][first_name]">
+                                    <input class="fields participant_firstname" type="text" id="fname" name="participant[<?= $k; ?>][<?= $i; ?>][first_name]">
                                 </div>
                                 <div class="last">
                                     <label for="lname">Last Name</label>
-                                    <input class="fields" type="text" id="lname" name="participant[<?= $k; ?>][<?= $i; ?>][last_name]">
+                                    <input class="fields participant_lastname" type="text" id="lname" name="participant[<?= $k; ?>][<?= $i; ?>][last_name]">
                                 </div>
                             </div>
                         </fieldset>
                     <?php endfor; ?>
-                <?php endforeach; ?>
+                <?php
+                $totalPrice += $detail['totalPrice']; 
+                endforeach;?>
             </div>
 
             <!-- 2nd -->
@@ -60,21 +110,21 @@
                         <div class="first">
                             <label for="fname">First Name</label>
                             <div class="input-icon">
-                                <input class="fields" type="text" required id="fname" name="fname">
+                                <input class="fields billing_participant_firstname" type="text" required id="fname" name="fname">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
                         <div class="last">
                             <label for="lname">Last Name</label>
                             <div class="input-icon">
-                                <input class="fields" type="text" required id="lname" name="lname">
+                                <input class="fields billing_participant_lastname" type="text" required id="lname" name="lname">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
                         <div class="mobile">
                             <label for="phone">Mobile</label>
                             <div class="input-icon">
-                                <input class="fields" type="tel" id="phone" name="phone">
+                                <input class="fields" type="number" id="phone" name="phone">
                                 <span class="input-addon"></span>
                             </div>
                         </div>
@@ -385,9 +435,9 @@
                 </fieldset>
             </div>
             <!-- button -->
-            <button type="submit" class="btn btn-payment btn-submit pointer btn-invalid">
+            <button type="submit" class="btn btn-payment btn-submit pointer btn-invalid create-booking">
                 <div class="btn-payment-total">
-                    Pay <span class="update-on-order-total-change price" data-currency-base="EUR" data-original-amount="€59.00" title="Estimated conversion from 59">€59.00</span> </div>
+                    Pay <span class="update-on-order-total-change price" data-currency-base="EUR" data-original-amount="€<?= $totalPrice; ?>" data-price-value="<?= $totalPrice; ?>" title="Estimated conversion from 59">€<?= $totalPrice; ?></span> </div>
 
                 <small class="invalid">
                     Please enter all required fields
@@ -402,9 +452,11 @@
                     <div class="text-right">
                         <small class="price-label">EUR</small>
                     </div>
-                    <?php foreach ($response as $k => $detail) : ?>
-                        <div class="main-item">
-                            <a class="item-delete" href="#">×</a>
+                    <?php
+                     
+                    foreach ($response as $k => $detail) : ?>
+                        <div class="main-item tour_<?= $k;?>_schedule_time" >
+                            <a class="item-delete" data-select_tour="tour_<?= $k;?>_schedule_time" data-session="<?= $detail['schedule_time'];?>" data-tour_url="<?= $detail['tour_url'];?>" href="#">×</a>
                             <div class="product-close">
                                 <div class="contents">
                                     <strong class="product-name">
@@ -421,24 +473,29 @@
                                     <strong class="price">€<?= $detail['totalPrice']; ?></strong>
                                 </div>
                             </div>
-                            <?php foreach ($detail['priceOptions'] as $i => $options) : ?>
-                                <div class="sub-itm">
-                                    <div class="price_left">
-                                        <input type="hidden" value="<?= $options['label']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][optionLabel]" id="">
-                                        <small><?= $options['label']; ?> <br><small class="price">€<?= $options['price']; ?></small>
-                                        </small>
+                            <?php 
+                            foreach ($detail['priceOptions'] as $i => $options) : ?>
+                                <?php if ($options['quantity'] > 0) :?>
+                                    <div class="sub-itm">
+                                        <div class="price_left">
+                                            <input type="hidden" value="<?= $options['label']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][optionLabel]" id="">
+                                            <small><?= $options['label']; ?> <br><small class="price">€<?= $options['price']; ?></small>
+                                            </small>
+                                        </div>
+                                        <div class="center-digit">
+                                            <input type="hidden" value="<?= $options['quantity']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][value]" id="">
+                                            <small><?= $options['quantity']; ?></small>
+                                        </div>
+                                        <div class="price_right">
+                                            <small class="price">€<?= $options['sessionTotalPrice']; ?></small>
+                                        </div>
                                     </div>
-                                    <div class="center-digit">
-                                        <input type="hidden" value="<?= $options['quantity']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][value]" id="">
-                                        <small><?= $options['quantity']; ?></small>
-                                    </div>
-                                    <div class="price_right">
-                                        <small class="price">€<?= $options['sessionTotalPrice']; ?></small>
-                                    </div>
-                                </div>
+                                <?php endif;?>
                             <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
+                    <?php
+                        endforeach; 
+                    ?>
                     <div class="button">
                         <small>
                             <a class="btn_pointer">Add Promo code / Voucher</a>
@@ -456,7 +513,7 @@
                         </a>
                     </div>
                     <div class="price">
-                        <strong>€59.00</strong>
+                        <strong class="alltotal"><?= '€' . $totalPrice; ?></strong>
                     </div>
                 </div>
                 <div class="total">
@@ -464,7 +521,7 @@
                         <strong>Total (<span class="price-label">EUR</span>)</strong>
                     </div>
                     <div class="price">
-                        <strong>€59.00</strong>
+                        <strong class="alltotal"><?= '€' . $totalPrice; ?></strong>
                     </div>
                 </div>
             </div>
@@ -476,9 +533,42 @@
 
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        counter();
+    });
+
+    function counter() {
+
+        var formWrappers = document.getElementsByClassName('form-wrapper');
+        for (var i = 0; i < formWrappers.length; i++) {
+            var existingParagraph = formWrappers[i].querySelector('p.checkout-participants');
+            if (existingParagraph) {
+                var innerHTML = existingParagraph.innerHTML;
+                existingParagraph.remove();
+                var newParagraph = document.createElement('p');
+                newParagraph.className = 'checkout-participants';
+                newParagraph.style.setProperty('--process-number', "'" + (i + 1) + "'");
+                newParagraph.innerHTML = innerHTML;
+                formWrappers[i].appendChild(newParagraph);
+            }
+            else{
+                var newParagraph = '<p class="checkout-participants" style="--process-number: \'' + (i + 1) + '\';">';
+                while (formWrappers[i].childNodes.length > 0) {
+                    var childNode = formWrappers[i].childNodes[0];
+                    formWrappers[i].removeChild(childNode);
+                    newParagraph += childNode.outerHTML || childNode.nodeValue;
+                }
+                newParagraph += '</p>';
+                formWrappers[i].insertAdjacentHTML('afterbegin', newParagraph);
+            }
+        }
+        
+    }
+
+
     var form = document.querySelector('.booking-checkout');
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
+    form.addEventListener("submit", function(ev) {
+        ev.preventDefault();
         var data = {
             action: 'booking_checkout'
         };
@@ -497,7 +587,7 @@
                 body: formData
             })
             .then(function(response) {
-                return response.json();
+                return response.text();
             })
             .then(function(data) {
                 console.log(data)
@@ -506,4 +596,192 @@
                 console.log(error)
             });
     });
+
+
+    document.body.addEventListener('click', async function (e) {
+        e.preventDefault();
+        var target = e.target;
+        if(target.classList.contains('editbooking')){
+            var data_target = target.getAttribute('data-target');
+            var target_div = document.getElementsByClassName(data_target);
+            if(target_div[0].style.display ==  'none' || target_div[0].style.display === ''){
+                target_div[0].style.display =  'block';
+            }else{
+                target_div[0].style.display =  'none';
+            }   
+        }
+
+        if(target.classList.contains('create-booking') || target.classList.contains('btn-payment-total')){
+            var form = document.querySelector('.booking-checkout');
+            var pricespan = document.querySelector('.update-on-order-total-change');
+            var priceValue = pricespan.getAttribute('data-price-value');
+            var data = {
+                action: 'booking_checkout',
+                priceValue: priceValue
+            };
+            var formData = new FormData(form);
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            
+            var requestData = {};
+
+            formData.forEach(function(value, key) {
+                requestData[key] = value;
+            });
+            console.log(requestData);
+            var response = fetch(ajax_object.ajax_url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(data) {
+                    console.log(data)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                });
+        }
+
+        if(target.classList.contains('update-item')){
+            
+            var schedule_time = target.getAttribute('data-schedule-time');
+            var product_code = target.getAttribute('data-product-code');  
+            var session_date = target.getAttribute('data-session-date');
+            var quantity_input = document.querySelector('.quantity-input');
+            var checkout_id = "<?php echo $checkout_id; ?>";
+            var fieldset = document.querySelector('.edit_booking_'+ product_code + '_' + schedule_time);
+            var elementsWithClass = fieldset.getElementsByClassName('quantity');
+            var arrayOfElements = Array.from(elementsWithClass);
+            //console.log(arrayOfElements);
+            var total_quantity = 0;
+            var priceOptions = {};
+            var data = {
+                action: 'edit_booking',
+                schedule_time: schedule_time,
+                product_code: product_code,
+                session_date: session_date,
+                checkout_id: checkout_id,
+                count: i
+            };
+            var i = 0;
+            arrayOfElements.forEach(function(selectElement) {
+                i = i + 1;
+                total_quantity = total_quantity + parseInt(selectElement.value);
+                    data[selectElement.name] = selectElement.value;     
+            });
+            data['total_quantity'] = total_quantity;
+            quantity_input.value = i;
+
+            var formData = new FormData();
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            formData.forEach(function(value, key) {
+                formData[key] = value;
+            });
+            var response = fetch(ajax_object.ajax_url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    //console.log('here we are in update function on checkout!!');
+                    //console.log(data);
+                    if(data.response == true){
+                        //console.log(data.success);
+                        location.reload();
+                    }else{
+                        console.log(data.error);
+                    }
+
+                })
+                .catch(function(error) {
+                    return error;
+                }); 
+        }
+        if (target.classList.contains('item-delete')) {
+            var sessionID = target.getAttribute('data-session');
+            var checkout_id = "<?php echo $checkout_id; ?>";
+            var data = {
+                action      : 'delete_db_sessions',
+                sessionID   : sessionID,
+                checkout_id :checkout_id
+            };
+            var formData = new FormData();
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            var response = fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                if(data.response == true){
+                    var selectTourValue = target.getAttribute('data-select_tour');
+                    var divsToRemove = document.querySelector('.' + selectTourValue);
+                    var elementsWithClass = document.getElementsByClassName(selectTourValue);
+                    var arrayOfElements = Array.from(elementsWithClass);
+                    console.log(arrayOfElements);
+                    arrayOfElements.forEach(function(divToRemove) {
+                        if (divToRemove) {
+                            divToRemove.remove();
+                            var elementscount = document.getElementsByClassName('main-item');
+                            if(elementscount.length == 0){
+                                var tour_url = target.getAttribute('data-tour_url');
+                                window.location.href = tour_url;
+                            }else{
+                                counter();
+                            }
+                            
+                        }
+                    });
+                    if(data.totalPrice){
+                        var strongElement = document.getElementsByClassName('alltotal');
+                        var strongElementsArray = Array.from(strongElement);
+                        strongElementsArray.forEach(function(element) {
+                            element.textContent = '';
+                            element.textContent = '€' + data.totalPrice;
+                        });
+                    }
+                    
+                }else{
+                    console.log('something wrong!!');
+                }
+            })
+            .catch(function(error) {
+                console.log(error)
+            });  
+        }
+
+    });
+
+    document.body.addEventListener('change', async function (e) {
+        e.preventDefault();
+        var target = e.target;
+        if (target.classList.contains('participant_firstname')) {
+            const fieldsets = document.getElementsByClassName('participant_firstname');
+            const fieldsetsArray = Array.from(fieldsets);
+            const clickedIndex = fieldsetsArray.indexOf(target);
+            if(clickedIndex == 0){
+                document.querySelector('.billing_participant_firstname').value = target.value;
+            }
+        }
+        if (target.classList.contains('participant_lastname')) {
+            const fieldsets = document.getElementsByClassName('participant_lastname');
+            const fieldsetsArray = Array.from(fieldsets);
+            const clickedIndex = fieldsetsArray.indexOf(target);
+            if(clickedIndex == 0){
+                document.querySelector('.billing_participant_lastname').value = target.value;
+            }
+        }
+    });
 </script>
+

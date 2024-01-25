@@ -38,7 +38,7 @@ class FormSettings extends Screen
         $availability           = $guzzleClient->availability->search($availabilitySearch);
         $name                   = $product->product->name;
         $priceOptions           = $product->product->priceOptions;
-
+        
         if (!empty($rezdy_api_product_code)) {
 
             $template = FormSettings::renderTemplate('booking-form.php', [
@@ -74,6 +74,7 @@ class FormSettings extends Screen
 
 
         $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate'] . ' ' . date('H:i:s')));
+    
         $lastDate = date("Y-m-d", strtotime("$selected_date"));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
 
@@ -108,7 +109,13 @@ class FormSettings extends Screen
 
         // $_SESSION['form_data'] = $_POST;
         $guzzleClient = new RezdyAPI($this->appContext::API_KEY);
-        $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
+        $select_date = date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+        $TodayDate = date('Y-m-d', time());
+        if($TodayDate == $select_date){
+            $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
+        }else{
+            $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate']));
+        }
         $lastDate = date("Y-m-t", strtotime($selected_date));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
         $availabilitySearch = new SessionSearch([
@@ -117,28 +124,34 @@ class FormSettings extends Screen
             'endTimeLocal' => $lastDateTime
         ]);
         $availabilities = $guzzleClient->availability->search($availabilitySearch);
-
+        
         $quantity = 0;
+        App::custom_logs('rerere');
+        App::custom_logs($_POST['ItemQuantity'][$_POST['OrderItem']['productCode']]);
         foreach ($_POST['ItemQuantity'][$_POST['OrderItem']['productCode']] as $value) {
             $quantity += $value['quantity'];
         }
-
+        
         $sessionsId = [];
         $sessionTimeLabel = [];
         $activeSession = [];
         $totalPrice = [];
 
-        $select_date = date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
-
+        
+        App::custom_logs("selectdate: " . $select_date);
+        App::custom_logs($availabilities);
         foreach ($availabilities->sessions as $availability) {
             $sessionsId[] = $availability->id;
             $date = date('Y-m-d', strtotime($availability->startTimeLocal));
-
+            $end_date = date('Y-m-d', strtotime($availability->endTimeLocal));
+            // App::custom_logs("date: " . $date);
+            // App::custom_logs("enddate: " . $end_date);
             if ($date == $select_date) {
                 $seatsAvailable = $availability->seatsAvailable;
-
+                App::custom_logs("Qauntity" . $quantity);
+                App::custom_logs("SeatsAvailable " . $seatsAvailable);
                 if ($quantity <= $seatsAvailable) {
-                    $availabilityStatus = 'Available';
+                    $availabilityStatus = "$seatsAvailable Available";
                     $isActiveSession = true;
                 } elseif ($seatsAvailable == 0) {
                     $availabilityStatus = 'Sold Out';
@@ -153,9 +166,9 @@ class FormSettings extends Screen
 
                 $sessionTotalPrice = 0;
                 foreach ($availability->priceOptions as $key => $value) {
-                    $quantity = $_POST['ItemQuantity'][$_POST['OrderItem']['productCode']][$key]['quantity'];
+                    $quantity_ = $_POST['ItemQuantity'][$_POST['OrderItem']['productCode']][$key]['quantity'];
                     $price = $value->price;
-                    $sessionTotalPrice += $quantity * $price;
+                    $sessionTotalPrice += $quantity_ * $price;
                 }
                 $totalPrice[$availability->id] = $sessionTotalPrice;
             }
