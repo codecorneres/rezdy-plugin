@@ -21,7 +21,7 @@
                             <div class="form-flex">
                                 <div class="label-box">
                                     <input type="hidden" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][id]" id="" value="<?= $value->id; ?>">
-                                    <h6><?php echo $value->label; ?></h6>
+                                    <h6><?php echo ($value->label == 'Quantity') ? 'Everyone' : $value->label; ?></h6>
                                     <p class="price" data-currency-base="<?php echo $product->product->currency; ?>" data-original-amount="<?php echo $value->price; ?>"><?php echo '€' . $value->price . '.00'; ?></p>
                                 </div>
                                 <div class="options-box">

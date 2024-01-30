@@ -11,7 +11,10 @@ jQuery(document).ready(function($) {
             rows.each(function(index) {
                 var currentRow = $(this);
                 var selectField = currentRow.find("[data-placeholder='Select']");
-                selectField.prop('disabled', 'disabled');
+                var priceField = currentRow.find("input[type='text']");
+                if(priceField.val()){
+                    selectField.prop('disabled', 'disabled');
+                }
                 var selectValue = selectField.val();
                     if(selectValue === 'ADULT'){
                         A_FieldGet = true;
@@ -53,13 +56,25 @@ jQuery(document).ready(function($) {
 
         }
         if (dataNameValue === 'tg_availability') {
-            currentRepeater.find('.hasDatepicker').prop('disabled', 'disabled');
-            
-            // var date_time_picker = currentRepeater.find('.acf-date-time-picker');
-            // date_time_picker = date_time_picker.find('input[type="hidden"]')
-            // console.log(date_time_picker);
+            if(currentRepeater.find('.hasDatepicker').val()){
+                currentRepeater.find('.hasDatepicker').prop('disabled', 'disabled');
+            }    
         }
 
     });
 
+});
+
+//After Update the post page need to be reload
+jQuery(document).ajaxSuccess(function(event, xhr, settings) {
+    // Check if the AJAX request was for updating or publishing a post
+    clearTimeout();
+    if (settings.url.includes('wp-admin/admin-ajax.php')) {
+        if(jQuery('body').text().indexOf('Post published.') != -1){
+            window.location.reload();
+        }
+        else if(jQuery('body').text().indexOf('Post updated.') != -1){
+            window.location.reload();
+        }
+    }
 });

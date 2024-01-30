@@ -39,6 +39,8 @@ class Page
 
     }
 
+    
+
     public function enqueue_scripts() {
         
         $base = plugin_basename($this->pageContext->getPluginFile());
@@ -57,9 +59,10 @@ class Page
         $status = '';
         for ($i = 0; $i <  $tg_availability; $i++) {
             if($rowIndex == $i){
-
-                $start_time_local = get_post_meta($post_id, "tg_availability_{$rowIndex}_start_time_local", true);
-                $end_time_local = get_post_meta($post_id, "tg_availability_{$rowIndex}_end_time_local", true);
+                $session_date_local = get_post_meta($post_id, "tg_availability_{$rowIndex}_session_date_local", true);
+                $session_date_local = date("Y-m-d", strtotime($session_date_local));
+                $start_time_local = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$rowIndex}_start_time_local", true);
+                $end_time_local = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$rowIndex}_end_time_local", true);
                 $rezdy_product_code = get_post_meta($post_id, 'rezdy_product_code', true);
 
                 $guzzleClient = new RezdyAPI($this->pageContext::API_KEY);
@@ -159,26 +162,6 @@ class Page
                 
             });
 
-            $(document).on('change', '.acf-field-date-time-picker[data-name="end_time_local"] input.hasDatepicker', function(ev) {
-                ev.preventDefault();
-                
-                var endTimeInputValue = $(this).val();
-                var endTimePreInput  = $(this).prev();
-                var endDateComponents = endTimeInputValue.split(/[\/ :]/);
-
-                var currentRow = $(this).closest('tr.acf-row');
-
-                var startTimeInput = currentRow.find('.acf-field-date-time-picker[data-name="start_time_local"] .hasDatepicker');
-                var startDateComponents = startTimeInput.val().split(/[\/ :]/);
-                console.log(startDateComponents);
-                if(endDateComponents[0] != startDateComponents[0] || endDateComponents[1] != startDateComponents[1] || endDateComponents[2] != startDateComponents[2]){
-                    alert("You should select same 'Date' as Start Time Local but with Different 'Time'");
-                    endTimePreInput.val('');
-                    $(this).val('');
-                }
-
-            });
-
 
 
             
@@ -224,7 +207,7 @@ class Page
 
             $guzzleClient = new RezdyAPI($this->pageContext::API_KEY);
             $product_get = $guzzleClient->products->get($rezdy_product_code);
-            
+            App::custom_logs("update: " . $update);
             if ($update) {
                 
                 //wp_die(json_encode($product_get->product));
@@ -254,8 +237,11 @@ class Page
                         App::custom_logs('Index1233');
                         for ($i = 0; $i <  $old_tg_availability; $i++) {
                             App::custom_logs('Index: ' . $i);
-                            $oldStartTime = get_post_meta($post_id, "old_tg_availability_{$i}_start_time_local", true);
-                            $tgStartTime = get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true);
+
+                            $oldStartTime = get_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", true);
+
+                            $tgStartTime = get_post_meta($post_id, "tg_availability_{$i}_session_date_local", true);
+
 
 
                             if( ($oldStartTime) && ( empty($tgStartTime) || !isset($tgStartTime) )){
@@ -277,6 +263,7 @@ class Page
                                     delete_post_meta($post_id, "tg_availability_{$i}_session_id");
 
                                     delete_post_meta($post_id, "old_tg_availability_{$i}_session_id");
+                                    delete_post_meta($post_id, "old_tg_availability_{$i}_session_date_local");
                                     delete_post_meta($post_id, "old_tg_availability_{$i}_start_time_local");
                                     delete_post_meta($post_id, "old_tg_availability_{$i}_end_time_local");
                                     delete_post_meta($post_id, "old_tg_availability_{$i}_all_day");
@@ -286,6 +273,9 @@ class Page
                             }
                             else
                             {
+                                $oldStartTime = strtotime(get_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", true));
+
+                                $tgStartTime = strtotime(get_post_meta($post_id, "tg_availability_{$i}_session_date_local", true));
                                 
                                 if($tgStartTime != $oldStartTime){
                                     App::custom_logs('starttime not matching');
@@ -302,6 +292,7 @@ class Page
                                             $oldtg = $i;
                                             $oldtg = $oldtg + 1;
                                             $session_id = get_post_meta($post_id, "old_tg_availability_{$oldtg}_session_id", true);
+                                            $session_date_local = get_post_meta($post_id, "old_tg_availability_{$oldtg}_session_date_local", true);
                                             $startTimeLocal = get_post_meta($post_id, "old_tg_availability_{$oldtg}_start_time_local", true);
                                             $endTimeLocal = get_post_meta($post_id, "old_tg_availability_{$oldtg}_end_time_local", true);
                                             $allDay = get_post_meta($post_id, "old_tg_availability_{$oldtg}_all_day", true);
@@ -312,6 +303,7 @@ class Page
                                             $tgCount = $tgCount + 1;
 
                                             update_post_meta($post_id, "tg_availability_{$i}_session_id", $session_id);
+                                            update_post_meta($post_id, "tg_availability_{$i}_session_date_local", $session_date_local);
                                             update_post_meta($post_id, "tg_availability_{$i}_start_time_local", $startTimeLocal);
                                             update_post_meta($post_id, "tg_availability_{$i}_end_time_local", $endTimeLocal);
                                             update_post_meta($post_id, "tg_availability_{$i}_all_day", $allDay);
@@ -319,6 +311,7 @@ class Page
                                             update_post_meta($post_id, "tg_availability", $tgCount);
 
                                             update_post_meta($post_id, "old_tg_availability_{$i}_session_id", $session_id);
+                                            update_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", $session_date_local);
                                             update_post_meta($post_id, "old_tg_availability_{$i}_start_time_local", $startTimeLocal);
                                             update_post_meta($post_id, "old_tg_availability_{$i}_end_time_local", $endTimeLocal);
                                             update_post_meta($post_id, "old_tg_availability_{$i}_all_day", $allDay);
@@ -332,6 +325,7 @@ class Page
                                         $oldtg = $i;
                                         $oldtg = $oldtg + 1;
                                         $session_id = get_post_meta($post_id, "old_tg_availability_{$oldtg}_session_id", true);
+                                        $session_date_local = get_post_meta($post_id, "old_tg_availability_{$oldtg}_session_date_local", true);
                                         $startTimeLocal = get_post_meta($post_id, "old_tg_availability_{$oldtg}_start_time_local", true);
                                         $endTimeLocal = get_post_meta($post_id, "old_tg_availability_{$oldtg}_end_time_local", true);
                                         $allDay = get_post_meta($post_id, "old_tg_availability_{$oldtg}_all_day", true);
@@ -342,6 +336,7 @@ class Page
                                         $tgCount = $tgCount + 1;
 
                                         update_post_meta($post_id, "tg_availability_{$i}_session_id", $session_id);
+                                        update_post_meta($post_id, "tg_availability_{$i}_session_date_local", $session_date_local);
                                         update_post_meta($post_id, "tg_availability_{$i}_start_time_local", $startTimeLocal);
                                         update_post_meta($post_id, "tg_availability_{$i}_end_time_local", $endTimeLocal);
                                         update_post_meta($post_id, "tg_availability_{$i}_all_day", $allDay);
@@ -349,6 +344,7 @@ class Page
                                         update_post_meta($post_id, "tg_availability", $tgCount);
 
                                         update_post_meta($post_id, "old_tg_availability_{$i}_session_id", $session_id);
+                                        update_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", $session_date_local);
                                         update_post_meta($post_id, "old_tg_availability_{$i}_start_time_local", $startTimeLocal);
                                         update_post_meta($post_id, "old_tg_availability_{$i}_end_time_local", $endTimeLocal);
                                         update_post_meta($post_id, "old_tg_availability_{$i}_all_day", $allDay);
@@ -368,30 +364,18 @@ class Page
                     if(get_post_meta($post_id, 'tg_availability', true)){
                         for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
 
-                            $checkpostmeta = [
-                                'tgavailability'         => get_post_meta($post_id, 'tg_availability', true),
-                                'starttime'              => get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true),
-                                'endtime'                => get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true),
-                                'seats'                  => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                                'allday'                 => get_post_meta($post_id, "tg_availability_{$i}_all_day", true) ? true : false,
-                                'sessionidddd'           => get_post_meta($post_id, "tg_availability_{$i}_session_id", true)
-                            ];
-                            
-                            App::custom_logs("Index: " . $i . json_encode($checkpostmeta));
 
-                            //wp_die(json_encode($checkpostmeta));
-                            
-
-
-                            if(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true) && get_post_meta($post_id, "tg_availability_{$i}_seats", true) && get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true))
+                            if( get_post_meta($post_id, "tg_availability_{$i}_session_date_local", true) )
                             {
-                                    
-                                $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true)));
-                                $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true)));
+                                $session_date_local = get_post_meta($post_id, "tg_availability_{$i}_session_date_local", true);
+                                $session_date_local = date("Y-m-d", strtotime($session_date_local));    
+                                $startTimeLocal = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true);
+                                $endTimeLocal = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true);
                                 
                                 
                                 if(get_post_meta($post_id, "tg_availability_{$i}_all_day", true)){
-                                    $endTime = strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true));
+                                    $startTimeLocal = $session_date_local . " " . '00:00:00';
+                                    $endTime = strtotime($session_date_local . " " . '00:00:00');
                                     $endTimeLocal = date('Y-m-d H:i:s', strtotime('+1 day', $endTime));
                                 }
                                 
@@ -410,6 +394,7 @@ class Page
                                     'endTimeLocal'                  => $endTimeLocal,
                                     'priceOptions'                  => $sessionPriceOptions
                                 ];
+                                App::custom_logs("sessionParams: " . json_encode($sessionParams));
                                 
                                 if(get_post_meta($post_id, "tg_availability_{$i}_session_id", true)){
                                     $sessionId = get_post_meta($post_id, "tg_availability_{$i}_session_id", true);
@@ -452,45 +437,52 @@ class Page
                     }
 
                 }else{
-                    //wp_die('create product in rezdy condition');
-                    //wp_die(json_encode($post_meta));
-                    $productParams = [
-                        'description'                    => $description,
-                        'durationMinutes'                => $tour_hour * 60,
-                        'name'                           => $post_title,
-                        'productType'                    => $tour_type,
-                        'shortDescription'               => $shortDescription,
-                    ];
-                    $this->product_create($guzzleClient, $post_id, $productParams);
-                    sleep(2);
-                    $rezdy_product_code = get_post_meta($post_id, 'rezdy_product_code', true);
-                    for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
-
-                        $startTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true)));
-                        $endTimeLocal = date('Y-m-d H:i:s', strtotime(get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true)));
-                        
-                        
-                        if(get_post_meta($post_id, "tg_availability_{$i}_all_day", true)){
-                            $endTime = strtotime(get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true));
-                            $endTimeLocal = date('Y-m-d H:i:s', strtotime('+1 day', $endTime));
-                        }
-
-                        $sessionParams = [
-                            'productCode'                   => $rezdy_product_code,
-                            'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
-                            'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true) ? true : false,
-                            'startTimeLocal'                => $startTimeLocal,
-                            'endTimeLocal'                  => $endTimeLocal,
+                    
+                    //wp_die($shortDescription);
+                    if( $description && $tour_hour && $tour_type )
+                    {  
+                        $productParams = [
+                            'description'                    => $description,
+                            'durationMinutes'                => $tour_hour * 60,
+                            'name'                           => $post_title,
+                            'productType'                    => $tour_type,
+                            'shortDescription'               => $shortDescription,
                         ];
-                        
-                        $this->availability_create_custom($sessionParams, $post_id, $i);
+
+                        $this->product_create($guzzleClient, $post_id, $productParams);
+                        sleep(2);
+                        $rezdy_product_code = get_post_meta($post_id, 'rezdy_product_code', true);
+                        App::custom_logs("tgavail: " . get_post_meta($post_id, 'tg_availability', true));
+                        for ($i = 0; $i <  get_post_meta($post_id, 'tg_availability', true); $i++) {
+                            App::custom_logs("Index: " . $i);
+                            $session_date_local = get_post_meta($post_id, "tg_availability_{$i}_session_date_local", true);
+                            $session_date_local = date("Y-m-d", strtotime($session_date_local));    
+                            $startTimeLocal = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$i}_start_time_local", true);
+                            $endTimeLocal = $session_date_local . " " . get_post_meta($post_id, "tg_availability_{$i}_end_time_local", true);
+                            
+                            
+                            if(get_post_meta($post_id, "tg_availability_{$i}_all_day", true)){
+                                $startTimeLocal = $session_date_local . " " . '00:00:00';
+                                $endTime = strtotime($session_date_local . " " . '00:00:00');
+                                $endTimeLocal = date('Y-m-d H:i:s', strtotime('+1 day', $endTime));
+                            }
+
+                            $sessionPriceOptions = $this->priceOptions($post_id);
+
+                            $sessionParams = [
+                                'productCode'                   => $rezdy_product_code,
+                                'seats'                         => get_post_meta($post_id, "tg_availability_{$i}_seats", true),
+                                'allDay'                        => get_post_meta($post_id, "tg_availability_{$i}_all_day", true) ? true : false,
+                                'startTimeLocal'                => $startTimeLocal,
+                                'endTimeLocal'                  => $endTimeLocal,
+                                'priceOptions'                  => $sessionPriceOptions
+                            ];
+                            App::custom_logs(json_encode($sessionParams));
+                            $this->availability_create_custom($sessionParams, $post_id, $i);
+                        }
                     }
                 }
 
-            } else {
-
-                return;
-                
             }
         }
         return $post_id;  
@@ -562,12 +554,13 @@ class Page
     public function availability_create_custom($sessionParams, $post_id, $i){
             App::custom_logs("Create: " . json_encode($sessionParams));
             
-            sleep(2);
+            //sleep(2);
             $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.availability_create');
             $rezdy_api_key = get_option('cc_rezdy_api_key');
             $apiUrl = $baseUrl;
             $request_type = 'POST';
             $resultArray  = $this->availability_requests($apiUrl, $request_type, $sessionParams);
+            App::custom_logs(json_encode($resultArray));
             if ( $resultArray['requestStatus']['success'] == false ) {
                 wp_die($resultArray['requestStatus']['error']['errorMessage']);
             }else{
@@ -577,7 +570,17 @@ class Page
                 $endTimeLocal = $resultArray['session']['endTimeLocal'];
                 $allDay = $resultArray['session']['allDay'] ? true : false;
                 $seats = $resultArray['session']['seats'];
+
+                $start_timestamp = strtotime($startTimeLocal);
+                $end_timestamp = strtotime($endTimeLocal);
+
+                $session_date_local = date("Y-m-d", $start_timestamp);
+                $startTimeLocal = date("H:i:s", $start_timestamp);
+
+                $endTimeLocal = date("H:i:s", $end_timestamp);
+
                 update_post_meta($post_id, "tg_availability_{$i}_session_id", $session_id);
+                update_post_meta($post_id, "tg_availability_{$i}_session_date_local", $session_date_local);
                 update_post_meta($post_id, "tg_availability_{$i}_start_time_local", $startTimeLocal);
                 update_post_meta($post_id, "tg_availability_{$i}_end_time_local", $endTimeLocal);
                 update_post_meta($post_id, "tg_availability_{$i}_all_day", $allDay);
@@ -585,6 +588,7 @@ class Page
 
 
                 update_post_meta($post_id, "old_tg_availability_{$i}_session_id", $session_id);
+                update_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", $session_date_local);
                 update_post_meta($post_id, "old_tg_availability_{$i}_start_time_local", $startTimeLocal);
                 update_post_meta($post_id, "old_tg_availability_{$i}_end_time_local", $endTimeLocal);
                 update_post_meta($post_id, "old_tg_availability_{$i}_all_day", $allDay);
@@ -614,7 +618,18 @@ class Page
                 $endTimeLocal = $resultArray['session']['endTimeLocal'];
                 $allDay = $resultArray['session']['allDay'];
                 $seats = $resultArray['session']['seats'];
+
+                $start_timestamp = strtotime($startTimeLocal);
+                $end_timestamp = strtotime($endTimeLocal);
+
+                $session_date_local = date("Y-m-d", $start_timestamp);
+                $startTimeLocal = date("H:i:s", $start_timestamp);
+
+                $endTimeLocal = date("H:i:s", $end_timestamp);
+
+
                 update_post_meta($post_id, "tg_availability_{$i}_session_id", $session_id);
+                update_post_meta($post_id, "tg_availability_{$i}_session_date_local", $session_date_local);
                 update_post_meta($post_id, "tg_availability_{$i}_start_time_local", $startTimeLocal);
                 update_post_meta($post_id, "tg_availability_{$i}_end_time_local", $endTimeLocal);
                 update_post_meta($post_id, "tg_availability_{$i}_all_day", $allDay);
@@ -622,6 +637,7 @@ class Page
 
 
                 update_post_meta($post_id, "old_tg_availability_{$i}_session_id", $session_id);
+                update_post_meta($post_id, "old_tg_availability_{$i}_session_date_local", $session_date_local);
                 update_post_meta($post_id, "old_tg_availability_{$i}_start_time_local", $startTimeLocal);
                 update_post_meta($post_id, "old_tg_availability_{$i}_end_time_local", $endTimeLocal);
                 update_post_meta($post_id, "old_tg_availability_{$i}_all_day", $allDay);

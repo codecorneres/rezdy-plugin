@@ -4,6 +4,7 @@ namespace CC_RezdyAPI\Admin;
 
 use CC_RezdyAPI\App;
 use CC_RezdyAPI\Admin\Screen\Settings;
+use CC_RezdyAPI\Admin\Screen\Sync;
 
 class Admin
 {
@@ -62,12 +63,14 @@ class Admin
             [$this->getScreenObject( Settings::class ), 'render'],
         );
 
+        // Add submenu page
         add_submenu_page(
-            'cc-rezdy-api',
-            __('Rezdy Integration &mdash; Settings', 'cc-rezdy-api'),
-            __('Settings', 'cc-rezdy-api'),
-            'manage_options',
             'cc-rezdy-api-settings',
+            __('Synchronize to Rezdy', 'cc-rezdy-sync'),
+            __('Synchronize to Rezdy', 'cc-rezdy-sync'),
+            'manage_options',
+            'cc-rezdy-api-sync',
+            [$this->getScreenObject( Sync::class ), 'render'],
         );
 
     }
@@ -78,6 +81,8 @@ class Admin
 
             case 'cc-rezdy-api-settings':
                 return call_user_func([$this->getScreenObject(Settings::class), $method]);
+            case 'cc-rezdy-api-sync':
+                return call_user_func([$this->getScreenObject(Sync::class), $method]);
 
         }
     }

@@ -40,12 +40,29 @@ class App
     public function setup()
     {
         add_action('plugins_loaded', [$this, 'loaded']);
-
+        //add_filter( 'acf/settings/load_json', [$this, 'my_acf_json_load_point'] );
+        add_filter( 'acf/settings/save_json', [$this, 'my_acf_json_save_point'] );
         // activation
         register_activation_hook($this->getPluginFile(), [$this, 'activation']);
 
         // deactivation
         register_deactivation_hook($this->getPluginFile(), [$this, 'deactivation']);
+    }
+
+    function my_acf_json_save_point( $path ) {
+
+        return plugin_dir_path( __DIR__ ) . '/custom_acf_json';
+    }   
+
+    function my_acf_json_load_point( $paths ) {
+
+        // Remove the original path (optional).
+        unset($paths[0]);
+    
+        // Append the new path and return it.
+        $paths[] = plugin_dir_path( __DIR__ ) . '/custom_acf_json';
+
+        return $paths;    
     }
 
     public function activation()
@@ -57,6 +74,10 @@ class App
         // update database version
         update_site_option(self::DB_VERSION_OPTION, self::DB_VERSION);
 
+        //ACF fields scan from custom acf json file
+        $field_groups = $this->scan_for_field_groups();
+        $this->acf_fields($field_groups);
+
         flush_rewrite_rules();
     }
 
@@ -65,6 +86,54 @@ class App
         flush_rewrite_rules();
     }
 
+
+
+    public function scan_for_field_groups() {
+        $field_groups = array();
+    
+        $json_directory = plugin_dir_path( __DIR__ ) . '/custom_acf_json';
+    
+        // Check if the directory exists
+        if (is_dir($json_directory)) {
+            // Scan the directory for JSON files
+            $json_files = scandir($json_directory);
+    
+            foreach ($json_files as $file) {
+                // Skip . and .. directories
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
+    
+                // Get the full path to the JSON file
+                $file_path = $json_directory . '/' . $file;
+    
+                // Read the contents of the JSON file
+                $json_data = file_get_contents($file_path);
+    
+                // Decode the JSON data into a PHP array
+                $field_group_data = json_decode($json_data, true);
+    
+                // Add the field group data to the array
+                $field_groups[] = $field_group_data;
+            }
+        }
+
+        return $field_groups;
+    }
+    public function acf_fields($field_groups) {
+
+        foreach ($field_groups as $field_group) {
+            $existing_group = acf_get_field_group($field_group['key']);
+            
+            if ($existing_group) {
+                // Update existing field group
+                acf_update_field_group($field_group);
+            } else {
+                // Insert new field group
+                acf_add_local_field_group($field_group);
+            }
+        }
+    }
     public function loaded()
     {
         // REST endpoints

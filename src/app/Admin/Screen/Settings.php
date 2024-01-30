@@ -31,6 +31,11 @@ class Settings extends Screen
         ]);
     }
 
+    public function synch_setting()
+    {
+        return $this->renderTemplate('synch-setting.php', []);
+    }
+
     public function scripts()
     {
         $base = trailingslashit(plugin_dir_url($this->appContext->getPluginFile()));
