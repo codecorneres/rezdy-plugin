@@ -4,7 +4,7 @@
 if (!session_id()) {
     session_start();
 }
-if(isset($response) && !empty($response)){
+if(isset($_SESSION) && !empty($_SESSION)){
     // echo '<pre>';
     // print_r($response);
     // exit();
@@ -413,8 +413,8 @@ if(isset($response) && !empty($response)){
                 <fieldset class="Billing_Contact payment-third">
                     <div class="contents">
                         <div class="first">
-                            <input type="radio" id="radio" name="radio">
-                              <label for="paymentOption" class="mls">
+                            <input type="radio" id="stripe" name="radio" class="stripe_credit_card">
+                              <label for="paymentOption" class="mls stripe_credit_card">
                                 <div class="payment-content">
                                     Pay by Credit Card<br><br>
                                     <small class="tight">
@@ -423,8 +423,8 @@ if(isset($response) && !empty($response)){
                                 </div>
                                 <img src="//static.rezdy-production.com/1890a432d193641d23fada2e43bcea7aeee684c71243/themes/rezdy-checkout/images/rezdypay-logo.png" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
                             </label>
-                            <input type="radio" id="radio" name="radio">
-                              <label for="paymentOption" class="mls mls-2">
+                            <input type="radio" id="other" name="radio" class="otherPayment">
+                              <label for="paymentOption" class="mls mls-2 otherPayment">
                                 <div class="payment-content">
                                     Pay with PayPal
                                 </div>
@@ -433,6 +433,17 @@ if(isset($response) && !empty($response)){
                         </div>
                     </div>
                 </fieldset>
+                <div class="form-row stripe_card" style="display:none;">
+                    <label for="card-element">
+                        Stripe Credit card
+                    </label>
+                    <div id="card-element">
+                    <!-- A Stripe Element will be inserted here. -->
+                    </div>
+
+                    <!-- Used to display form errors. -->
+                    <div id="card-errors" role="alert"></div>
+                </div>
             </div>
             <!-- button -->
             <button type="submit" class="btn btn-payment btn-submit pointer btn-invalid create-booking">
@@ -531,10 +542,48 @@ if(isset($response) && !empty($response)){
 </form>
 
 
-
+<script src="https://js.stripe.com/v3/"></script>
 <script>
+
+    //Form to make Disabled
+    var submit_button = document.getElementsByClassName('create-booking');
+    submit_button[0].disabled = true;
+
+
+
+    //Stripe card element
+    var stripeKey = "<?php echo get_option('cc_stripe_pub_api_key'); ?>";
+    var stripe = Stripe(stripeKey);
+    var elements = stripe.elements();
+    var style = {
+        base: {
+            iconColor: '#666EE8',
+            color: '#31325F',
+            lineHeight: '40px',
+            fontWeight: 300,
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSize: '15px',
+            '::placeholder': {
+            color: '#CFD7E0',
+            },
+        },
+    };
+    var card = elements.create('card', { style: style, hidePostalCode: true, });
+    card.mount('#card-element');                    
+    // Handle real-time validation errors
+    card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+            
+        } else {
+            displayError.textContent = '';
+            submit_button[0].disabled = false;
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
-        counter();
+        counter(); 
     });
 
     function counter() {
@@ -564,38 +613,63 @@ if(isset($response) && !empty($response)){
         }
         
     }
-
-
-    var form = document.querySelector('.booking-checkout');
-    form.addEventListener("submit", function(ev) {
-        ev.preventDefault();
-        var data = {
-            action: 'booking_checkout'
-        };
-        var formData = new FormData(form);
-        for (var key in data) {
-            formData.append(key, data[key]);
+    var mathodType = '';
+    document.body.addEventListener('click', async function (e) {
+        e.preventDefault();
+        var target = e.target;
+        if(target.classList.contains('stripe_credit_card')){
+            var radioButton = document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]');
+            radioButton.checked = true;
+            mathodType = 'stripe';
+            var target_div = document.getElementsByClassName('stripe_card');
+            if(target_div[0].style.display ==  'none' || target_div[0].style.display === ''){
+                target_div[0].style.display =  'block';
+                
+            }else{
+                target_div[0].style.display =  'none';
+            }
+            
         }
-        var requestData = {};
 
-        formData.forEach(function(value, key) {
-            requestData[key] = value;
-        });
-        console.log(requestData)
-        var response = fetch(ajax_object.ajax_url, {
-                method: 'POST',
-                body: formData
-            })
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(data) {
-                console.log(data)
-            })
-            .catch(function(error) {
-                console.log(error)
-            });
+        if(target.classList.contains('otherPayment')){
+            var radioButton = document.querySelectorAll('input[type="radio"][class="otherPayment"]');
+            radioButton.checked = true;
+            mathodType = 'other'; 
+        }
     });
+
+
+
+    // var form = document.querySelector('.booking-checkout');
+    // form.addEventListener("submit", function(ev) {
+    //     ev.preventDefault();
+    //     var data = {
+    //         action: 'booking_checkout'
+    //     };
+    //     var formData = new FormData(form);
+    //     for (var key in data) {
+    //         formData.append(key, data[key]);
+    //     }
+    //     var requestData = {};
+
+    //     formData.forEach(function(value, key) {
+    //         requestData[key] = value;
+    //     });
+    //     console.log(requestData)
+    //     var response = fetch(ajax_object.ajax_url, {
+    //             method: 'POST',
+    //             body: formData
+    //         })
+    //         .then(function(response) {
+    //             return response.text();
+    //         })
+    //         .then(function(data) {
+    //             console.log(data)
+    //         })
+    //         .catch(function(error) {
+    //             console.log(error)
+    //         });
+    // });
 
 
     document.body.addEventListener('click', async function (e) {
@@ -612,37 +686,87 @@ if(isset($response) && !empty($response)){
         }
 
         if(target.classList.contains('create-booking') || target.classList.contains('btn-payment-total')){
-            var form = document.querySelector('.booking-checkout');
-            var pricespan = document.querySelector('.update-on-order-total-change');
-            var priceValue = pricespan.getAttribute('data-price-value');
-            var data = {
-                action: 'booking_checkout',
-                priceValue: priceValue
-            };
-            var formData = new FormData(form);
-            for (var key in data) {
-                formData.append(key, data[key]);
-            }
-            
-            var requestData = {};
 
-            formData.forEach(function(value, key) {
-                requestData[key] = value;
-            });
-            console.log(requestData);
-            var response = fetch(ajax_object.ajax_url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.text();
-                })
-                .then(function(data) {
-                    console.log(data)
-                })
-                .catch(function(error) {
-                    console.log(error)
+            submit_button[0].disabled = true;
+            if(mathodType == 'stripe')
+            {
+                var method = 'CREDITCARD';
+                // Create payment token
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                    // Inform the user if there was an error
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+
+                    // Re-enable the submit button
+                    submit_button[0].disabled = false;
+                    } else {
+                    // Token was created successfully, submit the form with token
+                    //stripeTokenHandler(result.token);
+                        var tokenID = result.token.id;
+                        var form = document.querySelector('.booking-checkout');
+                        var pricespan = document.querySelector('.update-on-order-total-change');
+                        var priceValue = pricespan.getAttribute('data-price-value');
+                        var data = {
+                            action: 'booking_checkout',
+                            priceValue: priceValue,
+                            method: method
+                        };
+
+                        var hiddenInput = document.createElement('input');
+                        hiddenInput.setAttribute('type', 'hidden');
+                        hiddenInput.setAttribute('name', 'stripeToken');
+                        hiddenInput.setAttribute('value', tokenID);
+                        form.appendChild(hiddenInput);
+
+
+                        var formData = new FormData(form);
+                        for (var key in data) {
+                            formData.append(key, data[key]);
+                        }
+                        
+                        var requestData = {};
+
+                        formData.forEach(function(value, key) {
+                            requestData[key] = value;
+                        });
+                        console.log(requestData);
+                        var response = fetch(ajax_object.ajax_url, {
+                                method: 'POST',
+                                body: formData
+                            })
+                            .then(function(response) {
+                                return response.json();
+                            })
+                            .then(function(data) {
+                                console.log(data)
+                                var baseURL = "<?php echo home_url(); ?>";
+                                if(data.requestStatus == true){
+                                    var transactionID = data.transactionID;
+                                    baseURL = baseURL + '/success/' + transactionID;
+                                    console.log(baseURL);
+                                    window.location.href = baseURL;
+                                }
+                                if(data.requestStatus == false){
+                                    if(data.transactionID){
+                                        //payment success but Booking not
+                                        var transactionID = data.transactionID;
+                                        baseURL = baseURL + '/cancel/' + transactionID;
+                                        window.location.href = baseURL;
+                                    }else{
+                                        //payment and Booking both not
+                                        baseURL = baseURL + '/cancel/cancel';
+                                        window.location.href = baseURL;
+                                    }
+                                }
+                            })
+                            .catch(function(error) {
+                                console.log(error)
+                            });
+                    }
                 });
+            }
+ 
         }
 
         if(target.classList.contains('update-item')){
@@ -663,8 +787,7 @@ if(isset($response) && !empty($response)){
                 schedule_time: schedule_time,
                 product_code: product_code,
                 session_date: session_date,
-                checkout_id: checkout_id,
-                count: i
+                checkout_id: checkout_id
             };
             var i = 0;
             arrayOfElements.forEach(function(selectElement) {
@@ -679,9 +802,12 @@ if(isset($response) && !empty($response)){
             for (var key in data) {
                 formData.append(key, data[key]);
             }
+            var requestData = {};
+
             formData.forEach(function(value, key) {
-                formData[key] = value;
+                requestData[key] = value;
             });
+            console.log(requestData);
             var response = fetch(ajax_object.ajax_url, {
                     method: 'POST',
                     body: formData

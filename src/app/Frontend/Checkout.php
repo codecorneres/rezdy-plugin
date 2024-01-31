@@ -23,6 +23,7 @@ class Checkout
 
         add_action('wp_ajax_edit_booking', [$this, 'edit_booking_callback']);
         add_action('wp_ajax_nopriv_edit_booking', [$this, 'edit_booking_callback']);
+
     }
 
     function booking_checkout_callback()
@@ -47,6 +48,15 @@ class Checkout
         return $this->callPageScreenMethod('render');
     }
 
+    public function successRedirect()
+    {
+        return $this->callPageScreenMethod('succcess_render');
+    }
+    
+    public function cancelRedirect()
+    {
+        return $this->callPageScreenMethod('cancel_render');
+    }
     private function callPageScreenMethod(string $method)
     {
         return call_user_func([$this->getFormObject(BookingDetails::class), $method]);

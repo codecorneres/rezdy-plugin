@@ -40,7 +40,7 @@ class App
     public function setup()
     {
         add_action('plugins_loaded', [$this, 'loaded']);
-        //add_filter( 'acf/settings/load_json', [$this, 'my_acf_json_load_point'] );
+        add_filter( 'acf/settings/load_json', [$this, 'my_acf_json_load_point'] );
         add_filter( 'acf/settings/save_json', [$this, 'my_acf_json_save_point'] );
         // activation
         register_activation_hook($this->getPluginFile(), [$this, 'activation']);
@@ -75,8 +75,8 @@ class App
         update_site_option(self::DB_VERSION_OPTION, self::DB_VERSION);
 
         //ACF fields scan from custom acf json file
-        $field_groups = $this->scan_for_field_groups();
-        $this->acf_fields($field_groups);
+        //$field_groups = $this->scan_for_field_groups();
+        //$this->acf_fields($field_groups);
 
         flush_rewrite_rules();
     }
@@ -142,11 +142,12 @@ class App
 
     }
 
-
     public function custom_rewrite_rule()
     {   
         self::createToursPostTypes();
         add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)', 'index.php?checkout_id=$matches[1]', 'top');
+        add_rewrite_rule('^success/([^/]+)', 'index.php?transactionID=$matches[1]', 'top');
+        add_rewrite_rule('^cancel/([^/]+)', 'index.php?cancel=$matches[1]', 'top');
         add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
         add_action('template_redirect', [$this, 'custom_template_redirect']);
         flush_rewrite_rules();
@@ -159,11 +160,21 @@ class App
         if (isset($wp_query->query_vars['checkout_id'])) {
             $this->checkoutContext->makeBooking('render');
         }
+
+        if (isset($wp_query->query_vars['transactionID'])) {
+            $this->checkoutContext->successRedirect('succcess_render');
+        }
+
+        if (isset($wp_query->query_vars['cancel'])) {
+            $this->checkoutContext->cancelRedirect('cancel_render');
+        }
     }
 
     public function custom_query_vars($query_vars)
     {
         $query_vars[] = 'checkout_id';
+        $query_vars[] = 'transactionID';
+        $query_vars[] = 'cancel';
         return $query_vars;
     }
 
