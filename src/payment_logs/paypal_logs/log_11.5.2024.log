@@ -1,0 +1,49 @@
+User: 146.70.182.27 - May 11, 2024, 12:27 pm
+Attempt: Stripe payment started
+User name: Tobias Herrmann
+User email: toby.herrmann@proton.me
+Table inserted_id: 23|P1S02P|website ( www.carpediemtours )
+-------------------------
+User: 146.70.182.27 - May 11, 2024, 12:27 pm
+Payment status: Sripe Payment completed
+User name: Tobias Herrmann
+User email: toby.herrmann@proton.me
+Table inserted_id: 23
+-------------------------
+User: 146.70.182.27 - May 11, 2024, 12:27 pm
+Rezdy booking status: Rezdy Booking
+User name: Tobias Herrmann
+User email: toby.herrmann@proton.me
+Table inserted_id: 23
+-------------------------
+User: 146.90.237.151 - May 11, 2024, 3:16 pm
+Attempt: Stripe payment started
+User name: ALEXANDER HORNER
+User email: alex.horner@gmail.com
+Table inserted_id: 24|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 146.90.237.151 - May 11, 2024, 3:16 pm
+Status: Stripe payment failed
+User name: ALEXANDER HORNER
+User email: alex.horner@gmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 24
+-------------------------
+User: 146.90.237.151 - May 11, 2024, 3:27 pm
+Attempt: Stripe payment started
+User name: ALEXANDER HORNER
+User email: alex.horner@gmail.com
+Table inserted_id: 25|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 146.90.237.151 - May 11, 2024, 3:27 pm
+Payment status: Sripe Payment completed
+User name: ALEXANDER HORNER
+User email: alex.horner@gmail.com
+Table inserted_id: 25
+-------------------------
+User: 146.90.237.151 - May 11, 2024, 3:27 pm
+Rezdy booking status: Rezdy Booking
+User name: ALEXANDER HORNER
+User email: alex.horner@gmail.com
+Table inserted_id: 25
+-------------------------

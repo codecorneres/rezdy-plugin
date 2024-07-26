@@ -1,0 +1,209 @@
+User: 185.180.49.19 - June 23, 2024, 7:01 am
+Attempt: Paypal Payment started
+User name: Cleber  Silva
+User email: cleberlimasilva@yahoo.com.br
+Table inserted_id: 244|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 185.180.49.19 - June 23, 2024, 7:02 am
+Payment status: COMPLETED
+User name: Cleber  Silva
+User email: cleberlimasilva@yahoo.com.br
+Table inserted_id: 244
+-------------------------
+User: 185.180.49.19 - June 23, 2024, 7:02 am
+Rezdy booking status: CONFIRMED
+User name: Cleber  Silva
+User email: cleberlimasilva@yahoo.com.br
+Table inserted_id: 244
+-------------------------
+User: 2001:b07:646a:7239:f4a2:9189:9411:a825 - June 23, 2024, 8:49 am
+Attempt: Stripe payment started
+User name: TECK SENG Tan
+User email: teckstan@yahoo.com
+Table inserted_id: 245|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 2001:b07:646a:7239:f4a2:9189:9411:a825 - June 23, 2024, 8:50 am
+Payment status: Sripe Payment completed
+User name: TECK SENG Tan
+User email: teckstan@yahoo.com
+Table inserted_id: 245
+-------------------------
+User: 2001:b07:646a:7239:f4a2:9189:9411:a825 - June 23, 2024, 8:50 am
+Rezdy booking status: Rezdy Booking
+User name: TECK SENG Tan
+User email: teckstan@yahoo.com
+Table inserted_id: 245
+-------------------------
+User: 2601:983:8280:b060:c162:4892:efb4:8e50 - June 23, 2024, 2:36 pm
+Attempt: Stripe payment started
+User name: Cynthia Hershey
+User email: cynlu7@comcast.net
+Table inserted_id: 246|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 2601:983:8280:b060:c162:4892:efb4:8e50 - June 23, 2024, 2:36 pm
+Payment status: Sripe Payment completed
+User name: Cynthia Hershey
+User email: cynlu7@comcast.net
+Table inserted_id: 246
+-------------------------
+User: 2601:983:8280:b060:c162:4892:efb4:8e50 - June 23, 2024, 2:36 pm
+Rezdy booking status: Rezdy Booking
+User name: Cynthia Hershey
+User email: cynlu7@comcast.net
+Table inserted_id: 246
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:22 pm
+Attempt: Stripe payment started
+User name: SWATI  LAD
+User email: LAD.SWATI3@GMAIL.COM
+Table inserted_id: 247|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:22 pm
+Status: Stripe payment failed
+User name: SWATI  LAD
+User email: LAD.SWATI3@GMAIL.COM
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 247
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:24 pm
+Attempt: Stripe payment started
+User name: Swati  Lad 
+User email: Lad.swati3@gmail.com
+Table inserted_id: 248|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:24 pm
+Status: Stripe payment failed
+User name: Swati  Lad 
+User email: Lad.swati3@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 248
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:27 pm
+Attempt: Stripe payment started
+User name: Swati Lad
+User email: lad.swati3@gmail.com
+Table inserted_id: 249|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:27 pm
+Status: Stripe payment failed
+User name: Swati Lad
+User email: lad.swati3@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 249
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:31 pm
+Attempt: Stripe payment started
+User name: Swati Lad
+User email: Lad.swati3@gmail.com
+Table inserted_id: 250|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 145.40.159.179 - June 23, 2024, 3:31 pm
+Status: Stripe payment failed
+User name: Swati Lad
+User email: Lad.swati3@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 250
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:01 pm
+Attempt: Stripe payment started
+User name: Ava DeArment
+User email: heidid@mtcdc.org
+Table inserted_id: 251|PRBNX3|website ( carpediemtours )
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:01 pm
+Payment status: Sripe Payment completed
+User name: Ava DeArment
+User email: heidid@mtcdc.org
+Table inserted_id: 251
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:01 pm
+Rezdy booking status: Rezdy Booking
+User name: Ava DeArment
+User email: heidid@mtcdc.org
+Table inserted_id: 251
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:06 pm
+Attempt: Stripe payment started
+User name: Amelia Richmond
+User email: heidid@mtcdc.org
+Table inserted_id: 252|PRBNX3|website ( carpediemtours )
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:06 pm
+Payment status: Sripe Payment completed
+User name: Amelia Richmond
+User email: heidid@mtcdc.org
+Table inserted_id: 252
+-------------------------
+User: 69.144.68.97 - June 23, 2024, 4:06 pm
+Rezdy booking status: Rezdy Booking
+User name: Amelia Richmond
+User email: heidid@mtcdc.org
+Table inserted_id: 252
+-------------------------
+User: 151.3.216.86 - June 23, 2024, 4:57 pm
+Attempt: Stripe payment started
+User name: Laura Winberg
+User email: laura.winberg@gmail.com
+Table inserted_id: 253|P1S02P|website ( carpediemtours )
+-------------------------
+User: 151.3.216.86 - June 23, 2024, 4:57 pm
+Status: Stripe payment failed
+User name: Laura Winberg
+User email: laura.winberg@gmail.com
+Reason:Your card's security code is incorrect.
+Table inserted_id: 253
+-------------------------
+User: 5.91.137.142 - June 23, 2024, 6:19 pm
+Attempt: Stripe payment started
+User name: Julia Hufnagel
+User email: j.hufnagel97@gmail.com
+Table inserted_id: 254|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 5.91.137.142 - June 23, 2024, 6:19 pm
+Payment status: Sripe Payment completed
+User name: Julia Hufnagel
+User email: j.hufnagel97@gmail.com
+Table inserted_id: 254
+-------------------------
+User: 5.91.137.142 - June 23, 2024, 6:19 pm
+Rezdy booking status: Rezdy Booking
+User name: Julia Hufnagel
+User email: j.hufnagel97@gmail.com
+Table inserted_id: 254
+-------------------------
+User: 174.197.69.120 - June 23, 2024, 7:58 pm
+Attempt: Paypal Payment started
+User name: Alyssa Mull
+User email: mullaly2@msu.edu
+Table inserted_id: 255|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 174.197.69.120 - June 23, 2024, 7:58 pm
+Payment status: COMPLETED
+User name: Alyssa Mull
+User email: mullaly2@msu.edu
+Table inserted_id: 255
+-------------------------
+User: 174.197.69.120 - June 23, 2024, 7:58 pm
+Rezdy booking status: CONFIRMED
+User name: Alyssa Mull
+User email: mullaly2@msu.edu
+Table inserted_id: 255
+-------------------------
+User: 92.184.124.22 - June 23, 2024, 8:48 pm
+Attempt: Stripe payment started
+User name: Joshita Puri
+User email: joshita.puri@gmail.com
+Table inserted_id: 256|P1S02P|website ( carpediemtours )
+-------------------------
+User: 92.184.124.22 - June 23, 2024, 8:48 pm
+Payment status: Sripe Payment completed
+User name: Joshita Puri
+User email: joshita.puri@gmail.com
+Table inserted_id: 256
+-------------------------
+User: 92.184.124.22 - June 23, 2024, 8:48 pm
+Rezdy booking status: Rezdy Booking
+User name: Joshita Puri
+User email: joshita.puri@gmail.com
+Table inserted_id: 256
+-------------------------

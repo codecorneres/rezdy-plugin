@@ -41,18 +41,20 @@ class Booking
 
     public function rezdy_booking_shortcode()
     {
-
         add_shortcode('rezdy_booking_form', [$this, 'booking_form_shortcode']);
     }
 
-    public function booking_form_shortcode()
+    public function booking_form_shortcode($atts)
     {
-
-        return $this->callPageScreenMethod('render_booking_form');
+        if (empty($atts)) {
+            return false;
+        } else {
+            return $this->callPageScreenMethod('render_booking_form', $atts);
+        }
     }
-    private function callPageScreenMethod(string $method)
+    private function callPageScreenMethod(string $method, array $atts = [])
     {
-        return call_user_func([$this->getFormObject(FormSettings::class), $method]);
+        return call_user_func([$this->getFormObject(FormSettings::class), $method], $atts);
     }
 
     public function getFormObject(string $class)

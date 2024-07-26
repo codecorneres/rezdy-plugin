@@ -1,0 +1,134 @@
+User: 185.212.19.114 - May 13, 2024, 5:45 am
+Attempt: Stripe payment started
+User name: Emma Tornberg
+User email: tornberg_emma@hotmail.com
+Table inserted_id: 31|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 185.212.19.114 - May 13, 2024, 5:45 am
+Payment status: Sripe Payment completed
+User name: Emma Tornberg
+User email: tornberg_emma@hotmail.com
+Table inserted_id: 31
+-------------------------
+User: 185.212.19.114 - May 13, 2024, 5:45 am
+Rezdy booking status: Rezdy Booking
+User name: Emma Tornberg
+User email: tornberg_emma@hotmail.com
+Table inserted_id: 31
+-------------------------
+User: 80.20.180.6 - May 13, 2024, 6:36 am
+Attempt: Paypal Payment started
+User name: Erin Milstead
+User email: erin.milstead@gmail.com
+Table inserted_id: 32|PRQZ0S|website ( www.carpediemtours )
+-------------------------
+User: 80.20.180.6 - May 13, 2024, 6:37 am
+Payment status: COMPLETED
+User name: Erin Milstead
+User email: erin.milstead@gmail.com
+Table inserted_id: 32
+-------------------------
+User: 80.20.180.6 - May 13, 2024, 6:37 am
+Rezdy booking status: CONFIRMED
+User name: Erin Milstead
+User email: erin.milstead@gmail.com
+Table inserted_id: 32
+-------------------------
+User: 174.198.10.16 - May 13, 2024, 8:24 am
+Attempt: Paypal Payment started
+User name: Brenda  Croxton 
+User email: cacbkc@comcast.net
+Table inserted_id: 33|P6UCJM|website ( www.carpediemtours )
+-------------------------
+User: 174.198.10.16 - May 13, 2024, 8:25 am
+Payment status: COMPLETED
+User name: Brenda  Croxton 
+User email: cacbkc@comcast.net
+Table inserted_id: 33
+-------------------------
+User: 174.198.10.16 - May 13, 2024, 8:25 am
+Rezdy booking status: CONFIRMED
+User name: Brenda  Croxton 
+User email: cacbkc@comcast.net
+Table inserted_id: 33
+-------------------------
+User: 2.45.194.103 - May 13, 2024, 4:10 pm
+Attempt: Stripe payment started
+User name: Jordan  Boyd
+User email: jordshell@hotmail.com
+Table inserted_id: 34|PRHAPT|website ( www.carpediemtours )
+-------------------------
+User: 2.45.194.103 - May 13, 2024, 4:10 pm
+Payment status: Sripe Payment completed
+User name: Jordan  Boyd
+User email: jordshell@hotmail.com
+Table inserted_id: 34
+-------------------------
+User: 2.45.194.103 - May 13, 2024, 4:10 pm
+Rezdy booking status: Rezdy Booking
+User name: Jordan  Boyd
+User email: jordshell@hotmail.com
+Table inserted_id: 34
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:51 pm
+Attempt: Stripe payment started
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 35|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:51 pm
+Status: Stripe payment failed
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Reason:Your card does not support this type of purchase.
+Table inserted_id: 35
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:52 pm
+Attempt: Stripe payment started
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 36|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:52 pm
+Status: Stripe payment failed
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Reason:Your card does not support this type of purchase.
+Table inserted_id: 36
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:52 pm
+Attempt: Paypal Payment started
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 37|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:53 pm
+Payment status: COMPLETED
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 37
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 7:53 pm
+Rezdy booking status: CONFIRMED
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 37
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 8:00 pm
+Attempt: Paypal Payment started
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 38|PFVZX0|website ( www.carpediemtours )
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 8:00 pm
+Payment status: COMPLETED
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 38
+-------------------------
+User: 87.17.151.172 - May 13, 2024, 8:00 pm
+Rezdy booking status: CONFIRMED
+User name: Sharmaine Porlaje
+User email: sharmaine.porlaje@gmail.com
+Table inserted_id: 38
+-------------------------

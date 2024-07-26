@@ -1,0 +1,96 @@
+User: 61.247.227.239 - May 24, 2024, 2:33 am
+Attempt: Order created without payment methods
+User name:  
+User email: 
+Table inserted_id: 103|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 102.213.93.43 - May 24, 2024, 3:08 am
+Attempt: Stripe payment started
+User name: Deshundria  Fortson
+User email: elisa@luxetribes.com
+Table inserted_id: 104|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 102.213.93.43 - May 24, 2024, 3:08 am
+Payment status: Sripe Payment completed
+User name: Deshundria  Fortson
+User email: elisa@luxetribes.com
+Table inserted_id: 104
+-------------------------
+User: 102.213.93.43 - May 24, 2024, 3:08 am
+Rezdy booking status: Rezdy Booking
+User name: Deshundria  Fortson
+User email: elisa@luxetribes.com
+Table inserted_id: 104
+-------------------------
+User: 79.3.94.53 - May 24, 2024, 2:08 pm
+Attempt: Paypal Payment started
+User name: Kelly Schilling
+User email: kelly.schilling94@gmail.com
+Table inserted_id: 105|PEK6W7|website ( www.carpediemtours )
+-------------------------
+User: 79.3.94.53 - May 24, 2024, 2:08 pm
+Payment status: COMPLETED
+User name: Kelly Schilling
+User email: kelly.schilling94@gmail.com
+Table inserted_id: 105
+-------------------------
+User: 79.3.94.53 - May 24, 2024, 2:08 pm
+Rezdy booking status: CONFIRMED
+User name: Kelly Schilling
+User email: kelly.schilling94@gmail.com
+Table inserted_id: 105
+-------------------------
+User: 158.47.227.15 - May 24, 2024, 3:13 pm
+Attempt: Paypal Payment started
+User name: Isabella  Bianchini
+User email: isa.bianchini22@gmail.com
+Table inserted_id: 106|P94G3X|website ( www.carpediemtours )
+-------------------------
+User: 158.47.227.15 - May 24, 2024, 3:13 pm
+Payment status: COMPLETED
+User name: Isabella  Bianchini
+User email: isa.bianchini22@gmail.com
+Table inserted_id: 106
+-------------------------
+User: 158.47.227.15 - May 24, 2024, 3:13 pm
+Rezdy booking status: CONFIRMED
+User name: Isabella  Bianchini
+User email: isa.bianchini22@gmail.com
+Table inserted_id: 106
+-------------------------
+User: 151.25.100.82 - May 24, 2024, 7:30 pm
+Attempt: Paypal Payment started
+User name: Rogelio Martinez
+User email: tmart0930@gmail.com
+Table inserted_id: 107|PRQZ0S|website ( www.carpediemtours )
+-------------------------
+User: 151.25.100.82 - May 24, 2024, 7:31 pm
+Payment status: COMPLETED
+User name: Rogelio Martinez
+User email: tmart0930@gmail.com
+Table inserted_id: 107
+-------------------------
+User: 151.25.100.82 - May 24, 2024, 7:31 pm
+Rezdy booking status: CONFIRMED
+User name: Rogelio Martinez
+User email: tmart0930@gmail.com
+Table inserted_id: 107
+-------------------------
+User: 174.198.15.99 - May 24, 2024, 11:35 pm
+Attempt: Paypal Payment started
+User name: Cameron Williams
+User email: cameron.s.williams@outlook.com
+Table inserted_id: 108|P09QZB|website ( www.carpediemtours )
+-------------------------
+User: 82.61.153.150 - May 24, 2024, 11:37 pm
+Payment status: COMPLETED
+User name: Cameron Williams
+User email: cameron.s.williams@outlook.com
+Table inserted_id: 108
+-------------------------
+User: 82.61.153.150 - May 24, 2024, 11:37 pm
+Rezdy booking status: CONFIRMED
+User name: Cameron Williams
+User email: cameron.s.williams@outlook.com
+Table inserted_id: 108
+-------------------------

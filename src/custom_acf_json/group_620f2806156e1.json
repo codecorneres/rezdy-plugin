@@ -55,6 +55,20 @@
             {
                 "param": "post_type",
                 "operator": "==",
+                "value": "barcelona"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "lisbon"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
                 "value": "rome"
             }
         ],
@@ -63,6 +77,20 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "florence"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "london"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "madrid"
             }
         ]
     ],
@@ -75,5 +103,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706707531
+    "modified": 1712582270
 }

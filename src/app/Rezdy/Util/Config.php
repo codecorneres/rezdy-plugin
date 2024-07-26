@@ -10,7 +10,7 @@ class Config
          * REST endpoints
          */
         'endpoints' =>  [
-            'base_url'                          => 'https://api.rezdy-staging.com/v1/',
+            'base_url'                          => '',
             'availability_create'               => 'availability',
             'availability_update'               => 'availability/',
             'availability_delete'               => 'availability/',
@@ -42,6 +42,7 @@ class Config
             'manifest_remove_check_in'          => 'manifest/checkinSession',
             'manifest_check_in_item'            => 'manifest/checkinOrderSession',
             'product_create'                    => 'products',
+            'product_search'                    => 'products',
             'product_get'                       => 'products/',
             'product_marketplace'               => 'products/marketplace',
             'product_pickups'                   => 'products/%s/pickups',
@@ -54,6 +55,7 @@ class Config
             'resources_session'                 => 'resources/session',
             'resource_remove'                   => 'resources/%s/session/%s',
             'rezdy_connect'                     => 'products/%s/rezdyConnect',
+            'get_voucher'                       => 'vouchers/',
         ],
 
         'settings' =>   ['version' => '0.1.0',],
@@ -63,6 +65,11 @@ class Config
     {
         $index = explode('.', $index);
         return self::getValue($index, self::$props);
+    }
+
+    public static function setBaseUrl($baseUrl)
+    {
+        self::$props['endpoints']['base_url'] = $baseUrl;
     }
 
     private static function getValue($index, $value)
