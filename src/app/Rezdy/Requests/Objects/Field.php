@@ -1,7 +1,7 @@
 <?php
 namespace CC_RezdyAPI\Rezdy\Requests\Objects;
 
-use CC_RezdyAPI\Rezdy\\Requests\BaseRequest;
+use CC_RezdyAPI\Rezdy\Requests\BaseRequest;
 
 class Field extends BaseRequest {
 

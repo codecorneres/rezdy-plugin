@@ -1,0 +1,132 @@
+User: 2600:387:c:6e10::2 - July 20, 2024, 1:23 am
+Attempt: Paypal Payment started
+User name: William Moore
+User email: wbmoore@mac.com
+Table inserted_id: 428|PYHAPN|website ( carpediemtours )
+-------------------------
+User: 2600:387:c:6e10::2 - July 20, 2024, 1:24 am
+Payment status: COMPLETED
+User name: William Moore
+User email: wbmoore@mac.com
+Table inserted_id: 428
+-------------------------
+User: 2600:387:c:6e10::2 - July 20, 2024, 1:24 am
+Rezdy booking status: CONFIRMED
+User name: William Moore
+User email: wbmoore@mac.com
+Table inserted_id: 428
+-------------------------
+User: 81.33.29.120 - July 20, 2024, 8:19 am
+Attempt: Stripe payment started
+User name: Dan Dugan
+User email: ddugan37@gmail.com
+Table inserted_id: 429|PDMRAS|website ( carpediemtours )
+-------------------------
+User: 81.33.29.120 - July 20, 2024, 8:19 am
+Payment status: Sripe Payment completed
+User name: Dan Dugan
+User email: ddugan37@gmail.com
+Table inserted_id: 429
+-------------------------
+User: 81.33.29.120 - July 20, 2024, 8:19 am
+Rezdy booking status: Rezdy Booking
+User name: Dan Dugan
+User email: ddugan37@gmail.com
+Table inserted_id: 429
+-------------------------
+User: 85.75.88.219 - July 20, 2024, 9:02 am
+Attempt: Stripe payment started
+User name: Giulia Balletti 
+User email: gules159@googlemail.com
+Table inserted_id: 430|P6UCJM|website ( carpediemtours )
+-------------------------
+User: 85.75.88.219 - July 20, 2024, 9:02 am
+Payment status: Sripe Payment completed
+User name: Giulia Balletti 
+User email: gules159@googlemail.com
+Table inserted_id: 430
+-------------------------
+User: 85.75.88.219 - July 20, 2024, 9:02 am
+Rezdy booking status: Rezdy Booking
+User name: Giulia Balletti 
+User email: gules159@googlemail.com
+Table inserted_id: 430
+-------------------------
+User: 79.59.87.74 - July 20, 2024, 10:01 am
+Attempt: Stripe payment started
+User name: Valerie Rourke
+User email: valerierourke@gmail.com
+Table inserted_id: 431|P94G3X|website ( carpediemtours )
+-------------------------
+User: 79.59.87.74 - July 20, 2024, 10:01 am
+Payment status: Sripe Payment completed
+User name: Valerie Rourke
+User email: valerierourke@gmail.com
+Table inserted_id: 431
+-------------------------
+User: 79.59.87.74 - July 20, 2024, 10:01 am
+Rezdy booking status: Rezdy Booking
+User name: Valerie Rourke
+User email: valerierourke@gmail.com
+Table inserted_id: 431
+-------------------------
+User: 92.184.145.121 - July 20, 2024, 11:23 am
+Attempt: Paypal Payment started
+User name: Tania Fernandez Mendez
+User email: bo_france@msn.com
+Table inserted_id: 432|PDMRAS|website ( carpediemtours )
+-------------------------
+User: 92.184.145.121 - July 20, 2024, 11:24 am
+Payment status: COMPLETED
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 92.184.145.121 - July 20, 2024, 11:24 am
+Rezdy booking status: 
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 142.188.27.126 - July 20, 2024, 11:51 am
+Attempt: Stripe payment started
+User name: Nicole Lam
+User email: nplam72@gmail.com
+Table inserted_id: 433|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 142.188.27.126 - July 20, 2024, 11:51 am
+Payment status: Sripe Payment completed
+User name: Nicole Lam
+User email: nplam72@gmail.com
+Table inserted_id: 433
+-------------------------
+User: 142.188.27.126 - July 20, 2024, 11:51 am
+Rezdy booking status: Rezdy Booking
+User name: Nicole Lam
+User email: nplam72@gmail.com
+Table inserted_id: 433
+-------------------------
+User: 212.222.140.238 - July 20, 2024, 2:16 pm
+Attempt: Order created without payment methods
+User name: Steven denchev
+User email: steven1denchev@gmail.com
+Table inserted_id: 434|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 2600:387:f:5f13::2 - July 20, 2024, 9:58 pm
+Attempt: Paypal Payment started
+User name: Gerard Laurent
+User email: gerardlaurent25@yahoo.com
+Table inserted_id: 435|PDMRAS|website ( carpediemtours )
+-------------------------
+User: 2600:387:f:5f13::2 - July 20, 2024, 9:59 pm
+Payment status: COMPLETED
+User name: Gerard Laurent
+User email: gerardlaurent25@yahoo.com
+Table inserted_id: 435
+-------------------------
+User: 2600:387:f:5f13::2 - July 20, 2024, 9:59 pm
+Rezdy booking status: CONFIRMED
+User name: Gerard Laurent
+User email: gerardlaurent25@yahoo.com
+Table inserted_id: 435
+-------------------------

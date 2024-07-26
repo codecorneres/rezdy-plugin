@@ -10,45 +10,61 @@ use CC_RezdyAPI\Rezdy\Requests\SessionSearch;
 class FormSettings extends Screen
 {
 
-    public function render_booking_form()
+    public function render_booking_form($atts)
     {
-
-
-        $guzzleClient           = new RezdyAPI($this->appContext::API_KEY);
-        $page_id                = get_the_ID();
-        $rezdy_api_product_code = get_post_meta($page_id, 'rezdy_product_code', true);
-
-        if(!$rezdy_api_product_code){
+        session_start();
+        ob_start();
+        if (get_option('cc_rezdy_api_key') && get_option('cc_rezdy_api_url')) {
+            $cc_rezdy_api_key = get_option('cc_rezdy_api_key');
+        } else {
             return false;
         }
+        $guzzleClient           = new RezdyAPI($cc_rezdy_api_key);
+
+        $rezdy_api_product_code = $atts['productcode'];
+
+
+        if (!$rezdy_api_product_code) {
+            return false;
+        }
+
         $product                = $guzzleClient->products->get($rezdy_api_product_code);
+
+        if ($product->hadError ==  true) {
+            return false;
+        }
 
 
         $selected_date =  date('Y-m-d H:i:s');
         $lastDate = date("Y-m-t", strtotime("$selected_date"));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
 
-
         $availabilitySearch     = new SessionSearch([
             'productCode'       => $rezdy_api_product_code,
             'startTimeLocal'    => $selected_date,
-            'endTimeLocal'      => $lastDateTime
+            'endTimeLocal'      => $lastDateTime,
+            'limit'             => 500
         ]);
 
         $availability           = $guzzleClient->availability->search($availabilitySearch);
         $name                   = $product->product->name;
         $priceOptions           = $product->product->priceOptions;
+        $quantityRequiredMin    = $product->product->quantityRequiredMin;
+        $quantityRequiredMax    = $product->product->quantityRequiredMax;
 
         if (!empty($rezdy_api_product_code)) {
 
-            $template = FormSettings::renderTemplate('booking-form.php', [
+            FormSettings::renderTemplate('booking-form.php', [
                 'name' => $name,
                 'product' => $product,
                 'priceOptions' => $priceOptions,
+                'quantityRequiredMin' => $quantityRequiredMin,
+                'quantityRequiredMax' => $quantityRequiredMax,
                 'availabilities' => $availability->sessions,
             ]);
-
-            return $template;
+            $output =  ob_get_contents();
+            ob_end_clean();
+            return $output;
         } else {
             return 0;
         }
@@ -57,12 +73,11 @@ class FormSettings extends Screen
     public function scripts()
     {
         $base = trailingslashit(plugin_dir_url($this->appContext->getPluginFile()));
-        wp_enqueue_script('booking-form-script', $base . 'src/assets/includes/js/booking-form.js', array('jquery'), '1.0', true);
-        wp_enqueue_style('booking-form-styles', $base . 'src/assets/includes/css/style.css', array(), '1.0', 'all');
-        wp_enqueue_style('booking-form-jquery-ui-css', $base . 'src/assets/includes/css/jquery-ui.css', array(), '1.0', 'all');
-        wp_enqueue_script('booking-form-jquery', $base . 'src/assets/includes/js/jquery-2.2.4.min.js', array('jquery'), '1.0', true);
-        wp_enqueue_script('booking-form-jquery-ui', $base . 'src/assets/includes/js/jquery-ui.js', array('jquery'), '1.0', true);
-        wp_enqueue_script('rezdy-datepicker', $base . 'src/assets/includes/js/datepicker.js', array('jquery'), '1.0', true);
+        wp_enqueue_style('booking-form-styles', $base . 'src/assets/includes/css/style.css', array(), rand(1000, 1000), 'all');
+        wp_enqueue_style('booking-form-jquery-ui-css', $base . 'src/assets/includes/css/jquery-ui.css', array(), rand(1000, 1000), 'all');
+        //wp_enqueue_script('booking-form-jquery', $base . 'src/assets/includes/js/jquery-2.2.4.min.js', array('jquery'), rand(1000, 1000), true);
+        wp_enqueue_script('booking-form-jquery-ui', $base . 'src/assets/includes/js/jquery-ui.js', array('jquery'), rand(1000, 1000), true);
+        wp_enqueue_script('rezdy-datepicker', $base . 'src/assets/includes/js/datepicker.js', array('jquery'), rand(1000, 1000), true);
 
         wp_localize_script('rezdy-datepicker', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
     }
@@ -70,54 +85,69 @@ class FormSettings extends Screen
 
     function fetching_sessions_callback()
     {
-        $guzzleClient  = new RezdyAPI($this->appContext::API_KEY);
+
+        $guzzleClient  = new RezdyAPI(get_option('cc_rezdy_api_key'));
+
+        $select_date = date('Y-m-d', strtotime($_POST['firstDate']));
+        $TodayDate = date('Y-m-d', time());
+        if ($TodayDate == $select_date) {
+            $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate'] . ' ' . date('H:i:s')));
+        } else {
+            $selected_date = date('Y-m-d 00:00:00', strtotime($_POST['firstDate']));
+        }
 
 
-        $selected_date =  date('Y-m-d H:i:s', strtotime($_POST['firstDate'] . ' ' . date('H:i:s')));
-        $lastDate = date("Y-m-d", strtotime("$selected_date"));
+        $lastDate = date("Y-m-t", strtotime("$selected_date"));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
-
 
         $availabilitySearch     = new SessionSearch([
             'productCode'       => $_POST['productCode'],
             'startTimeLocal'    =>  $selected_date,
-            'endTimeLocal'      =>  $lastDateTime
+            'endTimeLocal'      =>  $lastDateTime,
+            'limit'             => 500
         ]);
 
-        $availabilities         = $guzzleClient->availability->search($availabilitySearch);
-
-
+        $availabilities = $guzzleClient->availability->search($availabilitySearch);
         $response = [];
         foreach ($availabilities->sessions as $availability) {
-            $date = date('Y-m-d', strtotime($availability->startTimeLocal));
-            if (!array_key_exists($date, $response)) {
-                $response[$date] = $response;
+            $CurrentDateTime = date('Y-m-d H:i:s', time());
+            if ($availability->startTimeLocal >= $CurrentDateTime) {
+                $date = date('Y-m-d', strtotime($availability->startTimeLocal));
+                $response[$date] = $availability;
             }
-            $response[$date][] = $availability;
         }
-        wp_send_json(array('availability' => $response));
+        wp_send_json(array('availability' => $response, 'CurrentDateTime' => $CurrentDateTime, 'startTimeLocal' => $selected_date, 'endTimeLocal' => $lastDateTime, 'all sessions' => $availabilities->sessions, 'postDate' => $_POST['firstDate']));
     }
 
 
 
     function fetching_availabilities_callback()
     {
-        // if (!session_id()) {
-        //     session_start();
-        // }
 
-        // $_SESSION['form_data'] = $_POST;
-        $guzzleClient = new RezdyAPI($this->appContext::API_KEY);
-        $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
+        $guzzleClient = new RezdyAPI(get_option('cc_rezdy_api_key'));
+        if (isset($_POST['nextMonthClicked']) && $_POST['nextMonthClicked'] != 'false') {
+            $select_date = date('Y-m-d', strtotime($_POST['firstDate']));
+            $selected_date = date('Y-m-d 00:00:00', strtotime($_POST['firstDate']));
+        } else {
+            $select_date = date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+            $TodayDate = date('Y-m-d', time());
+            if ($TodayDate == $select_date) {
+                $selected_date = date('Y-m-d H:m:s', strtotime($_POST['OrderItem']['preferredDate'] . ' ' . date('H:i:s')));
+            } else {
+                $selected_date = date('Y-m-d 00:00:00', strtotime($_POST['OrderItem']['preferredDate']));
+            }
+        }
+
         $lastDate = date("Y-m-t", strtotime($selected_date));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
+
         $availabilitySearch = new SessionSearch([
             'productCode' => $_POST['OrderItem']['productCode'],
             'startTimeLocal' => $selected_date,
-            'endTimeLocal' => $lastDateTime
+            'endTimeLocal' => $lastDateTime,
+            'limit'             => 500
         ]);
         $availabilities = $guzzleClient->availability->search($availabilitySearch);
-
         $quantity = 0;
         foreach ($_POST['ItemQuantity'][$_POST['OrderItem']['productCode']] as $value) {
             $quantity += $value['quantity'];
@@ -127,37 +157,70 @@ class FormSettings extends Screen
         $sessionTimeLabel = [];
         $activeSession = [];
         $totalPrice = [];
-
-        $select_date = date('Y-m-d', strtotime($_POST['OrderItem']['preferredDate']));
+        $basePrice = [];
+        $response_pre = [];
 
         foreach ($availabilities->sessions as $availability) {
+
+
+            if (isset($_POST['nextMonthClicked']) && $_POST['nextMonthClicked'] != 'false') {
+                $CurrentDateTime = date('Y-m-d H:i:s', time());
+                if ($availability->startTimeLocal >= $CurrentDateTime) {
+                    $date_ = date('Y-m-d', strtotime($availability->startTimeLocal));
+                    $response_pre[$date_] = $availability;
+                }
+            }
+
+
             $sessionsId[] = $availability->id;
             $date = date('Y-m-d', strtotime($availability->startTimeLocal));
+            $end_date = date('Y-m-d', strtotime($availability->endTimeLocal));
 
             if ($date == $select_date) {
                 $seatsAvailable = $availability->seatsAvailable;
-
                 if ($quantity <= $seatsAvailable) {
-                    $availabilityStatus = 'Available';
+                    $availabilityStatus = "$seatsAvailable Available";
                     $isActiveSession = true;
-                } elseif ($seatsAvailable == 0) {
+                } elseif ($seatsAvailable <= 0) {
                     $availabilityStatus = 'Sold Out';
                     $isActiveSession = false;
                 } else {
-                    $availabilityStatus = 'Not enough availability';
+                    $availabilityStatus = 'Sold Out';
                     $isActiveSession = false;
                 }
 
-                $sessionTimeLabel[$availability->id] = date('H:i', strtotime($availability->startTimeLocal)) . ' - ' . $availabilityStatus;
-                $activeSession[$availability->id] = $isActiveSession;
+                $sessionTimeLabel[' ' . $availability->id] = date('H:i', strtotime($availability->startTimeLocal)) . ' - ' . $availabilityStatus;
+                $activeSession[' ' . $availability->id] = $isActiveSession;
 
                 $sessionTotalPrice = 0;
                 foreach ($availability->priceOptions as $key => $value) {
-                    $quantity = $_POST['ItemQuantity'][$_POST['OrderItem']['productCode']][$key]['quantity'];
-                    $price = $value->price;
-                    $sessionTotalPrice += $quantity * $price;
+
+                    foreach ($_POST['ItemQuantity'][$_POST['OrderItem']['productCode']] as $IndexNew => $priceOptionNew) {
+                        if ($priceOptionNew['priceOption']['label'] == $value->label) {
+
+
+                            $quantity_ = $priceOptionNew['quantity'];
+                            $price = $value->price;
+
+                            if (isset($value->priceGroupType)) {
+                                $found = $this->getGroupValue($quantity_, $value->label);
+                                if ($found) {
+                                    $sessionTotalPrice = $price;
+                                    $basePrice[' ' . $availability->id][$key]['id'] = $value->id;
+                                    $basePrice[' ' . $availability->id][$key]['price'] = $value->price;
+                                    $basePrice[' ' . $availability->id][$key]['label'] = $value->label;
+                                    break;
+                                }
+                            } else {
+                                $sessionTotalPrice += $quantity_ * $price;
+                                $basePrice[' ' . $availability->id][$key]['id'] = $value->id;
+                                $basePrice[' ' . $availability->id][$key]['price'] = $value->price;
+                                $basePrice[' ' . $availability->id][$key]['label'] = $value->label;
+                            }
+                        }
+                    }
                 }
-                $totalPrice[$availability->id] = $sessionTotalPrice;
+                $totalPrice[' ' . $availability->id] = $sessionTotalPrice;
             }
         }
 
@@ -165,8 +228,26 @@ class FormSettings extends Screen
             'sessions' => $sessionsId,
             'sessionTimeLabel' => $sessionTimeLabel,
             'activeSession'     => $activeSession,
-            'totalPrice' => $totalPrice
+            'totalPrice' => $totalPrice,
+            'basePrice' => $basePrice,
+            'availability' => $response_pre
         ];
         wp_send_json($response);
+    }
+
+    public function getGroupValue($x, $value)
+    {
+
+        preg_match_all('/\d+/', $value, $matches);
+        $group = $matches[0];
+        if (count($group) === 1) {
+            if ($x == intval($group[0])) {
+                return true;
+            }
+        } else if (count($group) === 2) {
+            if ($x >= intval($group[0]) && $x <= intval($group[1])) {
+                return true;
+            }
+        }
     }
 }

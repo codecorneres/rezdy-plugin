@@ -1,0 +1,298 @@
+User: 80.233.54.105 - May 28, 2024, 3:00 am
+Attempt: Stripe payment started
+User name: LARA DE MESA
+User email: LARA.DEMESA@YAHOO.COM
+Table inserted_id: 148|PNXS0F|website ( www.carpediemtours )
+-------------------------
+User: 80.233.54.105 - May 28, 2024, 3:00 am
+Payment status: Sripe Payment completed
+User name: LARA DE MESA
+User email: LARA.DEMESA@YAHOO.COM
+Table inserted_id: 148
+-------------------------
+User: 80.233.54.105 - May 28, 2024, 3:00 am
+Rezdy booking status: Rezdy Booking
+User name: LARA DE MESA
+User email: LARA.DEMESA@YAHOO.COM
+Table inserted_id: 148
+-------------------------
+User: 2a09:bac3:41fb:187::27:f7 - May 28, 2024, 6:41 am
+Attempt: Paypal Payment started
+User name: Sarah Montgomery 
+User email: s-montgomery@hotmail.com
+Table inserted_id: 149|P94G3X|website ( www.carpediemtours )
+-------------------------
+User: 2a09:bac3:41fb:187::27:f7 - May 28, 2024, 6:41 am
+Payment status: COMPLETED
+User name: Sarah Montgomery 
+User email: s-montgomery@hotmail.com
+Table inserted_id: 149
+-------------------------
+User: 2a09:bac3:41fb:187::27:f7 - May 28, 2024, 6:41 am
+Rezdy booking status: CONFIRMED
+User name: Sarah Montgomery 
+User email: s-montgomery@hotmail.com
+Table inserted_id: 149
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 7:04 am
+Attempt: Stripe payment started
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 150|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 7:04 am
+Payment status: Sripe Payment completed
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 150
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 7:04 am
+Rezdy booking status: Rezdy Booking
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 150
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:36 am
+Attempt: Stripe payment started
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 151|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:36 am
+Status: Stripe payment failed
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 151
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:39 am
+Attempt: Stripe payment started
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 152|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:39 am
+Status: Stripe payment failed
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 152
+-------------------------
+User: 80.24.14.148 - May 28, 2024, 10:44 am
+Attempt: Stripe payment started
+User name: Mark Amendolara
+User email: mark.amendolara@gmail.com
+Table inserted_id: 153|PNXS0F|website ( www.carpediemtours )
+-------------------------
+User: 80.24.14.148 - May 28, 2024, 10:44 am
+Payment status: Sripe Payment completed
+User name: Mark Amendolara
+User email: mark.amendolara@gmail.com
+Table inserted_id: 153
+-------------------------
+User: 80.24.14.148 - May 28, 2024, 10:44 am
+Rezdy booking status: Rezdy Booking
+User name: Mark Amendolara
+User email: mark.amendolara@gmail.com
+Table inserted_id: 153
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:50 am
+Attempt: Stripe payment started
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 154|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:50 am
+Status: Stripe payment failed
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 154
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:52 am
+Attempt: Stripe payment started
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 155|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:52 am
+Status: Stripe payment failed
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 155
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:55 am
+Attempt: Stripe payment started
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 156|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:55 am
+Payment status: Sripe Payment completed
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 156
+-------------------------
+User: 203.109.148.28 - May 28, 2024, 10:55 am
+Rezdy booking status: Rezdy Booking
+User name: Simon Gillum
+User email: karley.simon@gmail.com
+Table inserted_id: 156
+-------------------------
+User: 61.247.227.239 - May 28, 2024, 11:26 am
+Attempt: Order created without payment methods
+User name: asd asd
+User email: test@gmail.com
+Table inserted_id: 157|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.48 - May 28, 2024, 11:40 am
+Attempt: Stripe payment started
+User name: Vladimir Andreev
+User email: andreev_vladimir@bk.ru
+Table inserted_id: 158|PQYU0A|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.48 - May 28, 2024, 11:40 am
+Payment status: Sripe Payment completed
+User name: Vladimir Andreev
+User email: andreev_vladimir@bk.ru
+Table inserted_id: 158
+-------------------------
+User: 206.0.75.48 - May 28, 2024, 11:40 am
+Rezdy booking status: Rezdy Booking
+User name: Vladimir Andreev
+User email: andreev_vladimir@bk.ru
+Table inserted_id: 158
+-------------------------
+User: 61.247.227.239 - May 28, 2024, 11:41 am
+Attempt: Order created without payment methods
+User name: test test
+User email: test@gmail.com
+Table inserted_id: 159|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 61.247.227.239 - May 28, 2024, 11:42 am
+Attempt: Order created without payment methods
+User name: test test
+User email: test@gmail.com
+Table inserted_id: 160|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 61.247.227.239 - May 28, 2024, 11:47 am
+Attempt: Order created without payment methods
+User name: testdatlayer test
+User email: test@gmail.com
+Table inserted_id: 161|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 91.223.100.13 - May 28, 2024, 1:27 pm
+Attempt: Paypal Payment started
+User name: Nathaniel  Jones
+User email: onenjones@gmail.com
+Table inserted_id: 162|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 51.179.112.4 - May 28, 2024, 1:52 pm
+Attempt: Stripe payment started
+User name: Elisabeth  Moseley 
+User email: europe4kidstours@gmail.com
+Table inserted_id: 163|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 51.179.112.4 - May 28, 2024, 1:52 pm
+Payment status: Sripe Payment completed
+User name: Elisabeth  Moseley 
+User email: europe4kidstours@gmail.com
+Table inserted_id: 163
+-------------------------
+User: 51.179.112.4 - May 28, 2024, 1:52 pm
+Rezdy booking status: Rezdy Booking
+User name: Elisabeth  Moseley 
+User email: europe4kidstours@gmail.com
+Table inserted_id: 163
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 3:29 pm
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 164|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 3:29 pm
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 164
+-------------------------
+User: 158.47.255.246 - May 28, 2024, 3:29 pm
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 164
+-------------------------
+User: 175.176.33.18 - May 28, 2024, 4:16 pm
+Attempt: Stripe payment started
+User name: Kirsten Wood
+User email: europe4kidstours@gmail.com
+Table inserted_id: 165|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 175.176.33.18 - May 28, 2024, 4:16 pm
+Payment status: Sripe Payment completed
+User name: Kirsten Wood
+User email: europe4kidstours@gmail.com
+Table inserted_id: 165
+-------------------------
+User: 175.176.33.18 - May 28, 2024, 4:16 pm
+Rezdy booking status: Rezdy Booking
+User name: Kirsten Wood
+User email: europe4kidstours@gmail.com
+Table inserted_id: 165
+-------------------------
+User: 172.58.139.204 - May 28, 2024, 5:57 pm
+Attempt: Stripe payment started
+User name: Jacob Hayes
+User email: jacob.hayes1@yahoo.com
+Table inserted_id: 166|PBHZDZ|website ( www.carpediemtours )
+-------------------------
+User: 172.58.139.204 - May 28, 2024, 5:57 pm
+Payment status: Sripe Payment completed
+User name: Jacob Hayes
+User email: jacob.hayes1@yahoo.com
+Table inserted_id: 166
+-------------------------
+User: 172.58.139.204 - May 28, 2024, 5:58 pm
+Rezdy booking status: Rezdy Booking
+User name: Jacob Hayes
+User email: jacob.hayes1@yahoo.com
+Table inserted_id: 166
+-------------------------
+User: 111.65.71.172 - May 28, 2024, 6:06 pm
+Attempt: Paypal Payment started
+User name: Amanda Kor
+User email: amandakor@live.com
+Table inserted_id: 167|PRQZ0S|website ( www.carpediemtours )
+-------------------------
+User: 111.65.56.235 - May 28, 2024, 6:07 pm
+Payment status: COMPLETED
+User name: Amanda Kor
+User email: amandakor@live.com
+Table inserted_id: 167
+-------------------------
+User: 111.65.56.235 - May 28, 2024, 6:07 pm
+Rezdy booking status: CONFIRMED
+User name: Amanda Kor
+User email: amandakor@live.com
+Table inserted_id: 167
+-------------------------
+User: 87.10.23.242 - May 28, 2024, 10:04 pm
+Attempt: Stripe payment started
+User name: JAMES CARLI
+User email: jamescarli@gmail.com
+Table inserted_id: 168|PZ8DNG|website ( www.carpediemtours )
+-------------------------
+User: 87.10.23.242 - May 28, 2024, 10:04 pm
+Payment status: Sripe Payment completed
+User name: JAMES CARLI
+User email: jamescarli@gmail.com
+Table inserted_id: 168
+-------------------------
+User: 87.10.23.242 - May 28, 2024, 10:04 pm
+Rezdy booking status: Rezdy Booking
+User name: JAMES CARLI
+User email: jamescarli@gmail.com
+Table inserted_id: 168
+-------------------------

@@ -1,0 +1,81 @@
+User: 85.115.54.202 - June 10, 2024, 7:33 am
+Attempt: Paypal Payment started
+User name: Jenny Olsen
+User email: jennifermcgeeney@yahoo.co.uk
+Table inserted_id: 202|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 85.115.54.202 - June 10, 2024, 7:34 am
+Payment status: COMPLETED
+User name: Jenny Olsen
+User email: jennifermcgeeney@yahoo.co.uk
+Table inserted_id: 202
+-------------------------
+User: 85.115.54.202 - June 10, 2024, 7:34 am
+Rezdy booking status: CONFIRMED
+User name: Jenny Olsen
+User email: jennifermcgeeney@yahoo.co.uk
+Table inserted_id: 202
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:14 pm
+Attempt: Stripe payment started
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Table inserted_id: 203|PJ69F4|website ( carpediemtours )
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:15 pm
+Status: Stripe payment failed
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 203
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:17 pm
+Attempt: Stripe payment started
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Table inserted_id: 204|PJ69F4|website ( carpediemtours )
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:17 pm
+Status: Stripe payment failed
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 204
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:19 pm
+Attempt: Stripe payment started
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Table inserted_id: 205|PJ69F4|website ( carpediemtours )
+-------------------------
+User: 2620:0:1040:20:6508:237e:7b6e:d01e - June 10, 2024, 3:19 pm
+Status: Stripe payment failed
+User name: Patricia Bilacicova
+User email: pata.bilacicova@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 205
+-------------------------
+User: 178.197.222.39 - June 10, 2024, 3:28 pm
+Attempt: Paypal Payment started
+User name: Soukaina Ait said
+User email: soukaina.aitsaid@outlook.con
+Table inserted_id: 206|PJ69F4|website ( carpediemtours )
+-------------------------
+User: 178.197.222.39 - June 10, 2024, 3:31 pm
+Attempt: Stripe payment started
+User name: Soukaina Ait Said
+User email: soukaina.aitsaid@outlook.com
+Table inserted_id: 207|PJ69F4|website ( carpediemtours )
+-------------------------
+User: 178.197.222.39 - June 10, 2024, 3:31 pm
+Payment status: Sripe Payment completed
+User name: Soukaina Ait Said
+User email: soukaina.aitsaid@outlook.com
+Table inserted_id: 207
+-------------------------
+User: 178.197.222.39 - June 10, 2024, 3:31 pm
+Rezdy booking status: Rezdy Booking
+User name: Soukaina Ait Said
+User email: soukaina.aitsaid@outlook.com
+Table inserted_id: 207
+-------------------------

@@ -1,0 +1,188 @@
+User: 206.0.75.53 - May 29, 2024, 7:37 am
+Attempt: Stripe payment started
+User name: Michelle F Zenere
+User email: zenere.michelle@gmail.com
+Table inserted_id: 169|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.53 - May 29, 2024, 7:37 am
+Status: Stripe payment failed
+User name: Michelle F Zenere
+User email: zenere.michelle@gmail.com
+Reason:Your card was declined.
+Table inserted_id: 169
+-------------------------
+User: 206.0.75.67 - May 29, 2024, 8:17 am
+Attempt: Stripe payment started
+User name: Tricia Martin
+User email: tricia.martin95@icloud.com
+Table inserted_id: 170|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.67 - May 29, 2024, 8:17 am
+Status: Stripe payment failed
+User name: Tricia Martin
+User email: tricia.martin95@icloud.com
+Reason:Your card does not support this type of purchase.
+Table inserted_id: 170
+-------------------------
+User: 206.0.75.67 - May 29, 2024, 8:20 am
+Attempt: Stripe payment started
+User name: Tricia Martin
+User email: tricia.martin95@icloud.com
+Table inserted_id: 171|PY1WWW|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.67 - May 29, 2024, 8:20 am
+Payment status: Sripe Payment completed
+User name: Tricia Martin
+User email: tricia.martin95@icloud.com
+Table inserted_id: 171
+-------------------------
+User: 206.0.75.67 - May 29, 2024, 8:20 am
+Rezdy booking status: Rezdy Booking
+User name: Tricia Martin
+User email: tricia.martin95@icloud.com
+Table inserted_id: 171
+-------------------------
+User: 77.39.235.98 - May 29, 2024, 11:15 am
+Attempt: Stripe payment started
+User name: Elaine Kindred
+User email: elainekindred@gmail.com
+Table inserted_id: 172|PQYU0A|website ( www.carpediemtours )
+-------------------------
+User: 77.39.235.98 - May 29, 2024, 11:15 am
+Payment status: Sripe Payment completed
+User name: Elaine Kindred
+User email: elainekindred@gmail.com
+Table inserted_id: 172
+-------------------------
+User: 77.39.235.98 - May 29, 2024, 11:15 am
+Rezdy booking status: Rezdy Booking
+User name: Elaine Kindred
+User email: elainekindred@gmail.com
+Table inserted_id: 172
+-------------------------
+User: 84.253.159.170 - May 29, 2024, 11:45 am
+Attempt: Paypal Payment started
+User name: Emma Hinterberger
+User email: emmielli@icloud.com
+Table inserted_id: 173|PQYU0A|website ( www.carpediemtours )
+-------------------------
+User: 84.253.159.170 - May 29, 2024, 11:46 am
+Payment status: COMPLETED
+User name: Emma Hinterberger
+User email: emmielli@icloud.com
+Table inserted_id: 173
+-------------------------
+User: 84.253.159.170 - May 29, 2024, 11:46 am
+Rezdy booking status: CONFIRMED
+User name: Emma Hinterberger
+User email: emmielli@icloud.com
+Table inserted_id: 173
+-------------------------
+User: 77.32.72.191 - May 29, 2024, 2:45 pm
+Attempt: Stripe payment started
+User name: LIBERTY TRAVEL SRL 
+User email: vsiciliano@libertyvenice.com
+Table inserted_id: 174|P1S02P|website ( www.carpediemtours )
+-------------------------
+User: 77.32.72.191 - May 29, 2024, 2:45 pm
+Payment status: Sripe Payment completed
+User name: LIBERTY TRAVEL SRL 
+User email: vsiciliano@libertyvenice.com
+Table inserted_id: 174
+-------------------------
+User: 77.32.72.191 - May 29, 2024, 2:45 pm
+Rezdy booking status: Rezdy Booking
+User name: LIBERTY TRAVEL SRL 
+User email: vsiciliano@libertyvenice.com
+Table inserted_id: 174
+-------------------------
+User: 86.53.241.179 - May 29, 2024, 3:10 pm
+Attempt: Stripe payment started
+User name: Dieter Kotsch
+User email: dieter@d-kotsch.de
+Table inserted_id: 175|P6UCJM|website ( www.carpediemtours )
+-------------------------
+User: 86.53.241.179 - May 29, 2024, 3:10 pm
+Payment status: Sripe Payment completed
+User name: Dieter Kotsch
+User email: dieter@d-kotsch.de
+Table inserted_id: 175
+-------------------------
+User: 86.53.241.179 - May 29, 2024, 3:10 pm
+Rezdy booking status: Rezdy Booking
+User name: Dieter Kotsch
+User email: dieter@d-kotsch.de
+Table inserted_id: 175
+-------------------------
+User: 188.217.90.71 - May 29, 2024, 6:02 pm
+Attempt: Stripe payment started
+User name: Nichole Russell
+User email: russellnichole1421@gmail.com
+Table inserted_id: 176|PBHZDZ|website ( www.carpediemtours )
+-------------------------
+User: 188.217.90.71 - May 29, 2024, 6:02 pm
+Payment status: Sripe Payment completed
+User name: Nichole Russell
+User email: russellnichole1421@gmail.com
+Table inserted_id: 176
+-------------------------
+User: 188.217.90.71 - May 29, 2024, 6:02 pm
+Rezdy booking status: Rezdy Booking
+User name: Nichole Russell
+User email: russellnichole1421@gmail.com
+Table inserted_id: 176
+-------------------------
+User: 1.123.35.234 - May 29, 2024, 6:23 pm
+Attempt: Stripe payment started
+User name: Jo-Anne Love
+User email: peterjo3@bigpond.com
+Table inserted_id: 177|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 1.123.35.234 - May 29, 2024, 6:23 pm
+Payment status: Sripe Payment completed
+User name: Jo-Anne Love
+User email: peterjo3@bigpond.com
+Table inserted_id: 177
+-------------------------
+User: 1.123.35.234 - May 29, 2024, 6:23 pm
+Rezdy booking status: Rezdy Booking
+User name: Jo-Anne Love
+User email: peterjo3@bigpond.com
+Table inserted_id: 177
+-------------------------
+User: 93.63.175.243 - May 29, 2024, 6:29 pm
+Attempt: Paypal Payment started
+User name: Holger Bachtenkirch
+User email: holger.bachtenkirch@gmail.com
+Table inserted_id: 178|PRBNX3|website ( www.carpediemtours )
+-------------------------
+User: 93.63.175.243 - May 29, 2024, 6:29 pm
+Payment status: COMPLETED
+User name: Holger Bachtenkirch
+User email: holger.bachtenkirch@gmail.com
+Table inserted_id: 178
+-------------------------
+User: 93.63.175.243 - May 29, 2024, 6:29 pm
+Rezdy booking status: CONFIRMED
+User name: Holger Bachtenkirch
+User email: holger.bachtenkirch@gmail.com
+Table inserted_id: 178
+-------------------------
+User: 78.33.115.63 - May 29, 2024, 7:24 pm
+Attempt: Paypal Payment started
+User name: Demitris Murtagh
+User email: demmurtagh@gmail.com
+Table inserted_id: 179|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 78.33.115.63 - May 29, 2024, 7:25 pm
+Payment status: COMPLETED
+User name: Demitris Murtagh
+User email: demmurtagh@gmail.com
+Table inserted_id: 179
+-------------------------
+User: 78.33.115.63 - May 29, 2024, 7:25 pm
+Rezdy booking status: CONFIRMED
+User name: Demitris Murtagh
+User email: demmurtagh@gmail.com
+Table inserted_id: 179
+-------------------------

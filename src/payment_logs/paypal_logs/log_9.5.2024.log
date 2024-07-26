@@ -1,0 +1,80 @@
+User: 2001:b07:a5a:66ab:bc7d:d609:94c6:a592 - May 9, 2024, 5:43 pm
+Attempt: Stripe payment started
+User name: Charlie Gent
+User email: chasgent@icloud.com
+Table inserted_id: 14|PEK6W7|website ( www.carpediemtours )
+-------------------------
+User: 2001:b07:a5a:66ab:bc7d:d609:94c6:a592 - May 9, 2024, 5:43 pm
+Payment status: Sripe Payment completed
+User name: Charlie Gent
+User email: chasgent@icloud.com
+Table inserted_id: 14
+-------------------------
+User: 2001:b07:a5a:66ab:bc7d:d609:94c6:a592 - May 9, 2024, 5:43 pm
+Rezdy booking status: Rezdy Booking
+User name: Charlie Gent
+User email: chasgent@icloud.com
+Table inserted_id: 14
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:16 pm
+Attempt: Stripe payment started
+User name: Sandra Olsson
+User email: niklas.jansson91@hotmail.com
+Table inserted_id: 15|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:16 pm
+Status: Stripe payment failed
+User name: Sandra Olsson
+User email: niklas.jansson91@hotmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 15
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:19 pm
+Attempt: Stripe payment started
+User name: Sandra Olsson
+User email: niklas.jansson91@hotmail.com
+Table inserted_id: 16|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:19 pm
+Status: Stripe payment failed
+User name: Sandra Olsson
+User email: niklas.jansson91@hotmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 16
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:24 pm
+Attempt: Stripe payment started
+User name: Niklas Jansson
+User email: niklas.jansson91@hotmail.com
+Table inserted_id: 17|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:24 pm
+Payment status: Sripe Payment completed
+User name: Niklas Jansson
+User email: niklas.jansson91@hotmail.com
+Table inserted_id: 17
+-------------------------
+User: 213.113.246.117 - May 9, 2024, 6:24 pm
+Rezdy booking status: Rezdy Booking
+User name: Niklas Jansson
+User email: niklas.jansson91@hotmail.com
+Table inserted_id: 17
+-------------------------
+User: 101.115.148.85 - May 9, 2024, 8:56 pm
+Attempt: Paypal Payment started
+User name: Honor Guinan
+User email: ekghmg@hotmail.com
+Table inserted_id: 18|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 101.115.148.85 - May 9, 2024, 8:57 pm
+Payment status: COMPLETED
+User name: Honor Guinan
+User email: ekghmg@hotmail.com
+Table inserted_id: 18
+-------------------------
+User: 101.115.148.85 - May 9, 2024, 8:57 pm
+Rezdy booking status: CONFIRMED
+User name: Honor Guinan
+User email: ekghmg@hotmail.com
+Table inserted_id: 18
+-------------------------

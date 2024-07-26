@@ -1,0 +1,36 @@
+User: 93.152.210.207 - July 22, 2024, 12:00 am
+Attempt: Paypal Payment started
+User name: Albert Cheng
+User email: acheng47@proton.me
+Table inserted_id: 448|P09QZB|website ( carpediemtours )
+-------------------------
+User: 93.152.210.207 - July 22, 2024, 12:05 am
+Payment status: COMPLETED
+User name: Albert Cheng
+User email: acheng47@proton.me
+Table inserted_id: 448
+-------------------------
+User: 93.152.210.207 - July 22, 2024, 12:05 am
+Rezdy booking status: CONFIRMED
+User name: Albert Cheng
+User email: acheng47@proton.me
+Table inserted_id: 448
+-------------------------
+User: 154.27.29.87 - July 22, 2024, 2:03 am
+Attempt: Stripe payment started
+User name: Alexander Malescio
+User email: alex.malescio@gmail.com
+Table inserted_id: 449|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 154.27.29.87 - July 22, 2024, 2:03 am
+Payment status: Sripe Payment completed
+User name: Alexander Malescio
+User email: alex.malescio@gmail.com
+Table inserted_id: 449
+-------------------------
+User: 154.27.29.87 - July 22, 2024, 2:03 am
+Rezdy booking status: Rezdy Booking
+User name: Alexander Malescio
+User email: alex.malescio@gmail.com
+Table inserted_id: 449
+-------------------------
