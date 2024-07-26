@@ -1,0 +1,85 @@
+User: 158.47.255.246 - June 18, 2024, 8:12 am
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 218|PT4HQ1|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - June 18, 2024, 8:12 am
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 218
+-------------------------
+User: 158.47.255.246 - June 18, 2024, 8:12 am
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 218
+-------------------------
+User: 158.47.255.246 - June 18, 2024, 9:05 am
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 219|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - June 18, 2024, 9:05 am
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 219
+-------------------------
+User: 158.47.255.246 - June 18, 2024, 9:05 am
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 219
+-------------------------
+User: 79.58.210.50 - June 18, 2024, 9:56 am
+Attempt: Stripe payment started
+User name: Aisling Kelly
+User email: aisling28@msn.com
+Table inserted_id: 220|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 79.58.210.50 - June 18, 2024, 9:56 am
+Payment status: Sripe Payment completed
+User name: Aisling Kelly
+User email: aisling28@msn.com
+Table inserted_id: 220
+-------------------------
+User: 79.58.210.50 - June 18, 2024, 9:56 am
+Rezdy booking status: Rezdy Booking
+User name: Aisling Kelly
+User email: aisling28@msn.com
+Table inserted_id: 220
+-------------------------
+User: 3.64.175.181 - June 18, 2024, 1:18 pm
+Attempt: Stripe payment started
+User name: Helen Lambshead
+User email: helenlambshead@hotmail.com
+Table inserted_id: 221|PEK6W7|website ( carpediemtours )
+-------------------------
+User: 3.64.175.181 - June 18, 2024, 1:18 pm
+Status: Stripe payment failed
+User name: Helen Lambshead
+User email: helenlambshead@hotmail.com
+Reason:Your card was declined.
+Table inserted_id: 221
+-------------------------
+User: 3.64.175.181 - June 18, 2024, 1:19 pm
+Attempt: Stripe payment started
+User name: Helen Lambshead
+User email: helenlambshead@hotmail.com
+Table inserted_id: 222|PEK6W7|website ( carpediemtours )
+-------------------------
+User: 3.64.175.181 - June 18, 2024, 1:20 pm
+Payment status: Sripe Payment completed
+User name: Helen Lambshead
+User email: helenlambshead@hotmail.com
+Table inserted_id: 222
+-------------------------
+User: 3.64.175.181 - June 18, 2024, 1:20 pm
+Rezdy booking status: Rezdy Booking
+User name: Helen Lambshead
+User email: helenlambshead@hotmail.com
+Table inserted_id: 222
+-------------------------

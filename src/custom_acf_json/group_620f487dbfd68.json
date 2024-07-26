@@ -9,7 +9,7 @@
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -17,10 +17,50 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
+            "new_lines": "",
             "maxlength": "",
-            "rows": "",
-            "new_lines": ""
+            "placeholder": "",
+            "rows": ""
+        },
+        {
+            "key": "field_65f055595d922",
+            "label": "Booking Shortcode",
+            "name": "booking_shortcode",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6651c7dcb7a77",
+            "label": "Booking code 2",
+            "name": "booking_code_2",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [
@@ -51,6 +91,34 @@
                 "operator": "==",
                 "value": "barcelona"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "lisbon"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "london"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "budapest"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "madrid"
+            }
         ]
     ],
     "menu_order": 0,
@@ -62,5 +130,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706707585
+    "modified": 1716824175
 }

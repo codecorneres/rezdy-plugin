@@ -1,0 +1,111 @@
+User: 192.114.91.247 - June 9, 2024, 6:13 am
+Attempt: Stripe payment started
+User name: David Goldstein
+User email: davidgold33@gmail.com
+Table inserted_id: 195|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 192.114.91.247 - June 9, 2024, 6:13 am
+Payment status: Sripe Payment completed
+User name: David Goldstein
+User email: davidgold33@gmail.com
+Table inserted_id: 195
+-------------------------
+User: 192.114.91.247 - June 9, 2024, 6:13 am
+Rezdy booking status: Rezdy Booking
+User name: David Goldstein
+User email: davidgold33@gmail.com
+Table inserted_id: 195
+-------------------------
+User: 82.30.132.154 - June 9, 2024, 1:09 pm
+Attempt: Stripe payment started
+User name: Lindsay Wood
+User email: lindsay_r_wood@hotmail.co.uk
+Table inserted_id: 196|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 82.30.132.154 - June 9, 2024, 1:09 pm
+Payment status: Sripe Payment completed
+User name: Lindsay Wood
+User email: lindsay_r_wood@hotmail.co.uk
+Table inserted_id: 196
+-------------------------
+User: 82.30.132.154 - June 9, 2024, 1:09 pm
+Rezdy booking status: Rezdy Booking
+User name: Lindsay Wood
+User email: lindsay_r_wood@hotmail.co.uk
+Table inserted_id: 196
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:46 pm
+Attempt: Stripe payment started
+User name: Manon  Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 197|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:46 pm
+Status: Stripe payment failed
+User name: Manon  Van Rullen
+User email: 2000manon@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 197
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:48 pm
+Attempt: Stripe payment started
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 198|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:48 pm
+Status: Stripe payment failed
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 198
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:52 pm
+Attempt: Stripe payment started
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 199|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:52 pm
+Status: Stripe payment failed
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Reason:Your card was declined. This transaction requires authentication.
+Table inserted_id: 199
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:54 pm
+Attempt: Paypal Payment started
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 200|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 79.43.210.16 - June 9, 2024, 6:54 pm
+Attempt: Stripe payment started
+User name: Lauren Findlow
+User email: lfindlow@gmail.com
+Table inserted_id: 201|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.43.210.16 - June 9, 2024, 6:54 pm
+Payment status: Sripe Payment completed
+User name: Lauren Findlow
+User email: lfindlow@gmail.com
+Table inserted_id: 201
+-------------------------
+User: 79.43.210.16 - June 9, 2024, 6:54 pm
+Rezdy booking status: Rezdy Booking
+User name: Lauren Findlow
+User email: lfindlow@gmail.com
+Table inserted_id: 201
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:55 pm
+Payment status: COMPLETED
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 200
+-------------------------
+User: 185.92.69.94 - June 9, 2024, 6:56 pm
+Rezdy booking status: CONFIRMED
+User name: Manon Van Rullen
+User email: 2000manon@gmail.com
+Table inserted_id: 200
+-------------------------

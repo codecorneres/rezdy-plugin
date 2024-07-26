@@ -1,0 +1,78 @@
+User: 158.47.255.246 - June 20, 2024, 7:42 am
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 223|PT4HQ1|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - June 20, 2024, 7:42 am
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 223
+-------------------------
+User: 158.47.255.246 - June 20, 2024, 7:42 am
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 223
+-------------------------
+User: 158.47.255.246 - June 20, 2024, 8:57 am
+Attempt: Order created without payment methods
+User name: Test Test
+User email: alina@carpediemtours.com
+Table inserted_id: 224|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 109.60.14.143 - June 20, 2024, 10:52 am
+Attempt: Paypal Payment started
+User name: Denis Jakus
+User email: denisjakus@icloud.com
+Table inserted_id: 225|P09QZB|website ( carpediemtours )
+-------------------------
+User: 109.60.14.143 - June 20, 2024, 10:52 am
+Payment status: COMPLETED
+User name: Denis Jakus
+User email: denisjakus@icloud.com
+Table inserted_id: 225
+-------------------------
+User: 109.60.14.143 - June 20, 2024, 10:52 am
+Rezdy booking status: CONFIRMED
+User name: Denis Jakus
+User email: denisjakus@icloud.com
+Table inserted_id: 225
+-------------------------
+User: 69.122.81.32 - June 20, 2024, 12:34 pm
+Attempt: Stripe payment started
+User name: Felicia Price
+User email: feliciarachel@hotmail.com
+Table inserted_id: 226|P6FFTT|website ( carpediemtours )
+-------------------------
+User: 69.122.81.32 - June 20, 2024, 12:34 pm
+Payment status: Sripe Payment completed
+User name: Felicia Price
+User email: feliciarachel@hotmail.com
+Table inserted_id: 226
+-------------------------
+User: 69.122.81.32 - June 20, 2024, 12:34 pm
+Rezdy booking status: Rezdy Booking
+User name: Felicia Price
+User email: feliciarachel@hotmail.com
+Table inserted_id: 226
+-------------------------
+User: 148.252.132.185 - June 20, 2024, 7:54 pm
+Attempt: Stripe payment started
+User name: Dianne Niven
+User email: meganniven17@yahoo.com
+Table inserted_id: 227|PRBNX3|website ( carpediemtours )
+-------------------------
+User: 148.252.132.185 - June 20, 2024, 7:54 pm
+Payment status: Sripe Payment completed
+User name: Dianne Niven
+User email: meganniven17@yahoo.com
+Table inserted_id: 227
+-------------------------
+User: 148.252.132.185 - June 20, 2024, 7:54 pm
+Rezdy booking status: Rezdy Booking
+User name: Dianne Niven
+User email: meganniven17@yahoo.com
+Table inserted_id: 227
+-------------------------

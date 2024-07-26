@@ -9,7 +9,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -29,7 +29,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -37,10 +37,10 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
         },
         {
             "key": "field_620ce9f49d0f3",
@@ -49,7 +49,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -97,6 +97,26 @@
                 "id": ""
             },
             "default_value": "Sustainable Tour",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6698f63899f47",
+            "label": "Sustainable Tour Text (For Mobile)",
+            "name": "tg_sustainable_tour_text_mobile",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -151,7 +171,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -159,10 +179,30 @@
                 "id": ""
             },
             "default_value": "£99",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
+        },
+        {
+            "key": "field_6661cb282b974",
+            "label": "Tour  From Price",
+            "name": "tour_from_price",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "€99",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_622ae6357bf22",
@@ -179,10 +219,10 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": ""
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_62d4f515d86ca",
@@ -201,26 +241,26 @@
             "choices": [
                 "BESTSELLER",
                 "OFFER",
-                "PROMOTION",
+                "LIMITED TIME OFFER",
                 "POPULAR",
-                "NEW"
+                "LIKELY TO SELL OUT"
             ],
             "default_value": false,
-            "allow_null": 1,
+            "return_format": "array",
             "multiple": 0,
+            "allow_null": 1,
             "ui": 1,
             "ajax": 1,
-            "return_format": "array",
             "placeholder": ""
         },
         {
-            "key": "field_6523d3cdef26c",
-            "label": "Description",
-            "name": "tg_description",
+            "key": "field_65fc4bcb87494",
+            "label": "Review code snippet",
+            "name": "review_code_snippet",
             "aria-label": "",
-            "type": "textarea",
+            "type": "text",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -229,367 +269,53 @@
             },
             "default_value": "",
             "maxlength": "",
-            "rows": "",
             "placeholder": "",
-            "new_lines": ""
+            "prepend": "",
+            "append": ""
         },
         {
-            "key": "field_65a75a028041d",
-            "label": "Tour Type",
-            "name": "tg_tour_type",
+            "key": "field_66053cce3f326",
+            "label": "Fixed review count",
+            "name": "fixed_review_count",
             "aria-label": "",
-            "type": "select",
+            "type": "number",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "DAYTOUR": "Day Tour",
-                "PRIVATE_TOUR": "Private Tour"
-            },
-            "default_value": "DAYTOUR",
-            "return_format": "value",
-            "multiple": 0,
-            "allow_null": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": ""
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
-            "key": "field_65321fe17c526",
-            "label": "Price Options",
-            "name": "tg_price_options",
+            "key": "field_660d35404887b",
+            "label": "Review rating",
+            "name": "review_rating",
             "aria-label": "",
-            "type": "repeater",
+            "type": "number",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
-            "pagination": 0,
-            "min": 1,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_65321ffd7c527",
-                    "label": "Price",
-                    "name": "price",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65321fe17c526"
-                },
-                {
-                    "key": "field_653220117c528",
-                    "label": "Label",
-                    "name": "label",
-                    "aria-label": "",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "UNIQUE_PRICE": "Everyone",
-                        "ADULT": "Adult",
-                        "CHILD": "Child",
-                        "INFANT": "Infant",
-                        "SENIOR": "Senior",
-                        "TEENAGER": "Teenager",
-                        "STUDENT": "Student",
-                        "CONCESSION": "Concession",
-                        "-": "----------",
-                        "FAMILY_OF_3": "Family of 3",
-                        "FAMILY_OF_4": "Family of 4",
-                        "FAMILY_OF_5": "Family of 5",
-                        "ONE_ADULT_2_CHILDREN": "1 Adult + 2 Children",
-                        "ONE_ADULT_3_CHILDREN": "1 Adult + 3 Children",
-                        "TWO_ADULTS_1_CHILD": "2 Adults + 1 Child",
-                        "TWO_ADULTS_2_CHILDREN": "2 Adults + 2 Children",
-                        "TWO_ADULTS_3_CHILDREN": "2 Adults + 3 Children",
-                        "---": "----------",
-                        "SINGLE": "Single",
-                        "DOUBLE": "Double",
-                        "TRIPLE": "Triple",
-                        "QUAD": "Quad",
-                        "----": "----------",
-                        "GROUP": "Group",
-                        "--": "----------",
-                        "CUSTOM": "Custom"
-                    },
-                    "default_value": "UNIQUE_PRICE",
-                    "return_format": "array",
-                    "multiple": 0,
-                    "allow_null": 0,
-                    "ui": 0,
-                    "ajax": 0,
-                    "placeholder": "",
-                    "parent_repeater": "field_65321fe17c526"
-                },
-                {
-                    "key": "field_658a648f9117a",
-                    "label": "Min",
-                    "name": "minQuantity",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_653220117c528",
-                                "operator": "==",
-                                "value": "GROUP"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": 0,
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65321fe17c526"
-                },
-                {
-                    "key": "field_658a64e29117b",
-                    "label": "Max",
-                    "name": "maxQuantity",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_653220117c528",
-                                "operator": "==",
-                                "value": "GROUP"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": 0,
-                    "min": 0,
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65321fe17c526"
-                },
-                {
-                    "key": "field_658a65d59117c",
-                    "label": "Price Group Type",
-                    "name": "priceGroupType",
-                    "aria-label": "",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_653220117c528",
-                                "operator": "==",
-                                "value": "GROUP"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "EACH": "Per Person",
-                        "TOTAL": "Total"
-                    },
-                    "default_value": "EACH",
-                    "return_format": "value",
-                    "multiple": 0,
-                    "allow_null": 0,
-                    "ui": 0,
-                    "ajax": 0,
-                    "placeholder": "",
-                    "parent_repeater": "field_65321fe17c526"
-                }
-            ]
-        },
-        {
-            "key": "field_65322c2964492",
-            "label": "Availability",
-            "name": "tg_availability",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "block",
-            "pagination": 0,
-            "min": 1,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_652927d925efe",
-                    "label": "All Day",
-                    "name": "all_day",
-                    "aria-label": "",
-                    "type": "true_false",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "message": "",
-                    "default_value": 0,
-                    "ui_on_text": "",
-                    "ui_off_text": "",
-                    "ui": 1,
-                    "parent_repeater": "field_65322c2964492"
-                },
-                {
-                    "key": "field_6529288325f01",
-                    "label": "Seats",
-                    "name": "seats",
-                    "aria-label": "",
-                    "type": "number",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "min": 0,
-                    "max": "",
-                    "placeholder": "",
-                    "step": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_65322c2964492"
-                },
-                {
-                    "key": "field_6529283a25eff",
-                    "label": "Session Date Local",
-                    "name": "session_date_local",
-                    "aria-label": "",
-                    "type": "date_picker",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "display_format": "d\/m\/Y",
-                    "return_format": "d\/m\/Y",
-                    "first_day": 1,
-                    "parent_repeater": "field_65322c2964492"
-                },
-                {
-                    "key": "field_65b72e22484e4",
-                    "label": "Start Time Local",
-                    "name": "start_time_local",
-                    "aria-label": "",
-                    "type": "time_picker",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_652927d925efe",
-                                "operator": "!=",
-                                "value": "1"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "display_format": "g:i a",
-                    "return_format": "g:i a",
-                    "parent_repeater": "field_65322c2964492"
-                },
-                {
-                    "key": "field_6529286425f00",
-                    "label": "End Time Local",
-                    "name": "end_time_local",
-                    "aria-label": "",
-                    "type": "time_picker",
-                    "instructions": "",
-                    "required": 1,
-                    "conditional_logic": [
-                        [
-                            {
-                                "field": "field_652927d925efe",
-                                "operator": "!=",
-                                "value": "1"
-                            }
-                        ]
-                    ],
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "display_format": "g:i a",
-                    "return_format": "g:i a",
-                    "parent_repeater": "field_65322c2964492"
-                }
-            ]
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -620,6 +346,34 @@
                 "operator": "==",
                 "value": "barcelona"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "lisbon"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "london"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "budapest"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "madrid"
+            }
         ]
     ],
     "menu_order": 0,
@@ -631,5 +385,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706707265
+    "modified": 1721300588
 }

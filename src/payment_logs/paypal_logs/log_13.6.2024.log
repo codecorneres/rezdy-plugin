@@ -1,0 +1,36 @@
+User: 158.47.255.246 - June 13, 2024, 10:32 am
+Attempt: Stripe payment started
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 212|PT4HQ1|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - June 13, 2024, 10:32 am
+Payment status: Sripe Payment completed
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 212
+-------------------------
+User: 158.47.255.246 - June 13, 2024, 10:32 am
+Rezdy booking status: Rezdy Booking
+User name: Test Alina
+User email: silina742@gmail.com
+Table inserted_id: 212
+-------------------------
+User: 5.102.26.10 - June 13, 2024, 12:40 pm
+Attempt: Paypal Payment started
+User name: Aaron  Palmer
+User email: europe4kidstours@gmail.com
+Table inserted_id: 213|P09QZB|website ( carpediemtours )
+-------------------------
+User: 5.102.26.10 - June 13, 2024, 12:40 pm
+Payment status: COMPLETED
+User name: Aaron  Palmer
+User email: europe4kidstours@gmail.com
+Table inserted_id: 213
+-------------------------
+User: 5.102.26.10 - June 13, 2024, 12:40 pm
+Rezdy booking status: CONFIRMED
+User name: Aaron  Palmer
+User email: europe4kidstours@gmail.com
+Table inserted_id: 213
+-------------------------

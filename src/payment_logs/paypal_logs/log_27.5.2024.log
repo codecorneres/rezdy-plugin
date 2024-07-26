@@ -1,0 +1,241 @@
+User: 61.247.227.239 - May 27, 2024, 3:48 am
+Attempt: Order created without payment methods
+User name: testing datalayer test
+User email: test@gmail.com
+Table inserted_id: 131|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 185.148.153.6 - May 27, 2024, 4:37 am
+Attempt: Stripe payment started
+User name: Keri Kwong
+User email: kerikwong@hotmail.com
+Table inserted_id: 132|PA5HVB|website ( www.carpediemtours )
+-------------------------
+User: 185.148.153.6 - May 27, 2024, 4:37 am
+Payment status: Sripe Payment completed
+User name: Keri Kwong
+User email: kerikwong@hotmail.com
+Table inserted_id: 132
+-------------------------
+User: 185.148.153.6 - May 27, 2024, 4:37 am
+Rezdy booking status: Rezdy Booking
+User name: Keri Kwong
+User email: kerikwong@hotmail.com
+Table inserted_id: 132
+-------------------------
+User: 61.247.227.239 - May 27, 2024, 4:45 am
+Attempt: Order created without payment methods
+User name: test test
+User email: test@gmail.com
+Table inserted_id: 133|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 102.213.93.43 - May 27, 2024, 7:01 am
+Attempt: Stripe payment started
+User name: Elisa  Zanolli
+User email: elisa@luxetribes.com
+Table inserted_id: 134|P6FFTT|website ( www.carpediemtours )
+-------------------------
+User: 102.213.93.43 - May 27, 2024, 7:01 am
+Payment status: Sripe Payment completed
+User name: Elisa  Zanolli
+User email: elisa@luxetribes.com
+Table inserted_id: 134
+-------------------------
+User: 102.213.93.43 - May 27, 2024, 7:01 am
+Rezdy booking status: Rezdy Booking
+User name: Elisa  Zanolli
+User email: elisa@luxetribes.com
+Table inserted_id: 134
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 8:47 am
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 135|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 8:48 am
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 135
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 8:48 am
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 135
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 8:49 am
+Attempt: Paypal Payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 136|PRBNX3|website ( www.carpediemtours )
+-------------------------
+User: 49.190.204.62 - May 27, 2024, 9:30 am
+Attempt: Paypal Payment started
+User name: Anna Gugliucciello
+User email: amgugliucciello@gmail.com
+Table inserted_id: 137|PFVZX0|website ( www.carpediemtours )
+-------------------------
+User: 49.190.204.62 - May 27, 2024, 9:31 am
+Payment status: COMPLETED
+User name: Anna Gugliucciello
+User email: amgugliucciello@gmail.com
+Table inserted_id: 137
+-------------------------
+User: 49.190.204.62 - May 27, 2024, 9:31 am
+Rezdy booking status: CONFIRMED
+User name: Anna Gugliucciello
+User email: amgugliucciello@gmail.com
+Table inserted_id: 137
+-------------------------
+User: 49.179.85.49 - May 27, 2024, 9:41 am
+Attempt: Stripe payment started
+User name: Pouria Baldari
+User email: pouria.baldari@gmail.com
+Table inserted_id: 138|PA5HVB|website ( www.carpediemtours )
+-------------------------
+User: 49.179.85.49 - May 27, 2024, 9:41 am
+Status: Stripe payment failed
+User name: Pouria Baldari
+User email: pouria.baldari@gmail.com
+Reason:Your card has insufficient funds.
+Table inserted_id: 138
+-------------------------
+User: 49.179.85.49 - May 27, 2024, 9:45 am
+Attempt: Stripe payment started
+User name: Pouria Baldari
+User email: pouria.baldari@gmail.com
+Table inserted_id: 139|PA5HVB|website ( www.carpediemtours )
+-------------------------
+User: 49.179.85.49 - May 27, 2024, 9:45 am
+Payment status: Sripe Payment completed
+User name: Pouria Baldari
+User email: pouria.baldari@gmail.com
+Table inserted_id: 139
+-------------------------
+User: 49.179.85.49 - May 27, 2024, 9:45 am
+Rezdy booking status: Rezdy Booking
+User name: Pouria Baldari
+User email: pouria.baldari@gmail.com
+Table inserted_id: 139
+-------------------------
+User: 61.247.227.239 - May 27, 2024, 10:45 am
+Attempt: Paypal Payment started
+User name: asd asd
+User email: test@gmail.com
+Table inserted_id: 140|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 11:20 am
+Attempt: Stripe payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 141|PT4HQ1|website ( www.carpediemtours )
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 11:20 am
+Payment status: Sripe Payment completed
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 141
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 11:20 am
+Rezdy booking status: Rezdy Booking
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 141
+-------------------------
+User: 90.240.148.203 - May 27, 2024, 11:24 am
+Attempt: Stripe payment started
+User name: Clare Edwards
+User email: clareed@aol.com
+Table inserted_id: 142|PZ8DNG|website ( www.carpediemtours )
+-------------------------
+User: 90.240.148.203 - May 27, 2024, 11:25 am
+Payment status: Sripe Payment completed
+User name: Clare Edwards
+User email: clareed@aol.com
+Table inserted_id: 142
+-------------------------
+User: 90.240.148.203 - May 27, 2024, 11:25 am
+Rezdy booking status: Rezdy Booking
+User name: Clare Edwards
+User email: clareed@aol.com
+Table inserted_id: 142
+-------------------------
+User: 158.47.255.246 - May 27, 2024, 2:41 pm
+Attempt: Paypal Payment started
+User name: test Alina
+User email: silina742@gmail.com
+Table inserted_id: 143|PRBNX3|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.54 - May 27, 2024, 4:46 pm
+Attempt: Stripe payment started
+User name: Sarah Ottewell
+User email: slottewell@gmail.com
+Table inserted_id: 144|PQYU0A|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.54 - May 27, 2024, 4:46 pm
+Payment status: Sripe Payment completed
+User name: Sarah Ottewell
+User email: slottewell@gmail.com
+Table inserted_id: 144
+-------------------------
+User: 206.0.75.54 - May 27, 2024, 4:46 pm
+Rezdy booking status: Rezdy Booking
+User name: Sarah Ottewell
+User email: slottewell@gmail.com
+Table inserted_id: 144
+-------------------------
+User: 37.168.47.141 - May 27, 2024, 6:46 pm
+Attempt: Paypal Payment started
+User name: Sibylle de Marolles
+User email: sibylle.demarolles@gmail.com
+Table inserted_id: 145|PFVZX0|website ( www.carpediemtours )
+-------------------------
+User: 37.168.47.141 - May 27, 2024, 6:51 pm
+Payment status: COMPLETED
+User name: Sibylle de Marolles
+User email: sibylle.demarolles@gmail.com
+Table inserted_id: 145
+-------------------------
+User: 37.168.47.141 - May 27, 2024, 6:51 pm
+Rezdy booking status: CONFIRMED
+User name: Sibylle de Marolles
+User email: sibylle.demarolles@gmail.com
+Table inserted_id: 145
+-------------------------
+User: 78.211.69.96 - May 27, 2024, 8:48 pm
+Attempt: Stripe payment started
+User name: Christina Vargas
+User email: christinavocelotl@gmail.com
+Table inserted_id: 146|PRQZ0S|website ( www.carpediemtours )
+-------------------------
+User: 78.211.69.96 - May 27, 2024, 8:48 pm
+Payment status: Sripe Payment completed
+User name: Christina Vargas
+User email: christinavocelotl@gmail.com
+Table inserted_id: 146
+-------------------------
+User: 78.211.69.96 - May 27, 2024, 8:48 pm
+Rezdy booking status: Rezdy Booking
+User name: Christina Vargas
+User email: christinavocelotl@gmail.com
+Table inserted_id: 146
+-------------------------
+User: 206.0.75.25 - May 27, 2024, 8:52 pm
+Attempt: Stripe payment started
+User name: Brandon Smith
+User email: brandon.r.smith10@gmail.com
+Table inserted_id: 147|P94G3X|website ( www.carpediemtours )
+-------------------------
+User: 206.0.75.25 - May 27, 2024, 8:52 pm
+Payment status: Sripe Payment completed
+User name: Brandon Smith
+User email: brandon.r.smith10@gmail.com
+Table inserted_id: 147
+-------------------------
+User: 206.0.75.25 - May 27, 2024, 8:52 pm
+Rezdy booking status: Rezdy Booking
+User name: Brandon Smith
+User email: brandon.r.smith10@gmail.com
+Table inserted_id: 147
+-------------------------

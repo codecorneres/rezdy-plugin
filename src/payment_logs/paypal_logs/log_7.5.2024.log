@@ -1,0 +1,60 @@
+User: 61.247.227.239 - May 7, 2024, 7:01 am
+Attempt: Payment started
+User name: asda asdad
+User email: test@gmail.com
+Table inserted_id: 10|P6X6F9|website ( www.carpediemtours )
+-------------------------
+User: 78.159.193.162 - May 7, 2024, 3:57 pm
+Attempt: Stripe payment started
+User name: Timothy  Matsay
+User email: timothy.matsay@gmail.com
+Table inserted_id: 11|PRQZ0S|website ( www.carpediemtours )
+-------------------------
+User: 78.159.193.162 - May 7, 2024, 3:57 pm
+Payment status: Sripe Payment completed
+User name: Timothy  Matsay
+User email: timothy.matsay@gmail.com
+Table inserted_id: 11
+-------------------------
+User: 78.159.193.162 - May 7, 2024, 3:57 pm
+Rezdy booking status: Rezdy Booking
+User name: Timothy  Matsay
+User email: timothy.matsay@gmail.com
+Table inserted_id: 11
+-------------------------
+User: 2a09:bac2:41f9:16a0::241:35 - May 7, 2024, 8:18 pm
+Attempt: Stripe payment started
+User name: Vanessa Joseph
+User email: vanessajoseph688@gmail.com
+Table inserted_id: 12|PEK6W7|website ( www.carpediemtours )
+-------------------------
+User: 2a09:bac2:41f9:16a0::241:35 - May 7, 2024, 8:18 pm
+Payment status: Sripe Payment completed
+User name: Vanessa Joseph
+User email: vanessajoseph688@gmail.com
+Table inserted_id: 12
+-------------------------
+User: 2a09:bac2:41f9:16a0::241:35 - May 7, 2024, 8:18 pm
+Rezdy booking status: Rezdy Booking
+User name: Vanessa Joseph
+User email: vanessajoseph688@gmail.com
+Table inserted_id: 12
+-------------------------
+User: 2603:9000:5b00:4cfc:315b:1671:8384:effc - May 7, 2024, 10:20 pm
+Attempt: Paypal Payment started
+User name: Angelina Oliva
+User email: angelinafoliva@gmail.com
+Table inserted_id: 13|PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 2603:9000:5b00:4cfc:315b:1671:8384:effc - May 7, 2024, 10:20 pm
+Payment status: COMPLETED
+User name: Angelina Oliva
+User email: angelinafoliva@gmail.com
+Table inserted_id: 13
+-------------------------
+User: 2603:9000:5b00:4cfc:315b:1671:8384:effc - May 7, 2024, 10:20 pm
+Rezdy booking status: CONFIRMED
+User name: Angelina Oliva
+User email: angelinafoliva@gmail.com
+Table inserted_id: 13
+-------------------------

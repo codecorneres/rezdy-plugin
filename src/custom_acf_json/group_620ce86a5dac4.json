@@ -9,7 +9,7 @@
             "aria-label": "",
             "type": "gallery",
             "instructions": "",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -17,10 +17,8 @@
                 "id": ""
             },
             "return_format": "url",
-            "preview_size": "medium",
-            "insert": "append",
             "library": "all",
-            "min": 2,
+            "min": 0,
             "max": "",
             "min_width": "",
             "min_height": "",
@@ -28,7 +26,9 @@
             "max_width": "",
             "max_height": "",
             "max_size": "",
-            "mime_types": ""
+            "mime_types": "",
+            "insert": "append",
+            "preview_size": "medium"
         }
     ],
     "location": [
@@ -59,6 +59,34 @@
                 "operator": "==",
                 "value": "barcelona"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "lisbon"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "london"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "budapest"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "madrid"
+            }
         ]
     ],
     "menu_order": 0,
@@ -70,5 +98,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1706707488
+    "modified": 1715939928
 }

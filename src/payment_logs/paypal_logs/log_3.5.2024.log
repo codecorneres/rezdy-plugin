@@ -1,0 +1,48 @@
+User: 50.159.171.50 - May 3, 2024, 1:57 am
+Attempt: Payment started
+User name: Jennifer Scharn
+User email: scharnj@live.com
+Table inserted_id: 5|PW6XPL|website ( www.carpediemtours )
+-------------------------
+User: 50.159.171.50 - May 3, 2024, 1:57 am
+Payment status: COMPLETED
+User name: Jennifer Scharn
+User email: scharnj@live.com
+Table inserted_id: 5
+-------------------------
+User: 50.159.171.50 - May 3, 2024, 1:57 am
+Rezdy booking status: CONFIRMED
+User name: Jennifer Scharn
+User email: scharnj@live.com
+Table inserted_id: 5
+-------------------------
+User: 61.247.227.239 - May 3, 2024, 6:55 am
+Attempt: Payment started
+User name: Jshs Jsjs
+User email: test@djsj.co
+Table inserted_id: 6|PCWGJR, PCWGJR|website ( www.carpediemtours )
+-------------------------
+User: 2001:b07:a5a:66ab:816a:b1ac:ad12:8af - May 3, 2024, 1:16 pm
+Attempt: Payment started
+User name: Carine Chalmet
+User email: chalmetcarine@gmail.com
+Table inserted_id: 7|PEK6W7|website ( www.carpediemtours )
+-------------------------
+User: 2001:b07:a5a:66ab:816a:b1ac:ad12:8af - May 3, 2024, 1:18 pm
+Payment status: Error: UNPROCESSABLE_ENTITY: The requested action could not be performed, semantically incorrect, or failed business validation.
+User name: Carine Chalmet
+User email: chalmetcarine@gmail.com
+Table inserted_id: 7
+-------------------------
+User: 93.35.188.134 - May 3, 2024, 1:30 pm
+Payment status: COMPLETED
+User name: Carine Chalmet
+User email: chalmetcarine@gmail.com
+Table inserted_id: 7
+-------------------------
+User: 93.35.188.134 - May 3, 2024, 1:30 pm
+Rezdy booking status: CONFIRMED
+User name: Carine Chalmet
+User email: chalmetcarine@gmail.com
+Table inserted_id: 7
+-------------------------

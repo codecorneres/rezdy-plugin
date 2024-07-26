@@ -4,7 +4,7 @@ namespace CC_RezdyAPI\Rezdy\Services;
 
 use CC_RezdyAPI\Rezdy\Requests\Product;
 use CC_RezdyAPI\Rezdy\Util\Config;
-
+use CC_RezdyAPI\App;
 use CC_RezdyAPI\Rezdy\Requests\ProductUpdate;
 
 use CC_RezdyAPI\Rezdy\Responses\ResponseStandard;
@@ -72,8 +72,20 @@ class ProductServices extends BaseService
     {
     }
 
-    public function search()
+    public function search(string $productName)
     {
+        $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.product_search') . '?search=' . urlencode($productName);
+        //App::custom_logs($baseUrl);
+        try {
+
+            $response = parent::sendRequestWithBody('GET', $baseUrl);
+            //App::custom_logs($response);
+        } catch (TransferException $e) {
+
+            return $this->returnExceptionAsErrors($e);
+        }
+
+        return new ResponseStandard($response->getBody(), 'product');
     }
 
     public function searchMarketplace()
