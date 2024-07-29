@@ -22,6 +22,7 @@ class App
     const DB_VERSION_OPTION = 'cc:db_version';
     const SETTINGS_TABLE = 'cc_settings';
     const ALLOWED_POST_TYPE = ['rome', 'florence', 'barcelona'];
+   
 
     public function __construct(string $plugin_file)
     {
