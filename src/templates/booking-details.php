@@ -688,8 +688,6 @@ function getGroupValue($value)
         env: 'demo', // Setup which Airwallex env('staging' | 'demo' | 'prod') to integrate with
         origin: window.location.origin, // Setup your event target to receive the browser events message
     });
-    // var airwallexClientID = "4BWsFG-ORAmcGRAHvYBfzw";
-    // var airwallexKey = "";
 
     const airwallexCard = Airwallex.createElement('card');
 
@@ -1560,7 +1558,7 @@ function getGroupValue($value)
             Airwallex.confirmPaymentIntent({
                 element: airwallexCard, // Provide Card element
                 intent_id: '', // Payment Intent ID
-                client_secret: '4BWsFG-ORAmcGRAHvYBfzw', // Client Secret
+                client_secret: '', // Client Secret
             }).then((response) => {
                 
                 window.alert(JSON.stringify(response));
