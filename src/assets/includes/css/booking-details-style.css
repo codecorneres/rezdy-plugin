@@ -944,6 +944,13 @@ input[type="radio"]:before {
   height: 40px;
   line-height: inherit;
 }
+.checkout-details .checkout .airwallexElement.AirwallexElement--complete{
+  border-bottom-color: #62ba37;
+}
+.checkout-details .checkout .airwallexElement.AirwallexElement--complete + .input-addon::before{
+  background-image: url("../../images/check-bold-green.svg");
+  background-size: 9px;
+}
 .checkout-details .checkout .airwallexElement iframe{
   position: relative;
   top: 9px;

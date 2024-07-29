@@ -385,7 +385,7 @@ function getGroupValue($value)
                                 <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>" alt=""> Secure and Encrypted Payment
                             </label>
                             <div class="card-detail-wrapper">
-                                <div class="accepted-card-list">
+                                <!-- <div class="accepted-card-list">
                                     <div class="title">
                                         <h5 class="m-0">We Accept:</h5>
                                     </div>
@@ -393,32 +393,32 @@ function getGroupValue($value)
                                         <ul class="m-0 p-0">
                                             <li>
                                                 <span class="pay-card card-visa">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/visa.svg'; ?>" alt="">
+                                                    <img src="< ?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/visa.svg'; ?>" alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-master">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/master.svg'; ?>" alt="">
+                                                    <img src="< ?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/master.svg'; ?>" alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-american">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/amex.svg'; ?>" alt="">
+                                                    <img src="< ?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/amex.svg'; ?>" alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-diners">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/diners.svg'; ?>" alt="">
+                                                    <img src="< ?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/diners.svg'; ?>" alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-discover">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/discover.svg'; ?>" alt="">
+                                                    <img src="< ?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/discover.svg'; ?>" alt="">
                                                 </span>
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="input-icon">
                                      <!-- Add empty container for the card input element -->
                                     <div id="airwallex_element" class="airwallexElement">
@@ -430,7 +430,7 @@ function getGroupValue($value)
                             </div>
 
                             <!-- Used to display form errors. -->
-                            <div id="card-errors" role="alert"></div>
+                            <div id="airwallex-card-errors" role="alert"></div>
                             
                         </div>
                     </div>
@@ -628,13 +628,7 @@ function getGroupValue($value)
         <!-- <input type="hidden" name="action" value="booking_checkout"> -->
     </form>
 </div>
-<style>
-    #dropIn {
-      width: 540px;
-      /* Example: to hide element before it is loaded */
-      display: none;
-    }
-  </style>
+
 <?php get_footer(); ?>
 <!-- intl-tel-input CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
@@ -690,7 +684,13 @@ function getGroupValue($value)
     }
 
     // ===== Airwallex Element ======
-    
+    Airwallex.init({
+        env: 'demo', // Setup which Airwallex env('staging' | 'demo' | 'prod') to integrate with
+        origin: window.location.origin, // Setup your event target to receive the browser events message
+    });
+    // var airwallexClientID = "4BWsFG-ORAmcGRAHvYBfzw";
+    // var airwallexKey = "";
+
     const airwallexCard = Airwallex.createElement('card');
 
     const airwallexElement = airwallexCard.mount("airwallex_element");
@@ -962,21 +962,7 @@ function getGroupValue($value)
 
     // ======== Airwallex ===== 
 
-    // document.getElementById('airwallex_submit_btn').addEventListener('click', () => {
-    //     Airwallex.confirmPaymentIntent({
-    //         element: cardNumber, // Provide the cardNumber element for Split Card, card element for Card
-    //         id: 'replace-with-your-intent-id', // Payment Intent ID
-    //         client_secret: 'replace-with-your-client-secret', // Client Secret
-    //     }).then((response) => {
-    //         // STEP #6b: Listen to the payment confirmation response
-    //         /* Handle response */
-    //         window.alert(JSON.stringify(response));
-    //     });
-    // });
-
     function airwallexPaymentCard(element){
-        console.log("airwallex clicked");
-        var target = element;
         
         var mathodType = '';
 
@@ -1007,30 +993,39 @@ function getGroupValue($value)
         var target_div_stripe = document.getElementsByClassName('stripe_card');
         var target_div_airwallex = document.getElementsByClassName('airwallex_card');
 
-
-
         if (target_div_airwallex[0].style.display == 'none' || target_div_airwallex[0].style.display === '') {
             target_div_airwallex[0].style.display = 'block';
             target_div_stripe[0].style.display = 'none';
             target_div_PayPal[0].style.display = 'none';
-            target_div_airwallex.addClass('selected').attr('checked', true);
 
-               // Handle real-time validation errors
-               airwallexCard.addEventListener('change', function(event) {
-                var displayError = document.getElementById('card-errors');
-                if (event.error) {
-                    displayError.textContent = event.error.message;
-                    submit_button.disabled = true;
-                    jQuery('.btn-payment').addClass('btn-invalid');
-                    paybutton_require_textElement.textContent = 'Please enter all required fields';
-                    var status = false;
-                    cardFill = false;
-                    updateProgressBar(status);
-                } else if (event.complete == true) {
+            // Handle real-time validation errors
+            var dom = airwallexCard.domElement;
+            dom.addEventListener('onChange', (e) => {
+                
+                var displayError = document.getElementById('airwallex-card-errors');
+                //console.log(e);
+                // if (e.detail.error) {
+                //     //console.log(e.detail);
+                //     displayError.textContent = e.detail.error.message;
+                //     submit_button.disabled = true;
+                //     jQuery('.btn-payment').addClass('btn-invalid');
+                //     paybutton_require_textElement.textContent = 'Please enter all required fields';
+                //     jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
+                //     var status = false;
+                //     cardFill = false;
+                //     updateProgressBar(status);
+                if (e.detail.complete === true) {   
+                //} else if (e.detail.complete === true) {
+                   
+                    jQuery('.airwallexElement').addClass('AirwallexElement--complete');
                     displayError.textContent = '';
                     cardFill = true;
                     fieldsValidation();
-                } else if (event.complete == false) {
+
+                } else if (e.detail.complete === false) {
+                    
+                    jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
+
                     displayError.textContent = 'Card is not completed Yet.';
                     submit_button.disabled = true;
                     jQuery('.btn-payment').addClass('btn-invalid');
@@ -1038,13 +1033,19 @@ function getGroupValue($value)
                     var status = false;
                     cardFill = false;
                     updateProgressBar(status);
+        
                 } else {
-                    displayError.textContent = '';
-                    jQuery('.btn-payment').removeClass('btn-invalid');
-                    submit_button.disabled = false;
-                    cardFill = true;
+                   
+                    jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
+                    displayError.textContent = e.detail.error.message;
+                    submit_button.disabled = true;
+                    jQuery('.btn-payment').addClass('btn-invalid');
+                    paybutton_require_textElement.textContent = 'Please enter all required fields';
+                    var status = false;
+                    cardFill = false;
+                    updateProgressBar(status);
+                    
                 }
-
             });
 
             if (cardFill == true) {
@@ -1548,8 +1549,52 @@ function getGroupValue($value)
                 .catch(function(error) {
                     console.log(error)
                 });
+            
+        // ====== airwallex create booking ======
 
-        } else {
+        } else if (mathodType == 'airwallex'){ 
+
+            console.log(mathodType);
+            //submit_button.disabled = true;
+            //jQuery('.btn-payment').addClass('btn-invalid');
+            Airwallex.confirmPaymentIntent({
+                element: airwallexCard, // Provide Card element
+                intent_id: '', // Payment Intent ID
+                client_secret: '4BWsFG-ORAmcGRAHvYBfzw', // Client Secret
+            }).then((response) => {
+                
+                window.alert(JSON.stringify(response));
+            })
+            .catch((response) => {
+                console.log('There was an error', response);
+                //console.log(response.message);
+          });
+
+            domElement.addEventListener('onReady', (event) => {
+                /*
+                ... Handle event
+                */
+                window.alert(event.detail);
+            });
+
+            // STEP #7: Add an event listener to handle events when the payment is successful.
+            domElement.addEventListener('onSuccess', (event) => {
+                /*
+                ... Handle event on success
+                */
+                window.alert(event.detail);
+            });
+
+            // STEP #8: Add an event listener to handle events when the payment has failed.
+            domElement.addEventListener('onError', (event) => {
+                /*
+                ... Handle event on error
+                */
+                console.log(event.detail);
+            });
+        
+        // ====== end airwallex booking ======
+        }else {
 
             paybutton_require_textElement.textContent = 'Processing..';
             submit_button.disabled = true;
