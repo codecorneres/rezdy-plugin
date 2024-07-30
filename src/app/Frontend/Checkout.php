@@ -28,8 +28,10 @@ class Checkout
         add_action('wp_ajax_edit_booking', [$this, 'edit_booking_callback']);
         add_action('wp_ajax_nopriv_edit_booking', [$this, 'edit_booking_callback']);
 
+        //========= airwallex =====
         add_action('wp_ajax_airwallex_auth_token', [$this, 'airwallex_auth_token']);
         add_action('wp_ajax_nopriv_airwallex_auth_token',[$this, 'airwallex_auth_token']);
+        // =================
     }
 
     function quote_booking_checkout_callback()

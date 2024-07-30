@@ -1693,8 +1693,10 @@ class BookingDetails extends Screen
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response = json_decode($response, true);
-        wp_send_json(array('response' => true, 'token' => $response));
+        $responseArray = json_decode($response, true);
+        echo '<pre>';
+        print_r($responseArray);
+        //wp_send_json(array('response' => true, 'token' => $response));
         exit();
     }
     

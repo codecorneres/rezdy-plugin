@@ -1367,36 +1367,6 @@ function getGroupValue($value)
 
     }
 
-    // ====== airwallex =====
-    function airwallexTokenResponse(api_key,client_id){
-             
-             $.ajax({
-                 url: 'https://api-demo.airwallex.com/api/v1/authentication/login',
-                 method: 'POST',
-                 headers: {
-                 'Content-Type': 'application/json',
-                 'x-client-id': client_id,
-                 'x-api-key': api_key
-                 },
-                 data: JSON.stringify({
-                 username: 'alina@carpediemtours.com',
-                 password: '8UQRX37bcAwEYei'
-                 }),
-                 success: function(data) {
-                     //console.log('Success:', data);
-                     var airwallexToken = data.token;
-                     //console.log(airwallexToken);
-                     return airwallexToken;
-                 
-                 },
-                 error: function(error) {
-                 console.error('Error:', error);
-                 // Handle the error here
-                 }
-             });
-         }
-    // =======================
-
     function create_booking() {
 
         var submit_button = document.getElementById('create-booking');
@@ -1608,7 +1578,7 @@ function getGroupValue($value)
                     body: formData,
                 })
                 .then(function(token) {
-                    return token.json();
+                    return token.text();
                 })
                 .then(function(data) {
                     console.log(data);
