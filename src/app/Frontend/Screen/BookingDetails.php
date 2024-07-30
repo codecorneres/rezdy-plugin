@@ -1662,4 +1662,41 @@ class BookingDetails extends Screen
         }
         return $randomString;
     }
+    // ======= airwallex ===============
+ 
+    public function airwallex_auth_token() {
+
+        
+
+
+        $api_key = $_POST['api_key'];
+        $client_id = $_POST['client_id'];
+        //print_r($_POST['api_key']);
+        
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api-demo.airwallex.com/api/v1/authentication/login',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_HTTPHEADER => array(
+            'x-api-key: '.$api_key.'',
+            'x-client-id: '.$client_id.''
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response = json_decode($response, true);
+        wp_send_json(array('response' => true, 'token' => $response));
+        exit();
+    }
+    
+    // ======= end =========
 }

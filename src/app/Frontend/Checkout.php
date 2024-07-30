@@ -27,6 +27,9 @@ class Checkout
 
         add_action('wp_ajax_edit_booking', [$this, 'edit_booking_callback']);
         add_action('wp_ajax_nopriv_edit_booking', [$this, 'edit_booking_callback']);
+
+        add_action('wp_ajax_airwallex_auth_token', [$this, 'airwallex_auth_token']);
+        add_action('wp_ajax_nopriv_airwallex_auth_token',[$this, 'airwallex_auth_token']);
     }
 
     function quote_booking_checkout_callback()
@@ -38,6 +41,12 @@ class Checkout
     {
         return $this->callPageScreenMethod('booking_checkout_callback');
     }
+    //========= airwallex =====
+    function airwallex_auth_token()
+    {
+        return $this->callPageScreenMethod('airwallex_auth_token');
+    }
+    // =================
     function delete_db_sessions_callback()
     {
         return $this->callPageScreenMethod('delete_db_sessions_callback');
@@ -70,7 +79,7 @@ class Checkout
     {
         return $this->callPageScreenMethod('return_render');
     }
-
+    
     private function callPageScreenMethod(string $method)
     {
         return call_user_func([$this->getFormObject(BookingDetails::class), $method]);
@@ -81,4 +90,5 @@ class Checkout
 
         return $this->formContext[$class] ?? ($this->formContext[$class] = new $class($this->checkoutContext));
     }
+
 }

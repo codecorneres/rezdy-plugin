@@ -291,6 +291,7 @@ function getGroupValue($value)
                         <!-- form-data -->
                         <fieldset class="Billing_Contact payment-third">
                             <div class="method_contents" id="method_contents_ID">
+                                <?php if(!(get_option('cc_stripe_disable') == 'yes')): ?>
                                 <div class="first">
                                     <input type="radio" id="stripe" name="radio" class="stripe_credit_card" onclick="stripeCreditCard(this)">
                                     <label for="paymentOption" class="mls stripe_credit_card" onclick="stripeCreditCard(this)">
@@ -303,6 +304,7 @@ function getGroupValue($value)
                                         <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
                                     </label>
                                 </div>
+                                <?php endif; ?>
                                 <div class="first">
                                     <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
                                     <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
@@ -630,6 +632,7 @@ function getGroupValue($value)
 </div>
 
 <?php get_footer(); ?>
+
 <!-- intl-tel-input CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <!-- intl-tel-input JS -->
@@ -684,6 +687,9 @@ function getGroupValue($value)
     }
 
     // ===== Airwallex Element ======
+    var airwallexApiKey = "<?php echo get_option('cc_airwallex_secret_api_key'); ?>";
+    var airwallexClientID = "<?php echo get_option('cc_airwallex_client_id'); ?>";
+
     Airwallex.init({
         env: 'demo', // Setup which Airwallex env('staging' | 'demo' | 'prod') to integrate with
         origin: window.location.origin, // Setup your event target to receive the browser events message
@@ -692,7 +698,7 @@ function getGroupValue($value)
     const airwallexCard = Airwallex.createElement('card');
 
     const airwallexElement = airwallexCard.mount("airwallex_element");
-    
+        
     // ======= End Airwallex Card Element =============
     
 
@@ -1361,6 +1367,36 @@ function getGroupValue($value)
 
     }
 
+    // ====== airwallex =====
+    function airwallexTokenResponse(api_key,client_id){
+             
+             $.ajax({
+                 url: 'https://api-demo.airwallex.com/api/v1/authentication/login',
+                 method: 'POST',
+                 headers: {
+                 'Content-Type': 'application/json',
+                 'x-client-id': client_id,
+                 'x-api-key': api_key
+                 },
+                 data: JSON.stringify({
+                 username: 'alina@carpediemtours.com',
+                 password: '8UQRX37bcAwEYei'
+                 }),
+                 success: function(data) {
+                     //console.log('Success:', data);
+                     var airwallexToken = data.token;
+                     //console.log(airwallexToken);
+                     return airwallexToken;
+                 
+                 },
+                 error: function(error) {
+                 console.error('Error:', error);
+                 // Handle the error here
+                 }
+             });
+         }
+    // =======================
+
     function create_booking() {
 
         var submit_button = document.getElementById('create-booking');
@@ -1553,43 +1589,53 @@ function getGroupValue($value)
         } else if (mathodType == 'airwallex'){ 
 
             console.log(mathodType);
+
+            var method = 'Airwallex';
+     
+            var data = {
+                action: 'airwallex_auth_token',
+                api_key: airwallexApiKey,
+                client_id: airwallexClientID
+            };
+
+            var formData = new FormData();
+            for (var key in data) {
+                formData.append(key, data[key]);
+            }
+            
+            var token = fetch(ajax_object.ajax_url, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(function(token) {
+                    return token.json();
+                })
+                .then(function(data) {
+                    console.log(data);
+                })
+                .catch(function(error) {
+                    console.log(error)
+                });
+                
+                //JSON.stringify(token)
+
             //submit_button.disabled = true;
             //jQuery('.btn-payment').addClass('btn-invalid');
-            Airwallex.confirmPaymentIntent({
-                element: airwallexCard, // Provide Card element
-                intent_id: '', // Payment Intent ID
-                client_secret: '', // Client Secret
-            }).then((response) => {
+
+        //     Airwallex.confirmPaymentIntent({
+        //         element: airwallexCard, // Provide Card element
+        //         intent_id: '', // Payment Intent ID
+        //         client_secret: airwallexClientID, // Client Secret
+        //     }).then((response) => {
                 
-                window.alert(JSON.stringify(response));
-            })
-            .catch((response) => {
-                console.log('There was an error', response);
-                //console.log(response.message);
-          });
+        //         //window.alert(JSON.stringify(response));
+        //         console.log(JSON.stringify(response));
+        //     })
+        //     .catch((response) => {
+        //         console.log('There was an error', response);
+        //         //console.log(response.message);
+        //   });
 
-            domElement.addEventListener('onReady', (event) => {
-                /*
-                ... Handle event
-                */
-                window.alert(event.detail);
-            });
-
-            // STEP #7: Add an event listener to handle events when the payment is successful.
-            domElement.addEventListener('onSuccess', (event) => {
-                /*
-                ... Handle event on success
-                */
-                window.alert(event.detail);
-            });
-
-            // STEP #8: Add an event listener to handle events when the payment has failed.
-            domElement.addEventListener('onError', (event) => {
-                /*
-                ... Handle event on error
-                */
-                console.log(event.detail);
-            });
         
         // ====== end airwallex booking ======
         }else {

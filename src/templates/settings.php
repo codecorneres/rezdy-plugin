@@ -63,6 +63,10 @@
                         <th scope="row"><label for="stripe_secret_api_key"><?php _e('Stripe Secret Key', 'cc-rezdy-api'); ?></label></th>
                         <td><input name="stripe_secret_api_key" value="<?php echo esc_attr($stripe_secret_api_key); ?>" type="text" id="stripe_secret_api_key" class="regular-text"></td>
                     </tr>
+                    <tr>
+                        <th scope="row"><label for="stripe_disable"><?php _e('Stripe Disable', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="stripe_disable" value="yes" type="checkbox" id="stripe_disable" class="regular-text" <?php if (isset($stripe_disable) && $stripe_disable == 'yes') echo "checked='checked'"; ?>></td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -87,7 +91,27 @@
                     </tr>
                 </tbody>
             </table>
+            <!-- ========== airwallex ======== -->
+            <h3><?php _e('Airwallex Settings', 'cc-rezdy-api'); ?></h3>
+            <p><a href="https://airwallex.com/app/login" target="_blank">Airwallex Login</a></p>
 
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="airwallex_live"><?php _e('Airwallex Live Account', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="airwallex_live" value="yes" type="checkbox" id="airwallex_live" class="regular-text" <?php if (isset($airwallex_live) && $airwallex_live == 'yes') echo "checked='checked'"; ?>></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="airwallex_client_id"><?php _e('Airwallex Client ID', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="airwallex_client_id" value="<?php echo esc_attr($airwallex_client_id); ?>" type="text" id="airwallex_client_id" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="airwallex_secret_api_key"><?php _e('Airwallex Secret Key', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="airwallex_secret_api_key" value="<?php echo esc_attr($airwallex_secret_api_key); ?>" type="text" id="airwallex_secret_api_key" class="regular-text"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- ============= end ============ -->
 
             <h3><?php _e('URL Settings', 'cc-rezdy-api'); ?></h3>
             <table class="form-table" role="presentation">
