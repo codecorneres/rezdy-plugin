@@ -1005,21 +1005,10 @@ function getGroupValue($value)
             // Handle real-time validation errors
             var dom = airwallexCard.domElement;
             dom.addEventListener('onChange', (e) => {
-                
+                //console.log(e.detail);
                 var displayError = document.getElementById('airwallex-card-errors');
-                //console.log(e);
-                // if (e.detail.error) {
-                //     //console.log(e.detail);
-                //     displayError.textContent = e.detail.error.message;
-                //     submit_button.disabled = true;
-                //     jQuery('.btn-payment').addClass('btn-invalid');
-                //     paybutton_require_textElement.textContent = 'Please enter all required fields';
-                //     jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
-                //     var status = false;
-                //     cardFill = false;
-                //     updateProgressBar(status);
+       
                 if (e.detail.complete === true) {   
-                //} else if (e.detail.complete === true) {
                    
                     jQuery('.airwallexElement').addClass('AirwallexElement--complete');
                     displayError.textContent = '';
@@ -1558,7 +1547,7 @@ function getGroupValue($value)
 
         } else if (mathodType == 'airwallex'){ 
 
-            console.log(mathodType);
+            //console.log(mathodType);
 
             var method = 'Airwallex';
      
@@ -1578,19 +1567,78 @@ function getGroupValue($value)
                     body: formData,
                 })
                 .then(function(token) {
-                    return token.text();
+                    return token.json();
                 })
                 .then(function(data) {
-                    console.log(data);
+                    //console.log(data);
+                    if(data.response == true){
+                        //console.log(data.token);
+                        var airwallexToken = data.token;
+
+                        if(airwallexToken != ''){
+                            //console.log("Token: "+airwallexToken);
+                            paybutton_require_textElement.textContent = 'Processing..';
+                            // submit_button.disabled = true;
+                            // jQuery('.btn-payment').addClass('btn-invalid');
+
+                            var form = document.querySelector('.booking-checkout');
+                            var pricespan = document.querySelector('.update-on-order-total-change');
+                            var priceValue = pricespan.getAttribute('data-price-value');
+
+                            var selected_flag_div = document.querySelector('.iti__selected-flag');
+                            var title_text = selected_flag_div.getAttribute('title');
+                            var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+
+                            var currencyCode = document.querySelector('.price-label').innerText;                            
+
+                            var paymentIntentsData = {
+                                action: 'get_payment_intents_id',
+                                token: airwallexToken,
+                                amount: priceValue,
+                                currency: currencyCode
+                                
+                            };
+                            console.log(paymentIntentsData);
+
+                            var formIntentsData = new FormData();
+
+                            for (var key in paymentIntentsData) {
+                                formIntentsData.append(key, paymentIntentsData[key]);
+                            }
+                            var intentID = fetch(ajax_object.ajax_url, {
+                                    method: 'POST',
+                                    body: formIntentsData,
+                                })
+                                .then(function(intentID) {
+                                    return intentID.text();
+                                })
+                                .then(function(paymentIntentsData) {
+                                    console.log(paymentIntentsData);
+                                })
+                                .catch(function(error) {
+                                    console.log(error);
+                                });
+                    
+                            
+                        }
+                    }else{
+                        console.log(data);
+                    }
+
                 })
                 .catch(function(error) {
-                    console.log(error)
+
+                    console.log(error);
+
+                    // var errorElement = document.getElementById('card-errors');
+                    // errorElement.textContent = error.message;
+
+                    // // Re-enable the submit button
+                    // submit_button.disabled = false;
+                    // jQuery('.btn-payment').removeClass('btn-invalid');
+
                 });
                 
-                //JSON.stringify(token)
-
-            //submit_button.disabled = true;
-            //jQuery('.btn-payment').addClass('btn-invalid');
 
         //     Airwallex.confirmPaymentIntent({
         //         element: airwallexCard, // Provide Card element

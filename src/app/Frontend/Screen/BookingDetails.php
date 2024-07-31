@@ -1666,37 +1666,88 @@ class BookingDetails extends Screen
  
     public function airwallex_auth_token() {
 
-        
-
-
         $api_key = $_POST['api_key'];
         $client_id = $_POST['client_id'];
-        //print_r($_POST['api_key']);
+        $airwallex_api_base_url = get_option('cc_airwallex_api_url');
         
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api-demo.airwallex.com/api/v1/authentication/login',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_HTTPHEADER => array(
-            'x-api-key: '.$api_key.'',
-            'x-client-id: '.$client_id.''
-        ),
-        ));
+        $url = $airwallex_api_base_url."authentication/login";
+      
+        $data = array("src" => "source", "text" => "test curl request");
+    
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data)); 
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');  
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'x-client-id: ' . $client_id,
+                    'x-api-key: ' . $api_key
+                    
+                  ));
+        curl_setopt($curl, CURLOPT_TIMEOUT, 0);
 
         $response = curl_exec($curl);
 
         curl_close($curl);
+
+        if (curl_errno($curl)) {
+            echo 'cURL error: ' . curl_error($curl);
+            exit();
+        }
+         
         $responseArray = json_decode($response, true);
-        echo '<pre>';
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            
+            echo 'JSON error: ' . json_last_error_msg();
+        } else {
+            //print_r($responseArray);
+            $token = $responseArray['token'];
+            //echo "Token:".$token;
+        }
+        
+        wp_send_json(array('response' => true, 'token' => $token));
+        exit();
+    }
+
+    public function get_payment_intents_id() {
+        
+        $token = $_POST['token'];
+        $amount = $_POST['amount'];
+        $currency = $_POST['currency'];
+
+        $airwallex_api_base_url = get_option('cc_airwallex_api_url');
+        
+        $url = $airwallex_api_base_url."issuing/authorizations";
+      
+        $data = array("src" => "source", "text" => "test curl request");
+
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data)); 
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');  
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Authorization: Bearer ' . $token
+                  ));
+        curl_setopt($curl, CURLOPT_TIMEOUT, 0);
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        if (curl_errno($curl)) {
+            echo 'cURL error: ' . curl_error($curl);
+            exit();
+        }
+         //echo $response;
+        $responseArray = json_decode($response, true);
         print_r($responseArray);
-        //wp_send_json(array('response' => true, 'token' => $response));
         exit();
     }
     

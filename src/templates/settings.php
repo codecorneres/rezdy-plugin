@@ -98,8 +98,8 @@
             <table class="form-table" role="presentation">
                 <tbody>
                     <tr>
-                        <th scope="row"><label for="airwallex_live"><?php _e('Airwallex Live Account', 'cc-rezdy-api'); ?></label></th>
-                        <td><input name="airwallex_live" value="yes" type="checkbox" id="airwallex_live" class="regular-text" <?php if (isset($airwallex_live) && $airwallex_live == 'yes') echo "checked='checked'"; ?>></td>
+                        <th scope="row"><label for="airwallex_api_url"><?php _e('Airwallex API URL', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="airwallex_api_url" value="<?php echo esc_attr($airwallex_api_url); ?>" type="text" id="airwallex_api_url" class="regular-text"></td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="airwallex_client_id"><?php _e('Airwallex Client ID', 'cc-rezdy-api'); ?></label></th>

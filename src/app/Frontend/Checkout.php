@@ -31,6 +31,9 @@ class Checkout
         //========= airwallex =====
         add_action('wp_ajax_airwallex_auth_token', [$this, 'airwallex_auth_token']);
         add_action('wp_ajax_nopriv_airwallex_auth_token',[$this, 'airwallex_auth_token']);
+
+        add_action('wp_ajax_get_payment_intents_id', [$this, 'get_payment_intents_id']);
+        add_action('wp_ajax_nopriv_get_payment_intents_id',[$this, 'get_payment_intents_id']);
         // =================
     }
 
@@ -47,6 +50,10 @@ class Checkout
     function airwallex_auth_token()
     {
         return $this->callPageScreenMethod('airwallex_auth_token');
+    }
+    function get_payment_intents_id()
+    {
+        return $this->callPageScreenMethod('get_payment_intents_id');
     }
     // =================
     function delete_db_sessions_callback()

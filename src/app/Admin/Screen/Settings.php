@@ -39,7 +39,7 @@ class Settings extends Screen
             'paypal_live' => get_option('cc_paypal_live'),
             'airwallex_client_id' => get_option('cc_airwallex_client_id'), // ==== airwallex ==
             'airwallex_secret_api_key' => get_option('cc_airwallex_secret_api_key'), // ==== airwallex ===
-            'airwallex_live' => get_option('cc_airwallex_live'), // ==== airwallex ===
+            'airwallex_api_url' => get_option('cc_airwallex_api_url'), // ==== airwallex ===
             'rezdy_auth_pass' => $rezdy_auth_pass,
         ]);
     }
@@ -139,7 +139,7 @@ class Settings extends Screen
 
         if (!$stripe_secret_api_key = sanitize_text_field($_POST['stripe_secret_api_key'] ?? ''))
             return $this->error(__('Please enter a Stripe API Key.', 'cc-rezdy-api'));
-        // =======  =============
+        // ======= Stripe_disable =============
         $stripe_disable = (isset($_POST['stripe_disable'])) ? $_POST['stripe_disable'] : '';
         // ====== end ========
 
@@ -164,7 +164,9 @@ class Settings extends Screen
         if (!$airwallex_secret_api_key = sanitize_text_field($_POST['airwallex_secret_api_key'] ?? ''))
             return $this->error(__('Please enter a Airwallex secret key.', 'cc-rezdy-api'));
 
-        $airwallex_live = (isset($_POST['airwallex_live'])) ? $_POST['airwallex_live'] : '';
+        if (!$airwallex_api_url = sanitize_text_field($_POST['airwallex_api_url'] ?? ''))
+            return $this->error(__('Please enter a Airwallex API URL.', 'cc-rezdy-api'));
+
         // ============== end ==========
         
 
@@ -188,7 +190,7 @@ class Settings extends Screen
         // ========== airwallex ========
         update_option('cc_airwallex_client_id', $airwallex_client_id);
         update_option('cc_airwallex_secret_api_key', $airwallex_secret_api_key);
-        update_option('cc_airwallex_live', $airwallex_live);
+        update_option('cc_airwallex_api_url', $airwallex_api_url);
         // ============== end ==========
 
         update_option('cc_picked_color', $color_picked);
