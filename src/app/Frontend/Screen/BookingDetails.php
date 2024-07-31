@@ -1720,9 +1720,13 @@ class BookingDetails extends Screen
 
         $airwallex_api_base_url = get_option('cc_airwallex_api_url');
         
-        $url = $airwallex_api_base_url."issuing/authorizations";
+        $url = $airwallex_api_base_url."pa/payment_intents/create";
       
-        $data = array("src" => "source", "text" => "test curl request");
+        $data = array(
+            "src" => "source", 
+            "amount" => $amount,
+            "currency" => $currency
+        );
 
         $curl = curl_init($url);
 
@@ -1745,9 +1749,10 @@ class BookingDetails extends Screen
             echo 'cURL error: ' . curl_error($curl);
             exit();
         }
-         //echo $response;
-        $responseArray = json_decode($response, true);
-        print_r($responseArray);
+        
+        echo $response;
+       // $responseArray = json_decode($response, true);
+        //print_r($responseArray);
         exit();
     }
     
