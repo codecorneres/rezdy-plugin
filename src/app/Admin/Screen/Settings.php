@@ -31,11 +31,15 @@ class Settings extends Screen
             'picked_color' => get_option('cc_picked_color'),
             'stripe_pub_api_key' => get_option('cc_stripe_pub_api_key'),
             'stripe_secret_api_key' => get_option('cc_stripe_secret_api_key'),
+            'stripe_disable' => get_option('cc_stripe_disable'), // ==== stripe desable ====
             'success_url' => get_option('cc_success_url'),
             'cancel_url' => get_option('cc_cancel_url'),
             'paypal_client_id' => get_option('cc_paypal_client_id'),
             'paypal_secret_api_key' => get_option('cc_paypal_secret_api_key'),
             'paypal_live' => get_option('cc_paypal_live'),
+            'airwallex_client_id' => get_option('cc_airwallex_client_id'), // ==== airwallex ==
+            'airwallex_secret_api_key' => get_option('cc_airwallex_secret_api_key'), // ==== airwallex ===
+            'airwallex_live' => get_option('cc_airwallex_live'), // ==== airwallex ===
             'rezdy_auth_pass' => $rezdy_auth_pass,
         ]);
     }
@@ -135,6 +139,9 @@ class Settings extends Screen
 
         if (!$stripe_secret_api_key = sanitize_text_field($_POST['stripe_secret_api_key'] ?? ''))
             return $this->error(__('Please enter a Stripe API Key.', 'cc-rezdy-api'));
+        // =======  =============
+        $stripe_disable = (isset($_POST['stripe_disable'])) ? $_POST['stripe_disable'] : '';
+        // ====== end ========
 
         if (!$success_url = sanitize_text_field($_POST['success_url'] ?? ''))
             return $this->error(__('Please select success url.', 'cc-rezdy-api'));
@@ -150,10 +157,24 @@ class Settings extends Screen
 
         $paypal_live = (isset($_POST['paypal_live'])) ? $_POST['paypal_live'] : '';
 
+        // ========== airwallex ========
+        if (!$airwallex_client_id = sanitize_text_field($_POST['airwallex_client_id'] ?? ''))
+            return $this->error(__('Please enter a Airwallex Client ID.', 'cc-rezdy-api'));
+
+        if (!$airwallex_secret_api_key = sanitize_text_field($_POST['airwallex_secret_api_key'] ?? ''))
+            return $this->error(__('Please enter a Airwallex secret key.', 'cc-rezdy-api'));
+
+        $airwallex_live = (isset($_POST['airwallex_live'])) ? $_POST['airwallex_live'] : '';
+        // ============== end ==========
+        
+
         $color_picked = (isset($_POST['theme'])) ? $_POST['theme'] : 'theme-cdt';
 
         update_option('cc_stripe_pub_api_key', $stripe_pub_api_key);
         update_option('cc_stripe_secret_api_key', $stripe_secret_api_key);
+        
+        update_option('cc_stripe_disable', $stripe_disable); // ===== stripe_disable ====
+
         update_option('cc_success_url', $success_url);
         update_option('cc_cancel_url', $cancel_url);
 
@@ -164,7 +185,11 @@ class Settings extends Screen
         update_option('cc_paypal_secret_api_key', $paypal_secret_api_key);
 
         update_option('cc_paypal_live', $paypal_live);
-
+        // ========== airwallex ========
+        update_option('cc_airwallex_client_id', $airwallex_client_id);
+        update_option('cc_airwallex_secret_api_key', $airwallex_secret_api_key);
+        update_option('cc_airwallex_live', $airwallex_live);
+        // ============== end ==========
 
         update_option('cc_picked_color', $color_picked);
 
