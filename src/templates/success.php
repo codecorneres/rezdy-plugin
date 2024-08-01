@@ -110,6 +110,7 @@ $bookingStatus = ($status == 'PENDING_CUSTOMER') ? 'Pending' : 'Success';
         </div>
         <!-- You can include additional content or links here -->
     </div>
+    
 </body>
 
 </html>

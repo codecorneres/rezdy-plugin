@@ -633,6 +633,22 @@ function getGroupValue($value)
 
 <?php get_footer(); ?>
 
+<?php 
+    // function generateGUID($length = 64) {
+    //     // Ensure the length is even, as bin2hex() converts 1 byte to 2 hex characters
+    //     if ($length % 2 != 0) {
+    //         $length++;
+    //     }
+    
+    //     // Generate random bytes and convert to hex
+    //     $bytes = random_bytes($length / 2);
+    //     $hex = bin2hex($bytes);
+    
+    //     // Trim to the required length
+    //     return substr($hex, 0, $length);
+    // }
+?>
+
 <!-- intl-tel-input CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
 <!-- intl-tel-input JS -->
@@ -698,6 +714,50 @@ function getGroupValue($value)
     const airwallexCard = Airwallex.createElement('card');
 
     const airwallexElement = airwallexCard.mount("airwallex_element");
+
+    // function generateGUID(length = 64) {
+    //     // Ensure the length is even, as each byte is converted to 2 hex characters
+    //     if (length % 2 !== 0) {
+    //         length++;
+    //     }
+
+    //     // Generate random bytes
+    //     const bytes = new Uint8Array(length / 2);
+    //     window.crypto.getRandomValues(bytes);
+
+    //     // Convert bytes to hexadecimal string
+    //     let hex = '';
+    //     for (let i = 0; i < bytes.length; i++) {
+    //         hex += bytes[i].toString(16).padStart(2, '0');
+    //     }
+
+    //     // Trim to the required length
+    //     return hex.substring(0, length);
+    // }
+    function generateGUID() {
+        // Generate random values
+        const bytes = new Uint8Array(16);
+        window.crypto.getRandomValues(bytes);
+
+        // Convert bytes to hex and format as a GUID
+        const guid = [
+            bytes[0].toString(16).padStart(2, '0') + bytes[1].toString(16).padStart(2, '0') +
+            bytes[2].toString(16).padStart(2, '0') + bytes[3].toString(16).padStart(2, '0'),
+            bytes[4].toString(16).padStart(2, '0') + bytes[5].toString(16).padStart(2, '0'),
+            bytes[6].toString(16).padStart(2, '0') + bytes[7].toString(16).padStart(2, '0'),
+            bytes[8].toString(16).padStart(2, '0') + bytes[9].toString(16).padStart(2, '0'),
+            bytes[10].toString(16).padStart(2, '0') + bytes[11].toString(16).padStart(2, '0') +
+            bytes[12].toString(16).padStart(2, '0') + bytes[13].toString(16).padStart(2, '0') +
+            bytes[14].toString(16).padStart(2, '0') + bytes[15].toString(16).padStart(2, '0')
+        ].join('-');
+
+        return guid;
+    }
+
+    // Example usage
+    //const guid = generateGUID();
+//console.log(guid);
+
         
     // ======= End Airwallex Card Element =============
     
@@ -1004,6 +1064,7 @@ function getGroupValue($value)
 
             // Handle real-time validation errors
             var dom = airwallexCard.domElement;
+
             dom.addEventListener('onChange', (e) => {
                 //console.log(e.detail);
                 var displayError = document.getElementById('airwallex-card-errors');
@@ -1555,7 +1616,7 @@ function getGroupValue($value)
                 action: 'airwallex_auth_token',
                 api_key: airwallexApiKey,
                 client_id: airwallexClientID
-            };
+            }; 
 
             var formData = new FormData();
             for (var key in data) {
@@ -1590,12 +1651,14 @@ function getGroupValue($value)
                             var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
 
                             var currencyCode = document.querySelector('.price-label').innerText;                            
-
+                            var request_id  =  generateGUID();
+                            //console.log(request_id);
                             var paymentIntentsData = {
                                 action: 'get_payment_intents_id',
                                 token: airwallexToken,
                                 amount: priceValue,
-                                currency: currencyCode
+                                currency: currencyCode,
+                                request_id: request_id
                                 
                             };
                             console.log(paymentIntentsData);
@@ -1610,7 +1673,7 @@ function getGroupValue($value)
                                     body: formIntentsData,
                                 })
                                 .then(function(intentID) {
-                                    return intentID.text();
+                                    return intentID.json();
                                 })
                                 .then(function(paymentIntentsData) {
                                     console.log(paymentIntentsData);

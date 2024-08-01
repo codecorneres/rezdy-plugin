@@ -1713,10 +1713,11 @@ class BookingDetails extends Screen
     }
 
     public function get_payment_intents_id() {
-        
+
         $token = $_POST['token'];
         $amount = $_POST['amount'];
         $currency = $_POST['currency'];
+        $request_id = $_POST['request_id'];
 
         $airwallex_api_base_url = get_option('cc_airwallex_api_url');
         
@@ -1725,7 +1726,9 @@ class BookingDetails extends Screen
         $data = array(
             "src" => "source", 
             "amount" => $amount,
-            "currency" => $currency
+            "currency" => $currency,
+            "merchant_order_id" => "Merchant_Order_$request_id",
+            "request_id" => $request_id
         );
 
         $curl = curl_init($url);
@@ -1750,10 +1753,20 @@ class BookingDetails extends Screen
             exit();
         }
         
-        echo $response;
-       // $responseArray = json_decode($response, true);
+        //echo $response;
+        $responseArray = json_decode($response, true);
         //print_r($responseArray);
-        exit();
+        //exit();
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            
+            echo 'JSON error: ' . json_last_error_msg();
+        } else {
+            print_r($responseArray);
+            //$token = $responseArray;
+            //echo "Token:".$token;
+        }
+        
+        wp_send_json(array('response' => true, 'token' => $token));
     }
     
     // ======= end =========
