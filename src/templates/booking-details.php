@@ -703,37 +703,16 @@ function getGroupValue($value)
     }
 
     // ===== Airwallex Element ======
-    var airwallexApiKey = "<?php echo get_option('cc_airwallex_secret_api_key'); ?>";
-    var airwallexClientID = "<?php echo get_option('cc_airwallex_client_id'); ?>";
 
     Airwallex.init({
-        env: 'demo', // Setup which Airwallex env('staging' | 'demo' | 'prod') to integrate with
-        origin: window.location.origin, // Setup your event target to receive the browser events message
+        env: 'demo', 
+        origin: window.location.origin, 
     });
 
     const airwallexCard = Airwallex.createElement('card');
 
     const airwallexElement = airwallexCard.mount("airwallex_element");
 
-    // function generateGUID(length = 64) {
-    //     // Ensure the length is even, as each byte is converted to 2 hex characters
-    //     if (length % 2 !== 0) {
-    //         length++;
-    //     }
-
-    //     // Generate random bytes
-    //     const bytes = new Uint8Array(length / 2);
-    //     window.crypto.getRandomValues(bytes);
-
-    //     // Convert bytes to hexadecimal string
-    //     let hex = '';
-    //     for (let i = 0; i < bytes.length; i++) {
-    //         hex += bytes[i].toString(16).padStart(2, '0');
-    //     }
-
-    //     // Trim to the required length
-    //     return hex.substring(0, length);
-    // }
     function generateGUID() {
         // Generate random values
         const bytes = new Uint8Array(16);
@@ -753,10 +732,6 @@ function getGroupValue($value)
 
         return guid;
     }
-
-    // Example usage
-    //const guid = generateGUID();
-//console.log(guid);
 
         
     // ======= End Airwallex Card Element =============
@@ -1102,6 +1077,7 @@ function getGroupValue($value)
                 }
             });
 
+
             if (cardFill == true) {
                 fieldsValidation();
 
@@ -1417,6 +1393,8 @@ function getGroupValue($value)
 
     }
 
+    
+
     function create_booking() {
 
         var submit_button = document.getElementById('create-booking');
@@ -1608,14 +1586,10 @@ function getGroupValue($value)
 
         } else if (mathodType == 'airwallex'){ 
 
-            //console.log(mathodType);
-
             var method = 'Airwallex';
-     
+
             var data = {
-                action: 'airwallex_auth_token',
-                api_key: airwallexApiKey,
-                client_id: airwallexClientID
+                action: 'airwallex_auth_token'
             }; 
 
             var formData = new FormData();
@@ -1639,10 +1613,16 @@ function getGroupValue($value)
                         if(airwallexToken != ''){
                             //console.log("Token: "+airwallexToken);
                             paybutton_require_textElement.textContent = 'Processing..';
-                            // submit_button.disabled = true;
-                            // jQuery('.btn-payment').addClass('btn-invalid');
+                            submit_button.disabled = true;
+                            jQuery('.btn-payment').addClass('btn-invalid');
 
-                            var form = document.querySelector('.booking-checkout');
+
+                            var checkoutFormData = new FormData(document.querySelector('.booking-checkout'));
+                            var firstName = checkoutFormData.get("fname");
+                            var lastName = checkoutFormData.get("lname");
+                            var phone = checkoutFormData.get("phone");
+                            var email = checkoutFormData.get("email");
+                           
                             var pricespan = document.querySelector('.update-on-order-total-change');
                             var priceValue = pricespan.getAttribute('data-price-value');
 
@@ -1652,16 +1632,27 @@ function getGroupValue($value)
 
                             var currencyCode = document.querySelector('.price-label').innerText;                            
                             var request_id  =  generateGUID();
+                            var order_id  =  generateGUID();
+                            var baseURL = "<?php echo home_url(); ?>";
+
+                            var merchant_cust_id = generateGUID();
                             //console.log(request_id);
                             var paymentIntentsData = {
                                 action: 'get_payment_intents_id',
                                 token: airwallexToken,
                                 amount: priceValue,
                                 currency: currencyCode,
-                                request_id: request_id
+                                request_id: request_id,
+                                order_id: order_id,
+                                fName: firstName,
+                                lName: lastName,
+                                phone: phone,
+                                email: email,
+                                merchant_cust_id: merchant_cust_id,
+                                return_url: baseURL +"/success"
                                 
                             };
-                            console.log(paymentIntentsData);
+                            //console.log(paymentIntentsData);
 
                             var formIntentsData = new FormData();
 
@@ -1676,7 +1667,47 @@ function getGroupValue($value)
                                     return intentID.json();
                                 })
                                 .then(function(paymentIntentsData) {
-                                    console.log(paymentIntentsData);
+
+                                    //console.log(paymentIntentsData);
+
+                                    if(paymentIntentsData.response == true){
+                                        //console.log("id:"+paymentIntentsData.data.id);
+                                        Airwallex.confirmPaymentIntent({
+                                            element: airwallexCard, // Provide Card element
+                                            intent_id: paymentIntentsData.data.id, // Payment Intent ID
+                                            client_secret: paymentIntentsData.data.client_secret, // Client Secret
+                                            
+                                        }).then((response) => {
+                                            
+                                            //alert("Payment Successfully Confirm!");
+                                            console.log(response);
+
+                                             var baseURL = "<?php echo home_url(); ?>";
+
+                                             if (response.id !== '') {
+
+                                                var transactionID = response.id;
+
+                                                if (response.status === 'SUCCEEDED') {
+                                                    
+                                                    baseURL = baseURL + '/success?transactionID=' + transactionID;
+                                                    window.location.href = baseURL;
+                                                } else {
+                                                    baseURL = baseURL + '/cancel/' + transactionID;
+                                                    window.location.href = baseURL;
+                                                }
+
+                                            }
+                                      
+
+                                        })
+                                        .catch((response) => {
+                                            console.log('There was an error', response);
+                                            //console.log(response.message);
+                                        });
+
+                                        
+                                    }
                                 })
                                 .catch(function(error) {
                                     console.log(error);
@@ -1701,21 +1732,6 @@ function getGroupValue($value)
                     // jQuery('.btn-payment').removeClass('btn-invalid');
 
                 });
-                
-
-        //     Airwallex.confirmPaymentIntent({
-        //         element: airwallexCard, // Provide Card element
-        //         intent_id: '', // Payment Intent ID
-        //         client_secret: airwallexClientID, // Client Secret
-        //     }).then((response) => {
-                
-        //         //window.alert(JSON.stringify(response));
-        //         console.log(JSON.stringify(response));
-        //     })
-        //     .catch((response) => {
-        //         console.log('There was an error', response);
-        //         //console.log(response.message);
-        //   });
 
         
         // ====== end airwallex booking ======

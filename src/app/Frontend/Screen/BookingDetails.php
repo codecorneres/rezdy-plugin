@@ -1666,8 +1666,8 @@ class BookingDetails extends Screen
  
     public function airwallex_auth_token() {
 
-        $api_key = $_POST['api_key'];
-        $client_id = $_POST['client_id'];
+        $api_key =  get_option('cc_airwallex_secret_api_key'); 
+        $client_id = get_option('cc_airwallex_client_id');
         $airwallex_api_base_url = get_option('cc_airwallex_api_url');
         
         $url = $airwallex_api_base_url."authentication/login";
@@ -1713,30 +1713,47 @@ class BookingDetails extends Screen
     }
 
     public function get_payment_intents_id() {
-
         $token = $_POST['token'];
         $amount = $_POST['amount'];
         $currency = $_POST['currency'];
         $request_id = $_POST['request_id'];
-
+        $order_id = $_POST['order_id'];
+        $return_url = $_POST['return_url'];
+        $fName = $_POST['fName'];
+        $lName = $_POST['lName'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $merchant_customer_id = $_POST['merchant_cust_id'];
+        
         $airwallex_api_base_url = get_option('cc_airwallex_api_url');
         
         $url = $airwallex_api_base_url."pa/payment_intents/create";
-      
-        $data = array(
-            "src" => "source", 
-            "amount" => $amount,
-            "currency" => $currency,
-            "merchant_order_id" => "Merchant_Order_$request_id",
-            "request_id" => $request_id
+
+        $customer = array(
+            "email" => $email,
+            "first_name" => $fName,
+            "last_name" => $lName,
+            "merchant_customer_id" => "merchant_$merchant_customer_id",
+            "phone_number" => $phone,
+           
         );
 
+        $data = array(
+            "request_id" => $request_id,
+            "amount" => $amount,
+            "currency" => $currency,
+            "merchant_order_id" => "Merchant_Order_$order_id",
+            "return_url" => $return_url,
+            "customer" => $customer,
+        );
+        // print_r($data);
+        // exit();
         $curl = curl_init($url);
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data)); 
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data)); 
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');  
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json',
@@ -1745,7 +1762,7 @@ class BookingDetails extends Screen
         curl_setopt($curl, CURLOPT_TIMEOUT, 0);
 
         $response = curl_exec($curl);
-
+                   
         curl_close($curl);
 
         if (curl_errno($curl)) {
@@ -1761,13 +1778,13 @@ class BookingDetails extends Screen
             
             echo 'JSON error: ' . json_last_error_msg();
         } else {
-            print_r($responseArray);
-            //$token = $responseArray;
-            //echo "Token:".$token;
+            //print_r($responseArray);
+    
         }
         
-        wp_send_json(array('response' => true, 'token' => $token));
+        wp_send_json(array('response' => true, 'data' => $responseArray ));
     }
+
     
     // ======= end =========
 }
