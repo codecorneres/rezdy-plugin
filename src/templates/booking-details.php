@@ -291,19 +291,19 @@ function getGroupValue($value)
                         <!-- form-data -->
                         <fieldset class="Billing_Contact payment-third">
                             <div class="method_contents" id="method_contents_ID">
-                                <?php if(!(get_option('cc_stripe_disable') == 'yes')): ?>
-                                <div class="first">
-                                    <input type="radio" id="stripe" name="radio" class="stripe_credit_card" onclick="stripeCreditCard(this)">
-                                    <label for="paymentOption" class="mls stripe_credit_card" onclick="stripeCreditCard(this)">
-                                        <div class="payment-content">
-                                            Pay by Credit Card<br>
-                                            <!-- <small class="tight">
+                                <?php if (!(get_option('cc_stripe_disable') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="stripe" name="radio" class="stripe_credit_card" onclick="stripeCreditCard(this)">
+                                        <label for="paymentOption" class="mls stripe_credit_card" onclick="stripeCreditCard(this)">
+                                            <div class="payment-content">
+                                                Pay by Credit Card<br>
+                                                <!-- <small class="tight">
                                             Credit Card Surcharge: +€0.00
                                         </small> -->
-                                        </div>
-                                        <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
-                                    </label>
-                                </div>
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
+                                        </label>
+                                    </div>
                                 <?php endif; ?>
                                 <div class="first">
                                     <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
@@ -320,7 +320,7 @@ function getGroupValue($value)
                                     <label for="paymentOption" class="mls airwallex_payment_card" onclick="airwallexPaymentCard(this)">
                                         <div class="payment-content">
                                             Pay by Airwallex<br>
-                                            
+
                                         </div>
                                         <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/airwallex_logo.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
                                     </label>
@@ -383,7 +383,7 @@ function getGroupValue($value)
                             <div id="paypal-button-container"></div>
                         </div>
                         <div class="form-row airwallex_card" style="display:none;">
-                        <label for="card-element">
+                            <label for="card-element">
                                 <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>" alt=""> Secure and Encrypted Payment
                             </label>
                             <div class="card-detail-wrapper">
@@ -422,9 +422,9 @@ function getGroupValue($value)
                                     </div>
                                 </div> -->
                                 <div class="input-icon">
-                                     <!-- Add empty container for the card input element -->
+                                    <!-- Add empty container for the card input element -->
                                     <div id="airwallex_element" class="airwallexElement">
-                                        
+
                                     </div>
 
                                     <span class="input-addon"></span>
@@ -433,7 +433,7 @@ function getGroupValue($value)
 
                             <!-- Used to display form errors. -->
                             <div id="airwallex-card-errors" role="alert"></div>
-                            
+
                         </div>
                     </div>
 
@@ -687,20 +687,16 @@ function getGroupValue($value)
     }
 
     // ===== Airwallex Element ======
-    var airwallexApiKey = "<?php echo get_option('cc_airwallex_secret_api_key'); ?>";
-    var airwallexClientID = "<?php echo get_option('cc_airwallex_client_id'); ?>";
-
+    var cc_airwallex_live = "<?php echo get_option('cc_airwallex_live'); ?>";
+    const env = (cc_airwallex_live) ? 'prod' : 'demo';
     Airwallex.init({
-        env: 'demo', // Setup which Airwallex env('staging' | 'demo' | 'prod') to integrate with
-        origin: window.location.origin, // Setup your event target to receive the browser events message
+        env: `${env}`,
+        origin: window.location.origin
     });
-
     const airwallexCard = Airwallex.createElement('card');
-
     const airwallexElement = airwallexCard.mount("airwallex_element");
-        
     // ======= End Airwallex Card Element =============
-    
+
 
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -826,7 +822,7 @@ function getGroupValue($value)
 
     function stripeCreditCard(element) {
         var target = element;
-        
+
         var mathodType = '';
         var radioButtonStripeJS = document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]');
         radioButtonStripeJS.checked = true;
@@ -851,7 +847,7 @@ function getGroupValue($value)
         // ===================
         mathodType = 'stripe';
         submit_button.setAttribute('data-method', mathodType);
-        
+
         var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
         var target_div_stripe = document.getElementsByClassName('stripe_card');
 
@@ -943,7 +939,7 @@ function getGroupValue($value)
 
         mathodType = 'PayPal';
         submit_button.setAttribute('data-method', mathodType);
-        
+
 
         var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
         var target_div_stripe = document.getElementsByClassName('stripe_card');
@@ -966,10 +962,30 @@ function getGroupValue($value)
 
     // ======== Airwallex ===== 
 
-    function airwallexPaymentCard(element){
-        
-        var mathodType = '';
+    function airwallexPaymentCard(element) {
 
+
+        const airwallex_element_DIV = document.getElementById('airwallex_element');
+        // Check if it has a AirwallexElement--complete class
+        if (airwallex_element_DIV.classList.contains('AirwallexElement--complete')) {
+            cardFill = true;
+            var status = true;
+            updateProgressBar(status);
+            paybutton_require_textElement.textContent = 'Complete your booking';
+            jQuery('.btn-payment').removeClass('btn-invalid');
+            submit_button.disabled = false;
+
+        } else {
+            submit_button.disabled = true;
+            jQuery('.btn-payment').addClass('btn-invalid');
+            paybutton_require_textElement.textContent = 'Please enter all required fields';
+            var status = false;
+            cardFill = false;
+            updateProgressBar(status);
+        }
+
+
+        var mathodType = '';
         var radioButtonAirwallexJS = document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]');
         radioButtonAirwallexJS.checked = true;
 
@@ -992,7 +1008,7 @@ function getGroupValue($value)
 
         mathodType = 'airwallex';
         submit_button.setAttribute('data-method', mathodType);
-        
+
         var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
         var target_div_stripe = document.getElementsByClassName('stripe_card');
         var target_div_airwallex = document.getElementsByClassName('airwallex_card');
@@ -1003,33 +1019,15 @@ function getGroupValue($value)
             target_div_PayPal[0].style.display = 'none';
 
             // Handle real-time validation errors
-            var dom = airwallexCard.domElement;
-            dom.addEventListener('onChange', (e) => {
-                
+            airwallexElement.addEventListener('onChange', (e) => {
                 var displayError = document.getElementById('airwallex-card-errors');
-                //console.log(e);
-                // if (e.detail.error) {
-                //     //console.log(e.detail);
-                //     displayError.textContent = e.detail.error.message;
-                //     submit_button.disabled = true;
-                //     jQuery('.btn-payment').addClass('btn-invalid');
-                //     paybutton_require_textElement.textContent = 'Please enter all required fields';
-                //     jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
-                //     var status = false;
-                //     cardFill = false;
-                //     updateProgressBar(status);
-                if (e.detail.complete === true) {   
-                //} else if (e.detail.complete === true) {
-                   
+                if (e.detail.complete === true) {
                     jQuery('.airwallexElement').addClass('AirwallexElement--complete');
                     displayError.textContent = '';
                     cardFill = true;
                     fieldsValidation();
-
                 } else if (e.detail.complete === false) {
-                    
                     jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
-
                     displayError.textContent = 'Card is not completed Yet.';
                     submit_button.disabled = true;
                     jQuery('.btn-payment').addClass('btn-invalid');
@@ -1037,9 +1035,7 @@ function getGroupValue($value)
                     var status = false;
                     cardFill = false;
                     updateProgressBar(status);
-        
                 } else {
-                   
                     jQuery('.airwallexElement').removeClass('AirwallexElement--complete');
                     displayError.textContent = e.detail.error.message;
                     submit_button.disabled = true;
@@ -1048,7 +1044,6 @@ function getGroupValue($value)
                     var status = false;
                     cardFill = false;
                     updateProgressBar(status);
-                    
                 }
             });
 
@@ -1229,7 +1224,6 @@ function getGroupValue($value)
             });
 
         } else {
-
             if (cardFill && cardFill == true) {
                 var status = true;
                 updateProgressBar(status);
@@ -1553,62 +1547,115 @@ function getGroupValue($value)
                 .catch(function(error) {
                     console.log(error)
                 });
-            
-        // ====== airwallex create booking ======
 
-        } else if (mathodType == 'airwallex'){ 
+            // ====== airwallex create booking ======
 
-            console.log(mathodType);
+        } else if (mathodType == 'airwallex') {
+
+            paybutton_require_textElement.textContent = 'Processing..';
+            submit_button.disabled = true;
+            jQuery('.btn-payment').addClass('btn-invalid');
 
             var method = 'Airwallex';
-     
-            var data = {
-                action: 'airwallex_auth_token',
-                api_key: airwallexApiKey,
-                client_id: airwallexClientID
-            };
+            var form = document.querySelector('.booking-checkout');
+            var pricespan = document.querySelector('.update-on-order-total-change');
+            var priceValue = pricespan.getAttribute('data-price-value');
 
-            var formData = new FormData();
+            var selected_flag_div = document.querySelector('.iti__selected-flag');
+            var title_text = selected_flag_div.getAttribute('title');
+            var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+
+            var data = {
+                action: 'booking_checkout',
+                priceValue: priceValue,
+                selectedcountryCode: selectedcountryCode,
+                method: method,
+                rezdy_session_id: session_id
+            };
+            var formData = new FormData(form);
             for (var key in data) {
                 formData.append(key, data[key]);
             }
-            
-            var token = fetch(ajax_object.ajax_url, {
+            var response = fetch(ajax_object.ajax_url, {
                     method: 'POST',
                     body: formData,
                 })
-                .then(function(token) {
-                    return token.text();
+                .then(function(response) {
+                    return response.json();
                 })
                 .then(function(data) {
-                    console.log(data);
+                    console.log('Data from payment Intent API: ', data);
+                    var isError = false;
+                    if (!data.isError) {
+                        //success
+                        const int_ID = data.int_ID;
+                        const errorCode = data.errorCode;
+                        const errorMessage = data.errorMessage;
+                        const client_secret = data.client_secret;
+                        const inserted_id = data.inserted_id;
+                        const rezdy_params = data.rezdy_params;
+                        const plugin_dir = data.plugin_dir;
+                        const username = data.username;
+                        const useremail = data.useremail;
+                        const custom_id = data.custom_id;
+                        Airwallex.confirmPaymentIntent({
+                            element: Airwallex.getElement('card'),
+                            intent_id: `${int_ID}`, // Payment Intent ID
+                            client_secret: `${client_secret}` // client_secret
+                        }).then((response) => {
+                            console.log('Data from payment Intent Confirmation: ', response);
+                            console.log(JSON.stringify(response));
+
+                            const status = response.status;
+                            const totalPaid = response.captured_amount;
+
+                            // After successfull confirm payment intent
+                            afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+
+
+                        }).catch((error) => {
+                            console.error('Payment failed:', error);
+
+                            // Handle error
+                            isError = true;
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            const status = 'Failed at Confirm Intent';
+                            const totalPaid = '';
+                            // After Failedf from confirm payment Intent
+                            afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+
+                        });
+
+                    } else {
+                        //error
+                        isError = true;
+                        const errorCode = data.errorCode;
+                        const errorMessage = data.errorMessage;
+                        const inserted_id = data.inserted_id;
+                        const rezdy_params = data.rezdy_params;
+                        const plugin_dir = data.plugin_dir;
+                        const username = data.username;
+                        const useremail = data.useremail;
+
+                        const status = 'Failed at Payment Intent';
+                        const totalPaid = '';
+                        const int_ID = '';
+                        // After Failedf from confirm payment Intent
+                        afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+                    }
                 })
                 .catch(function(error) {
                     console.log(error)
                 });
-                
-                //JSON.stringify(token)
 
-            //submit_button.disabled = true;
-            //jQuery('.btn-payment').addClass('btn-invalid');
 
-        //     Airwallex.confirmPaymentIntent({
-        //         element: airwallexCard, // Provide Card element
-        //         intent_id: '', // Payment Intent ID
-        //         client_secret: airwallexClientID, // Client Secret
-        //     }).then((response) => {
-                
-        //         //window.alert(JSON.stringify(response));
-        //         console.log(JSON.stringify(response));
-        //     })
-        //     .catch((response) => {
-        //         console.log('There was an error', response);
-        //         //console.log(response.message);
-        //   });
 
-        
-        // ====== end airwallex booking ======
-        }else {
+            // ====== end airwallex booking ======
+        } else {
 
             paybutton_require_textElement.textContent = 'Processing..';
             submit_button.disabled = true;
@@ -1669,6 +1716,89 @@ function getGroupValue($value)
                     console.log(error)
                 });
         }
+    }
+
+    function afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id) {
+
+        var dataInner = {
+            action: 'airwallex_after_confirm',
+            rezdy_session_id: session_id,
+            transactionID: `${int_ID}`,
+            inserted_id: `${inserted_id}`,
+            rezdy_params: `${rezdy_params}`,
+            plugin_dir: `${plugin_dir}`,
+            username: `${username}`,
+            useremail: `${useremail}`,
+            status: `${status}`,
+            totalPaid: `${totalPaid}`,
+            isError: isError,
+            errorCode: `${errorCode}`,
+            errorMessage: `${errorMessage}`,
+            custom_id: `${custom_id}`,
+
+        };
+        var formData = new FormData();
+        for (var key in dataInner) {
+            formData.append(key, dataInner[key]);
+        }
+        var responseInner = fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(function(responseInner) {
+                return responseInner.json();
+            })
+            .then(function(data) {
+                console.log('After confirm ajax response: ', data);
+                var baseURL = "<?php echo home_url(); ?>";
+                if (data.requestStatus == true) {
+
+                    var transactionID = data.transactionID;
+
+                    if (data.success_url != '') {
+                        var success_url = data.success_url;
+
+
+                        var transactionID = data.transactionID;
+                        window.location.href = success_url + '?transactionID=' + transactionID;
+
+
+                    } else {
+                        var transactionID = data.transactionID;
+                        baseURL = baseURL + '/success?transactionID=' + transactionID;
+                        window.location.href = baseURL;
+                    }
+
+                }
+                if (data.requestStatus == false) {
+                    if (data.transactionID) {
+                        //payment success but Booking not
+                        if (data.cancel_url != '') {
+                            var cancel_url = data.cancel_url;
+                            var params = new URLSearchParams(cancel_url.search);
+                            var param = 'cancel';
+                            if (params.has(param)) {
+                                var transactionID = data.transactionID;
+                                baseURL = baseURL + '/cancel/' + transactionID;
+                                window.location.href = baseURL;
+                            } else {
+                                window.location.href = cancel_url;
+                            }
+                        } else {
+                            var transactionID = data.transactionID;
+                            baseURL = baseURL + '/cancel/' + transactionID;
+                            window.location.href = baseURL;
+                        }
+
+                    }
+                }
+
+
+
+            })
+            .catch(function(error) {
+                console.log(error)
+            });
     }
 
     function sendDataToDataLayer() {

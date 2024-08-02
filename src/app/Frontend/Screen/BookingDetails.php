@@ -590,9 +590,11 @@ class BookingDetails extends Screen
 
 
             $PayPalItem = 0;
+            $AirwallexItem = 0;
             $itemParams = [];
             $items_name = [];
             $itemsPayPal = [];
+            $itemsAirewallex = [];
             $itemsStripe = [];
             $itemsPayPal['intent'] = 'CAPTURE';
             $out_counter = 0;
@@ -617,14 +619,19 @@ class BookingDetails extends Screen
                         $itemParams['items'][$out_counter]['quantities'][$in_counter]['optionLabel'] = $option['optionLabel'];
                         $itemParams['items'][$out_counter]['quantities'][$in_counter]['value'] = $option['value'];
 
-
-
+                        $itemsAirewallex['order']['products'][$AirwallexItem]['code'] = $order['product_code'];
+                        $itemsAirewallex['order']['products'][$AirwallexItem]['name'] = $order['product_code'] . ' ' . $order['sessionDate'] . ' (' . $optionLabel . ') ';
+                        $itemsAirewallex['order']['products'][$AirwallexItem]['quantity'] = $option['value'];
+                        $itemsAirewallex['order']['products'][$AirwallexItem]['type'] = 'service';
+                        $itemsAirewallex['order']['products'][$AirwallexItem]['unit_price'] = $option['price'];
+                        $itemsAirewallex['order']['type'] = 'tours';
 
 
 
 
                         $in_counter++;
                         $PayPalItem++;
+                        $AirwallexItem++;
                     }
                     $in_in_counter = 0;
                     foreach ($_POST['participant'][$key] as $p => $participant) {
@@ -1198,11 +1205,460 @@ class BookingDetails extends Screen
                         wp_send_json(array('error' => $order_response['error_description']));
                     }
                 }
+                if ($_POST['method'] == 'Airwallex') {
+
+                    //echo '<pre>';
+                    //print_r($_POST);
+                    //print_r($itemsAirewallex);
+                    //exit();
+                    $itemParams['payments'][0]['type'] = 'CREDITCARD';
+
+                    $plugin_dir = trailingslashit(plugin_dir_path($this->appContext->getPluginFile()));
+                    $items_nameString = implode(", ", $items_name);
+                    $site = home_url();
+                    $site_without_http = trim(str_replace(array('http://', 'https://'), '', $site), '/');
+                    $site_without_domain_extension = preg_replace('/\.[^.\/]+$/i', '', $site_without_http);
+
+
+                    $user_ip = $this->get_user_ip();
+                    $username = $_POST["fname"] . " " . $_POST["lname"];
+                    $useremail = $_POST["email"];
+                    $current_timestamp = current_time('mysql');
+                    $rezdy_params = json_encode($itemParams);
+
+                    $paymentObject = array("rezdy_order_id" => '', "transactionID" => '', "success_message" => '', "failure_message" => '', "order_status" => 0, "IP_address" => $user_ip, "username" => $username, "useremail" => $useremail,  "firstName" => $po_firstName, "lastName" => $po_lastName, "phone" => $po_phone, "country" => $po_country, "date_time" => $current_timestamp, "response_time" => '', "totalAmount" => number_format($_POST["priceValue"], 2, '.', ''),  "totalPaid" => '', "payment_method" => $_POST['method'], "paypal_token" => '', "paypal_payer_id" => '', "rezdy_booking_status" => '', "rezdy_total_amount" => '', "rezdy_total_paid" => '', "rezdy_due_amount" => '', "rezdy_created_date" => '', "rezdy_confirmed_date" => '');
+
+                    $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+
+                    $data_transactions = array(
+                        'rezdy_order_id' => $paymentObject['rezdy_order_id'],
+                        'transactionID' => $paymentObject['transactionID'],
+                        'success_message' => $paymentObject['success_message'],
+                        'failure_message' => $paymentObject['failure_message'],
+                        'order_status' => $paymentObject['order_status'],
+                        'IP_address' => $paymentObject['IP_address'],
+                        'username' => $paymentObject['username'],
+                        'useremail' => $paymentObject['useremail'],
+                        'firstName' => $paymentObject['firstName'],
+                        'lastName' => $paymentObject['lastName'],
+                        'phone' => $paymentObject['phone'],
+                        'country' => $paymentObject['country'],
+                        'date_time' => $paymentObject['date_time'],
+                        'response_time' => $paymentObject['response_time'],
+                        'totalAmount' => $paymentObject['totalAmount'],
+                        'totalPaid' => $paymentObject['totalPaid'],
+                        'payment_method' => $paymentObject['payment_method'],
+                        "paypal_token" => $paymentObject['paypal_token'],
+                        "paypal_payer_id" => $paymentObject['paypal_payer_id'],
+                        "rezdy_params" => "$rezdy_params",
+                        "rezdy_response_params" => '',
+                        "rezdy_booking_status" => $paymentObject['rezdy_booking_status'],
+                        "rezdy_total_amount" => $paymentObject['rezdy_total_amount'],
+                        "rezdy_total_paid" => $paymentObject['rezdy_total_paid'],
+                        "rezdy_due_amount" => $paymentObject['rezdy_due_amount'],
+                        "rezdy_payment_type" => '',
+                        "rezdy_created_date" => $paymentObject['rezdy_created_date'],
+                        "rezdy_confirmed_date" => $paymentObject['rezdy_confirmed_date']
+                    );
+
+                    $wpdb->insert($rezdy_plugin_transactions, $data_transactions);
+
+                    $inserted_id = $wpdb->insert_id;
+                    $custom_id = $inserted_id . '|' . $items_nameString . '|website ' . '( ' . $site_without_domain_extension . ' )';
+
+
+                    $paymentstatus = 'Airwallex payment started';
+                    $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Attempt: " . $paymentstatus . PHP_EOL . "User name: " . $username . PHP_EOL . "User email: " . $useremail . PHP_EOL . "Table inserted_id: " . $custom_id . PHP_EOL . "-------------------------" . PHP_EOL;
+
+                    $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+
+                    // Create the directory if it doesn't exist
+                    if (!file_exists($log_dir)) {
+                        mkdir($log_dir, 0755, true); // Recursive directory creation
+                    }
+
+                    $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+                    file_put_contents($fileName, $log, FILE_APPEND);
+
+
+                    $api_key = get_option('cc_airwallex_secret_api_key');
+                    $client_id = get_option('cc_airwallex_client_id');
+                    $airwallex_live = get_option('cc_airwallex_live');
+                    $baseUrl = ($airwallex_live == 'yes') ? 'https://api.airwallex.com/api/v1/' : 'https://api-demo.airwallex.com/api/v1/';
+                    $post_data = '';
+                    //Get Auth Token
+                    $apiUrl =  $baseUrl . 'authentication/login';
+                    $request_type = 'POST';
+                    $headers = [];
+                    $headers[] = 'Content-Type: application/json';
+                    $headers[] =  'x-api-key: ' . $api_key;
+                    $headers[] =  'x-client-id: ' . $client_id;
+                    $requestFor = 'login';
+                    $result = $this->airwallex_request($apiUrl, $post_data, $request_type, $headers, $requestFor);
+                    $responseArray = json_decode($result, true);
+                    if (isset($responseArray['token'])) {
+                        $token = $responseArray['token'];
+                        //Create Request ID
+                        $requestId = $this->generateGUID();
+                        $merchant_order_id = 'Merchant_Order_' . $this->generateGUID();
+                        $merchant_customer_id = 'merchant_' . $this->generateGUID();
+                        if ($requestId && $merchant_order_id && $merchant_customer_id) {
+
+                            $itemsAirewallex['request_id'] = $requestId;
+                            $itemsAirewallex['amount'] = $_POST["priceValue"];
+                            $itemsAirewallex['currency'] = 'EUR';
+                            $itemsAirewallex['merchant_order_id'] = $merchant_order_id;
+                            $itemsAirewallex['metadata']['custom_order_details'] = 'Order from website: ' . home_url() . ' and Order table record Id is ' . $inserted_id;
+
+                            $itemsAirewallex['customer']['email'] = $useremail;
+                            $itemsAirewallex['customer']['first_name'] = $po_firstName;
+                            $itemsAirewallex['customer']['last_name'] = $po_lastName;
+                            $itemsAirewallex['customer']['merchant_customer_id'] = $merchant_customer_id;
+                            $itemsAirewallex['customer']['phone_number'] = $po_phone;
+
+
+
+
+                            //Create payment Intent ID
+                            $apiUrl = $baseUrl . 'pa/payment_intents/create';
+                            $request_type = 'POST';
+                            $headers = [];
+                            $headers[] = 'Content-Type: application/json';
+                            $headers[] =  'Authorization: Bearer ' . $token;
+                            $requestFor = 'loggedIn';
+                            $post_data = json_encode($itemsAirewallex);
+                            $intent_result = $this->airwallex_request($apiUrl, $post_data, $request_type, $headers, $requestFor);
+                            $intent_Array = json_decode($intent_result, true);
+                            if (isset($intent_Array['id'])) {
+                                // Success Payment
+                                $isError = false;
+                                $int_ID = $intent_Array['id'];
+                                $client_secret = $intent_Array['client_secret'];
+                                $this->intentLog($int_ID, $inserted_id, $username, $useremail, $custom_id);
+                            } elseif (isset($intent_Array['code'])) {
+                                // Payment Declined
+                                $isError = true;
+                                $errorCode = $intent_Array['code'];
+                                $errorMessage = $intent_Array['message'];
+                                $this->errorLog($errorCode, $errorMessage, $order_status = 2, $inserted_id, $username, $useremail, $custom_id);
+                            } else {
+                                // Error in Payment
+                                $isError = true;
+                                $errorCode = 'API';
+                                $errorMessage = 'Issue from: Payment_intents API';
+                                $this->errorLog($errorCode, $errorMessage, $order_status = 2, $inserted_id, $username, $useremail, $custom_id);
+                            }
+                        } else {
+                            // Error is not getting GUID
+                            $isError = true;
+                            $errorCode = 'API';
+                            $errorMessage = 'Issue from:  GUID is not creating';
+                            $this->errorLog($errorCode, $errorMessage, $order_status = 2, $inserted_id, $username, $useremail, $custom_id);
+                        }
+                    } else {
+
+                        // Error is not getting token
+                        $isError = true;
+                        $errorCode = 'API';
+                        $errorMessage = 'Issue from:  Token is not creating from Auth API';
+                        $this->errorLog($errorCode, $errorMessage, $order_status = 2, $inserted_id, $username, $useremail, $custom_id);
+                    }
+
+
+                    wp_send_json(array('isError' => $isError, 'errorCode' => $errorCode, 'errorMessage' => $errorMessage, 'int_ID' => $int_ID, 'client_secret' => $client_secret, 'inserted_id' => $inserted_id, 'rezdy_params' => $rezdy_params, 'plugin_dir' => $plugin_dir, 'username' => $username, 'useremail' => $useremail, 'custom_id' => $custom_id));
+                }
             }
         }
 
         // wp_send_json(array('itemParams' => $response));
     }
+
+    // ======= airwallex start ===============
+
+    function airwallex_after_confirm()
+    {
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            session_start();
+            global $wpdb;
+            $success_url = get_option('cc_success_url');
+            $cancel_url =  get_option('cc_cancel_url');
+
+            $rezdy_session_id = $_POST['rezdy_session_id'];
+            $inserted_id = $_POST['inserted_id'];
+            $rezdy_params = $_POST['rezdy_params'];
+            $plugin_dir = $_POST['plugin_dir'];
+            $username = $_POST['username'];
+            $useremail = $_POST['useremail'];
+            $transactionID = $_POST['transactionID'];
+            $status = $_POST['status'];
+            $totalPaid = $_POST['totalPaid'];
+            $errorCode = $_POST['errorCode'];
+            $errorMessage = $_POST['errorMessage'];
+            $custom_id = $_POST['custom_id'];
+
+            if ($_POST['isError'] == 'false') {
+                //On success
+
+                $decoded_data = json_decode(stripslashes($rezdy_params), true);
+                $decoded_data['payments'][0]['label'] = "Airwallex Payment Intent ID: " . $transactionID;
+                $output_rezdy_params = json_encode($decoded_data, JSON_PRETTY_PRINT);
+
+                $attemps = 'Airewallex payment completed';
+                $this->updateAirwallexOrder($status, $failure_message = '', $rezdy_order_id = '', $transactionID, $order_status = 1, $totalPaid, $attemps, $plugin_dir, $inserted_id, $username, $useremail);
+
+
+                ##====Create Booking in Rezdy====##
+                $baseUrl = Config::get('endpoints.base_url') . Config::get('endpoints.booking_create');
+                $rezdy_api_key = get_option('cc_rezdy_api_key');
+                $apiUrl = $baseUrl;
+                $request_type = 'POST';
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "$apiUrl");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_type);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $output_rezdy_params);
+
+                $headers = array();
+                $headers[] = 'Content-Type: application/json';
+                $headers[] = 'Apikey: ' . $rezdy_api_key;
+                $headers[] = 'Cookie: JSESSIONID=19D1B116214696EA41B2579C7080DD81';
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+                $result = curl_exec($ch);
+                curl_close($ch);
+                $resultArray = json_decode($result, true);
+
+                if ($resultArray['requestStatus']['success'] == true) {
+
+                    $rezdy_order_id = $resultArray['booking']['orderNumber'];
+                    $rezdy_booking_status = $resultArray['booking']['status'];
+                    $rezdy_total_amount = $resultArray['booking']['totalAmount'];
+                    $rezdy_total_paid = $resultArray['booking']['totalPaid'];
+                    $rezdy_due_amount = $resultArray['booking']['totalDue'];
+                    $rezdy_created_date = $resultArray['booking']['dateCreated'];
+                    $rezdy_confirmed_date = $resultArray['booking']['dateConfirmed'];
+                    $attemps = $resultArray['booking']['status'];
+                    $rezdy_response_params = json_encode($resultArray['booking']['items']);
+
+                    $types = [];
+                    foreach ($resultArray['booking']['payments'] as $paymentsRow) {
+                        $types[] = $paymentsRow['type'];
+                    }
+                    $rezdy_payment_type = implode(", ", $types);
+
+                    $attemps = 'Rezdy Booking Successfull';
+                    $this->updateAirwallexRezdyOrder($transactionID, $rezdy_order_id, $rezdy_response_params, $rezdy_booking_status, $rezdy_total_amount, $rezdy_total_paid, $rezdy_due_amount, $rezdy_payment_type, $rezdy_created_date, $rezdy_confirmed_date, $attemps, $plugin_dir, $inserted_id, $username, $useremail);
+
+
+                    ##Delete session data
+                    $table_add_to_cart_data = $wpdb->prefix . 'add_to_cart_data';
+                    $where = array(
+                        'sessionID' => $rezdy_session_id,
+                    );
+                    $wpdb->delete($table_add_to_cart_data, $where);
+
+
+
+                    session_destroy();
+                    wp_send_json(array('requestStatus' => true, 'success_url' => $success_url, 'transactionID' => $transactionID));
+                } else {
+
+                    $attemps = 'Rezdy Booking NOT DONE';
+                    $this->updateAirwallexRezdyOrder($transactionID, $rezdy_order_id = '', $rezdy_response_params = '', $rezdy_booking_status = 'Failed', $rezdy_total_amount = '', $rezdy_total_paid = '', $rezdy_due_amount = '', $rezdy_payment_type = '', $rezdy_created_date = '', $rezdy_confirmed_date = '', $attemps, $plugin_dir, $inserted_id, $username, $useremail);
+
+
+
+
+                    session_destroy();
+                    wp_send_json(array('requestStatus' => false, 'cancel_url' => $cancel_url, 'error' => 'Booking not triggered in Rezdy', 'transactionID' => $transactionID));
+                }
+            } else {
+                //On failure
+                $this->errorLog($errorCode, $errorMessage, $order_status = 2, $inserted_id, $username, $useremail, $custom_id);
+                $transactionID = ($transactionID == '') ? 'payment_intentError' : $transactionID;
+                session_destroy();
+                wp_send_json(array('requestStatus' => false, 'cancel_url' => $cancel_url, 'error' => 'Payment failed', 'transactionID' => $transactionID));
+            }
+        }
+    }
+
+    public function airwallex_request($apiUrl, $post_data, $request_type, $headers, $requestFor)
+    {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_type);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        if ($requestFor == 'loggedIn') {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        }
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+    }
+
+
+    public function generateGUID()
+    {
+        if (function_exists('com_create_guid')) {
+            return strtolower(trim(com_create_guid(), '{}'));
+        } else {
+            $charid = strtolower(md5(uniqid(rand(), true)));
+            $hyphen = chr(45); // "-"
+            $uuid = substr($charid, 0, 8) . $hyphen
+                . substr($charid, 8, 4) . $hyphen
+                . substr($charid, 12, 4) . $hyphen
+                . substr($charid, 16, 4) . $hyphen
+                . substr($charid, 20, 12);
+            return $uuid;
+        }
+    }
+
+    public function intentLog($int_ID, $inserted_id, $username, $useremail, $custom_id)
+    {
+        global $wpdb;
+        ##Update order
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $data_to_update = array(
+            'transactionID' => $int_ID
+        );
+
+        // Define the WHERE clause to identify the row to update
+        $where = array(
+            'id' => $inserted_id, // Assuming rezdy_order_id is the unique identifier
+        );
+
+        // Perform the update
+        $result = $wpdb->update($rezdy_plugin_transactions, $data_to_update, $where);
+
+        //Intent Log
+        $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Intent ID Created: " . $int_ID . PHP_EOL . "User name: " . $username . PHP_EOL . "User email: " . $useremail . PHP_EOL . "Table inserted_id: " . $custom_id . PHP_EOL . "-------------------------" . PHP_EOL;
+        $plugin_dir = trailingslashit(plugin_dir_path($this->appContext->getPluginFile()));
+        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        // Create the directory if it doesn't exist
+        if (!file_exists($log_dir)) {
+            mkdir($log_dir, 0755, true); // Recursive directory creation
+        }
+        $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+        file_put_contents($fileName, $log, FILE_APPEND);
+    }
+    public function errorLog($errorCode, $errorMessage, $order_status, $inserted_id, $username, $useremail, $custom_id)
+    {
+
+        global $wpdb;
+        ##Update order
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $data_to_update = array(
+            'failure_message' => $errorMessage,
+            'order_status' => $order_status,
+            'response_time' => current_time('mysql')
+        );
+
+        // Define the WHERE clause to identify the row to update
+        $where = array(
+            'id' => $inserted_id, // Assuming rezdy_order_id is the unique identifier
+        );
+
+        // Perform the update
+        $result = $wpdb->update($rezdy_plugin_transactions, $data_to_update, $where);
+
+
+
+        //Error Log
+        $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Error Code: " . $errorCode . PHP_EOL . "Error: " . $errorMessage . PHP_EOL . "User name: " . $username . PHP_EOL . "User email: " . $useremail . PHP_EOL . "Table inserted_id: " . $custom_id . PHP_EOL . "-------------------------" . PHP_EOL;
+        $plugin_dir = trailingslashit(plugin_dir_path($this->appContext->getPluginFile()));
+        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        // Create the directory if it doesn't exist
+        if (!file_exists($log_dir)) {
+            mkdir($log_dir, 0755, true); // Recursive directory creation
+        }
+        $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+        file_put_contents($fileName, $log, FILE_APPEND);
+    }
+
+    public function updateAirwallexOrder($success_message, $failure_message, $rezdy_order_id, $transactionID, $order_status, $totalPaid, $attemps, $plugin_dir, $inserted_id, $userName, $userEmail)
+    {
+
+        global $wpdb;
+        ##Update order
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $data_to_update = array(
+            'success_message' => $success_message,
+            'failure_message' => $failure_message,
+            'rezdy_order_id' => $rezdy_order_id,
+            'order_status' => $order_status,
+            'response_time' => current_time('mysql'),
+            'totalPaid' => $totalPaid,
+        );
+
+        // Define the WHERE clause to identify the row to update
+        $where = array(
+            'id' => $inserted_id,
+            'transactionID' => $transactionID,
+        );
+
+        // Perform the update
+        $result = $wpdb->update($rezdy_plugin_transactions, $data_to_update, $where);
+
+
+        ##log file update
+        $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Payment status: " . $attemps . PHP_EOL . "User name: " . $userName . PHP_EOL . "User email: " . $userEmail . PHP_EOL .  "Table inserted_id: " . $inserted_id . PHP_EOL . "-------------------------" . PHP_EOL;
+
+
+        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        if (!file_exists($log_dir)) {
+            mkdir($log_dir, 0755, true);
+        }
+        $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+        file_put_contents($fileName, $log, FILE_APPEND);
+    }
+
+    public function updateAirwallexRezdyOrder($transactionID, $rezdy_order_id, $rezdy_response_params, $rezdy_booking_status, $rezdy_total_amount, $rezdy_total_paid, $rezdy_due_amount, $rezdy_payment_type, $rezdy_created_date, $rezdy_confirmed_date, $attemps, $plugin_dir, $inserted_id, $userName, $userEmail)
+    {
+
+        global $wpdb;
+        ##Update order
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $data_to_update = array(
+            'rezdy_order_id' => $rezdy_order_id,
+            "rezdy_response_params" => "$rezdy_response_params",
+            "rezdy_booking_status" => $rezdy_booking_status,
+            "rezdy_total_amount" => $rezdy_total_amount,
+            "rezdy_total_paid" => $rezdy_total_paid,
+            "rezdy_due_amount" => $rezdy_due_amount,
+            "rezdy_payment_type" => $rezdy_payment_type,
+            "rezdy_created_date" => $rezdy_created_date,
+            "rezdy_confirmed_date" => $rezdy_confirmed_date
+        );
+
+        // Define the WHERE clause to identify the row to update
+        $where = array(
+            'id' => $inserted_id,
+            'transactionID' => $transactionID,
+        );
+
+        // Perform the update
+        $result = $wpdb->update($rezdy_plugin_transactions, $data_to_update, $where);
+
+
+        ##log file update
+        $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Rezdy booking status: " . $attemps . PHP_EOL . "User name: " . $userName . PHP_EOL . "User email: " . $userEmail . PHP_EOL .  "Table inserted_id: " . $inserted_id . PHP_EOL . "-------------------------" . PHP_EOL;
+
+
+        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        if (!file_exists($log_dir)) {
+            mkdir($log_dir, 0755, true);
+        }
+        $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+        file_put_contents($fileName, $log, FILE_APPEND);
+    }
+
+    // ======= airwallex end =========
+
 
     public function paypal_request($apiUrl, $post_data, $request_type, $headers)
     {
@@ -1212,13 +1668,13 @@ class BookingDetails extends Screen
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_type);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
     }
+
     public function guidv4($data = null)
     {
         // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
@@ -1233,6 +1689,7 @@ class BookingDetails extends Screen
         // Output the 36 character UUID.
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
+
     public function get_user_ip()
     {
         // Check for shared Internet/ISP IP
@@ -1662,43 +2119,4 @@ class BookingDetails extends Screen
         }
         return $randomString;
     }
-    // ======= airwallex ===============
- 
-    public function airwallex_auth_token() {
-
-        
-
-
-        $api_key = $_POST['api_key'];
-        $client_id = $_POST['client_id'];
-        //print_r($_POST['api_key']);
-        
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api-demo.airwallex.com/api/v1/authentication/login',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_HTTPHEADER => array(
-            'x-api-key: '.$api_key.'',
-            'x-client-id: '.$client_id.''
-        ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $responseArray = json_decode($response, true);
-        echo '<pre>';
-        print_r($responseArray);
-        //wp_send_json(array('response' => true, 'token' => $response));
-        exit();
-    }
-    
-    // ======= end =========
 }
