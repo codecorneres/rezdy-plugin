@@ -122,40 +122,38 @@ class Settings
     public static function delete_Tables_Options()
     {
 
-        // global $wpdb;
-        // $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
-        // $stripe_transaction = $wpdb->prefix . 'stripe_transaction';
-        // $razdy_authentication = $wpdb->prefix . 'razdy_authentication';
-        // $add_to_cart_data = $wpdb->prefix . 'add_to_cart_data';
-        // $wpdb->query("DROP TABLE IF EXISTS $rezdy_plugin_transactions");
-        // $wpdb->query("DROP TABLE IF EXISTS $stripe_transaction");
-        // $wpdb->query("DROP TABLE IF EXISTS $razdy_authentication");
-        // $wpdb->query("DROP TABLE IF EXISTS $add_to_cart_data");
-        // delete_option("cc:db_version");
-        // delete_option("cc_stripe_pub_api_key");
-        // delete_option("cc_stripe_secret_api_key");
-        // delete_option("cc_success_url");
-        // delete_option("cc_cancel_url");
-        // delete_option("cc_rezdy_api_key");
-        // delete_option("cc_rezdy_api_url");
-        // delete_option("cc_paypal_client_id");
-        // delete_option("cc_paypal_secret_api_key");
-        // delete_option("cc_paypal_live");
-        // delete_option("cc_picked_color");
-        // delete_option("cc_stripe_enabled");
-        // delete_option("cc_paypal_enabled");
-        // delete_option("cc_airwallex_enabled");
-        // delete_option("cc_airwallex_client_id");
-        // delete_option("cc_airwallex_secret_api_key");
-        // delete_option("cc_airwallex_live");
+        global $wpdb;
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $razdy_authentication = $wpdb->prefix . 'razdy_authentication';
+        $add_to_cart_data = $wpdb->prefix . 'add_to_cart_data';
+        $wpdb->query("DROP TABLE IF EXISTS $rezdy_plugin_transactions");
+        $wpdb->query("DROP TABLE IF EXISTS $razdy_authentication");
+        $wpdb->query("DROP TABLE IF EXISTS $add_to_cart_data");
+        delete_option("cc:db_version");
+        delete_option("cc_stripe_pub_api_key");
+        delete_option("cc_stripe_secret_api_key");
+        delete_option("cc_success_url");
+        delete_option("cc_cancel_url");
+        delete_option("cc_rezdy_api_key");
+        delete_option("cc_rezdy_api_url");
+        delete_option("cc_paypal_client_id");
+        delete_option("cc_paypal_secret_api_key");
+        delete_option("cc_paypal_live");
+        delete_option("cc_picked_color");
+        delete_option("cc_stripe_enabled");
+        delete_option("cc_paypal_enabled");
+        delete_option("cc_airwallex_enabled");
+        delete_option("cc_airwallex_client_id");
+        delete_option("cc_airwallex_secret_api_key");
+        delete_option("cc_airwallex_live");
 
 
-        // setcookie('wordpress_session_custom', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN);
-        // // Unset the cookie value from the $_COOKIE array
-        // unset($_COOKIE['wordpress_session_custom']);
-        // // Optionally, you may also destroy the cookie value from the current session
-        // if (isset($_SESSION['wordpress_session_custom'])) {
-        //     unset($_SESSION['wordpress_session_custom']);
-        // }
+        setcookie('wordpress_session_custom', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN);
+        // Unset the cookie value from the $_COOKIE array
+        unset($_COOKIE['wordpress_session_custom']);
+        // Optionally, you may also destroy the cookie value from the current session
+        if (isset($_SESSION['wordpress_session_custom'])) {
+            unset($_SESSION['wordpress_session_custom']);
+        }
     }
 }
