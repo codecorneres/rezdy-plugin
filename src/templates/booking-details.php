@@ -291,7 +291,7 @@ function getGroupValue($value)
                         <!-- form-data -->
                         <fieldset class="Billing_Contact payment-third">
                             <div class="method_contents" id="method_contents_ID">
-                                <?php if (!(get_option('cc_stripe_disable') == 'yes')) : ?>
+                                <?php if ((get_option('cc_stripe_enabled') == 'yes')) : ?>
                                     <div class="first">
                                         <input type="radio" id="stripe" name="radio" class="stripe_credit_card" onclick="stripeCreditCard(this)">
                                         <label for="paymentOption" class="mls stripe_credit_card" onclick="stripeCreditCard(this)">
@@ -305,26 +305,30 @@ function getGroupValue($value)
                                         </label>
                                     </div>
                                 <?php endif; ?>
-                                <div class="first">
-                                    <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
-                                    <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
-                                        <div class="payment-content">
-                                            Pay with PayPal
-                                        </div>
-                                        <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>" width="150" height="35" class="rezdy-checkout">
-                                    </label>
-                                </div>
+                                <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
+                                        <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
+                                            <div class="payment-content">
+                                                Pay with PayPal
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>" width="150" height="35" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
                                 <!-- ======== Airwallex ===== -->
-                                <div class="first">
-                                    <input type="radio" id="airwallex" name="radio" class="airwallex_payment_card" onclick="airwallexPaymentCard(this)">
-                                    <label for="paymentOption" class="mls airwallex_payment_card" onclick="airwallexPaymentCard(this)">
-                                        <div class="payment-content">
-                                            Pay by Airwallex<br>
+                                <?php if ((get_option('cc_airwallex_enabled') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="airwallex" name="radio" class="airwallex_payment_card" onclick="airwallexPaymentCard(this)">
+                                        <label for="paymentOption" class="mls airwallex_payment_card" onclick="airwallexPaymentCard(this)">
+                                            <div class="payment-content">
+                                                Pay by Airwallex<br>
 
-                                        </div>
-                                        <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/airwallex_logo.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
-                                    </label>
-                                </div>
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/airwallex_logo.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
                                 <!-- ======= End Airwallex ====== -->
                             </div>
                         </fieldset>
@@ -639,10 +643,14 @@ function getGroupValue($value)
 
 <script src="<?php echo plugin_dir_url(__FILE__) . 'js/intlTelInput.min.js'; ?>"></script>
 <script src="<?php echo plugin_dir_url(__FILE__) . 'js/utils.js'; ?>"></script>
-<script src="https://js.stripe.com/v3/"></script>
 
+<?php if (get_option('cc_stripe_enabled') == 'yes') : ?>
+    <script src="https://js.stripe.com/v3/"></script>
+<?php endif; ?>
 <!-- ====== Airwallex ====== -->
-<script src="https://checkout.airwallex.com/assets/elements.bundle.min.js"></script>
+<?php if (get_option('cc_airwallex_enabled') == 'yes') : ?>
+    <script src="https://checkout.airwallex.com/assets/elements.bundle.min.js"></script>
+<?php endif; ?>
 <!-- ===== End Airwallex ===== -->
 
 <script src="<?php echo plugin_dir_url(__FILE__) . 'js/jquery-2.2.4.min.js'; ?>"></script>
@@ -661,40 +669,51 @@ function getGroupValue($value)
 
 
     //Stripe card element
-    var stripeKey = "<?php echo get_option('cc_stripe_pub_api_key'); ?>";
-    var stripe = Stripe(stripeKey);
-    var elements = stripe.elements();
-    var style = {
-        base: {
-            iconColor: '#666EE8',
-            color: '#31325F',
-            lineHeight: '40px',
-            fontWeight: 300,
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSize: '15px',
-            '::placeholder': {
-                color: '#CFD7E0',
-            },
-        },
-    };
-    var card = elements.create('card', {
-        style: style,
-        hidePostalCode: true,
-    });
-    var cardElement = document.querySelector('#card-element');
-    if (cardElement) {
-        card.mount('#card-element');
+    var cc_stripe_enabled = "<?php echo get_option('cc_stripe_enabled'); ?>";
+    if (cc_stripe_enabled) {
+        if (cc_stripe_enabled == 'yes') {
+            var stripeKey = "<?php echo get_option('cc_stripe_pub_api_key'); ?>";
+            var stripe = Stripe(stripeKey);
+            var elements = stripe.elements();
+            var style = {
+                base: {
+                    iconColor: '#666EE8',
+                    color: '#31325F',
+                    lineHeight: '40px',
+                    fontWeight: 300,
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSize: '15px',
+                    '::placeholder': {
+                        color: '#CFD7E0',
+                    },
+                },
+            };
+            var card = elements.create('card', {
+                style: style,
+                hidePostalCode: true,
+            });
+            var cardElement = document.querySelector('#card-element');
+            if (cardElement) {
+                card.mount('#card-element');
+            }
+        }
     }
 
+
     // ===== Airwallex Element ======
-    var cc_airwallex_live = "<?php echo get_option('cc_airwallex_live'); ?>";
-    const env = (cc_airwallex_live) ? 'prod' : 'demo';
-    Airwallex.init({
-        env: `${env}`,
-        origin: window.location.origin
-    });
-    const airwallexCard = Airwallex.createElement('card');
-    const airwallexElement = airwallexCard.mount("airwallex_element");
+    var cc_airwallex_enabled = "<?php echo get_option('cc_airwallex_enabled'); ?>";
+    if (cc_airwallex_enabled) {
+        if (cc_airwallex_enabled == 'yes') {
+            var cc_airwallex_live = "<?php echo get_option('cc_airwallex_live'); ?>";
+            const env = (cc_airwallex_live) ? 'prod' : 'demo';
+            Airwallex.init({
+                env: `${env}`,
+                origin: window.location.origin
+            });
+            const airwallexCard = Airwallex.createElement('card');
+            var airwallexElement = airwallexCard.mount("airwallex_element");
+        }
+    }
     // ======= End Airwallex Card Element =============
 
 
@@ -1584,7 +1603,6 @@ function getGroupValue($value)
                     return response.json();
                 })
                 .then(function(data) {
-                    console.log('Data from payment Intent API: ', data);
                     var isError = false;
                     if (!data.isError) {
                         //success
@@ -1603,20 +1621,12 @@ function getGroupValue($value)
                             intent_id: `${int_ID}`, // Payment Intent ID
                             client_secret: `${client_secret}` // client_secret
                         }).then((response) => {
-                            console.log('Data from payment Intent Confirmation: ', response);
-                            console.log(JSON.stringify(response));
-
                             const status = response.status;
                             const totalPaid = response.captured_amount;
-
                             // After successfull confirm payment intent
                             afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
 
-
-
                         }).catch((error) => {
-                            console.error('Payment failed:', error);
-
                             // Handle error
                             isError = true;
                             const errorCode = error.code;
@@ -1625,7 +1635,6 @@ function getGroupValue($value)
                             const totalPaid = '';
                             // After Failedf from confirm payment Intent
                             afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
-
 
                         });
 
@@ -1749,7 +1758,6 @@ function getGroupValue($value)
                 return responseInner.json();
             })
             .then(function(data) {
-                console.log('After confirm ajax response: ', data);
                 var baseURL = "<?php echo home_url(); ?>";
                 if (data.requestStatus == true) {
 

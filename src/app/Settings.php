@@ -54,23 +54,6 @@ class Settings
         }
 
         //2nd Table
-        $stripe_transaction = $wpdb->prefix . 'stripe_transaction';
-        $stripe_transaction_sql = "CREATE TABLE `$stripe_transaction` (
-            `id` bigint(20) NOT NULL AUTO_INCREMENT,
-            `orderNumber` varchar(255) NOT NULL,
-            `transactionID` varchar(255) NOT NULL,
-            `amount` varchar(255) NOT NULL,
-            `currency` varchar(255) NOT NULL,
-            `status` varchar(255) NOT NULL,
-            PRIMARY KEY (`id`)
-          ) $charset_collate;";
-
-        if ($wpdb->get_var("SHOW TABLES LIKE '$stripe_transaction'") != $stripe_transaction) {
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($stripe_transaction_sql);
-        }
-
-        //4th Table
         $razdy_authentication = $wpdb->prefix . 'razdy_authentication';
         $md5EncodedPassword = md5('wsELpm2rDPprLrzxPdYI');
         $razdy_authentication_sql = "CREATE TABLE `$razdy_authentication` (
@@ -88,7 +71,7 @@ class Settings
         }
 
 
-        //5th Table
+        //3rd Table
         $add_to_cart_data = $wpdb->prefix . 'add_to_cart_data';
         $add_to_cart_data_sql = "CREATE TABLE `$add_to_cart_data` (
             `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -159,6 +142,12 @@ class Settings
         // delete_option("cc_paypal_secret_api_key");
         // delete_option("cc_paypal_live");
         // delete_option("cc_picked_color");
+        // delete_option("cc_stripe_enabled");
+        // delete_option("cc_paypal_enabled");
+        // delete_option("cc_airwallex_enabled");
+        // delete_option("cc_airwallex_client_id");
+        // delete_option("cc_airwallex_secret_api_key");
+        // delete_option("cc_airwallex_live");
 
 
         // setcookie('wordpress_session_custom', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN);

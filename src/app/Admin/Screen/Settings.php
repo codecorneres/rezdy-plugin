@@ -29,9 +29,11 @@ class Settings extends Screen
             'rezdy_api_key' => get_option('cc_rezdy_api_key'),
             'rezdy_api_url' => get_option('cc_rezdy_api_url'),
             'picked_color' => get_option('cc_picked_color'),
+            'stripe_enabled' => get_option('cc_stripe_enabled'),
+            'paypal_enabled' => get_option('cc_paypal_enabled'),
+            'airwallex_enabled' => get_option('cc_airwallex_enabled'),
             'stripe_pub_api_key' => get_option('cc_stripe_pub_api_key'),
             'stripe_secret_api_key' => get_option('cc_stripe_secret_api_key'),
-            'stripe_disable' => get_option('cc_stripe_disable'), // ==== stripe desable ====
             'success_url' => get_option('cc_success_url'),
             'cancel_url' => get_option('cc_cancel_url'),
             'paypal_client_id' => get_option('cc_paypal_client_id'),
@@ -132,48 +134,67 @@ class Settings extends Screen
             return $this->error(__('Please enter a Rezdy API Key.', 'cc-rezdy-api'));
 
         if (!$rezdy_api_url = sanitize_text_field($_POST['rezdy_api_url'] ?? ''))
-            return $this->error(__('Please enter a Rezdy API Key.', 'cc-rezdy-api'));
-
-        if (!$stripe_pub_api_key = sanitize_text_field($_POST['stripe_pub_api_key'] ?? ''))
-            return $this->error(__('Please enter a Stripe API Key.', 'cc-rezdy-api'));
-
-        if (!$stripe_secret_api_key = sanitize_text_field($_POST['stripe_secret_api_key'] ?? ''))
-            return $this->error(__('Please enter a Stripe API Key.', 'cc-rezdy-api'));
-        // =======  =============
-        $stripe_disable = (isset($_POST['stripe_disable'])) ? $_POST['stripe_disable'] : '';
-        // ====== end ========
-
-        if (!$success_url = sanitize_text_field($_POST['success_url'] ?? ''))
-            return $this->error(__('Please select success url.', 'cc-rezdy-api'));
-
-        if (!$cancel_url = sanitize_text_field($_POST['cancel_url'] ?? ''))
-            return $this->error(__('Please select cancel url.', 'cc-rezdy-api'));
-
-        if (!$paypal_client_id = sanitize_text_field($_POST['paypal_client_id'] ?? ''))
-            return $this->error(__('Please enter a PayPal Client ID.', 'cc-rezdy-api'));
-
-        if (!$paypal_secret_api_key = sanitize_text_field($_POST['paypal_secret_api_key'] ?? ''))
-            return $this->error(__('Please enter a PayPal secret key.', 'cc-rezdy-api'));
-
-        $paypal_live = (isset($_POST['paypal_live'])) ? $_POST['paypal_live'] : '';
-
-        // ========== airwallex ========
-        if (!$airwallex_client_id = sanitize_text_field($_POST['airwallex_client_id'] ?? ''))
-            return $this->error(__('Please enter a Airwallex Client ID.', 'cc-rezdy-api'));
-
-        if (!$airwallex_secret_api_key = sanitize_text_field($_POST['airwallex_secret_api_key'] ?? ''))
-            return $this->error(__('Please enter a Airwallex secret key.', 'cc-rezdy-api'));
-
-        $airwallex_live = (isset($_POST['airwallex_live'])) ? $_POST['airwallex_live'] : '';
-        // ============== end ==========
-        
+            return $this->error(__('Please enter a Rezdy API URL.', 'cc-rezdy-api'));
 
         $color_picked = (isset($_POST['theme'])) ? $_POST['theme'] : 'theme-cdt';
 
+
+
+        $stripe_enabled = (isset($_POST['stripe_enabled'])) ? $_POST['stripe_enabled'] : '';
+        $paypal_enabled = (isset($_POST['paypal_enabled'])) ? $_POST['paypal_enabled'] : '';
+        $airwallex_enabled = (isset($_POST['airwallex_enabled'])) ? $_POST['airwallex_enabled'] : '';
+
+        // Ensure at least one payment gateway is enabled
+        if (empty($stripe_enabled) && empty($paypal_enabled) && empty($airwallex_enabled)) {
+            return $this->error(__('At least one payment gateway must be enabled.', 'cc-rezdy-api'));
+        }
+
+        //Stripe
+        if (!empty($stripe_enabled)) {
+            if (!$stripe_pub_api_key = sanitize_text_field($_POST['stripe_pub_api_key'] ?? ''))
+                return $this->error(__('Please enter a Stripe Publishable Key.', 'cc-rezdy-api'));
+
+            if (!$stripe_secret_api_key = sanitize_text_field($_POST['stripe_secret_api_key'] ?? ''))
+                return $this->error(__('Please enter a Stripe Secret Key.', 'cc-rezdy-api'));
+        }
+
+        //PayPal
+        if (!empty($paypal_enabled)) {
+            $paypal_live = (isset($_POST['paypal_live'])) ? $_POST['paypal_live'] : '';
+            if (!$paypal_client_id = sanitize_text_field($_POST['paypal_client_id'] ?? ''))
+                return $this->error(__('Please enter a PayPal Client ID.', 'cc-rezdy-api'));
+
+            if (!$paypal_secret_api_key = sanitize_text_field($_POST['paypal_secret_api_key'] ?? ''))
+                return $this->error(__('Please enter a PayPal secret key.', 'cc-rezdy-api'));
+        }
+
+        // ========== airwallex ========
+        //Airwallex
+        if (!empty($airwallex_enabled)) {
+            $airwallex_live = (isset($_POST['airwallex_live'])) ? $_POST['airwallex_live'] : '';
+            if (!$airwallex_client_id = sanitize_text_field($_POST['airwallex_client_id'] ?? ''))
+                return $this->error(__('Please enter a Airwallex Client ID.', 'cc-rezdy-api'));
+
+            if (!$airwallex_secret_api_key = sanitize_text_field($_POST['airwallex_secret_api_key'] ?? ''))
+                return $this->error(__('Please enter a Airwallex secret key.', 'cc-rezdy-api'));
+        }
+        // ============== end ==========
+
+
+        if (!$success_url = sanitize_text_field($_POST['success_url'] ?? ''))
+            return $this->error(__('Please enter success url.', 'cc-rezdy-api'));
+
+        if (!$cancel_url = sanitize_text_field($_POST['cancel_url'] ?? ''))
+            return $this->error(__('Please enter cancel url.', 'cc-rezdy-api'));
+
+
+
+        update_option('cc_stripe_enabled', $stripe_enabled);
+        update_option('cc_paypal_enabled', $paypal_enabled);
+        update_option('cc_airwallex_enabled', $airwallex_enabled);
+
         update_option('cc_stripe_pub_api_key', $stripe_pub_api_key);
         update_option('cc_stripe_secret_api_key', $stripe_secret_api_key);
-        
-        update_option('cc_stripe_disable', $stripe_disable); // ===== stripe_disable ====
 
         update_option('cc_success_url', $success_url);
         update_option('cc_cancel_url', $cancel_url);
