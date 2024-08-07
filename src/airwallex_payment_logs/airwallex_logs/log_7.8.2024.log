@@ -1,0 +1,24 @@
+User: ::1 - August 7, 2024, 12:00 pm
+Attempt: Airwallex payment started
+User name: test4 test
+User email: test@example.us
+Table inserted_id: 27|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 7, 2024, 12:00 pm
+Payment status: Airwallex Payment completed
+User name: test4 test
+User email: test@example.us
+Table inserted_id: 27
+-------------------------
+User: ::1 - August 7, 2024, 12:04 pm
+Attempt: Airwallex payment started
+User name: test test
+User email: test@gmail.com
+Table inserted_id: 28|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 7, 2024, 12:04 pm
+Payment status: Airwallex Payment completed
+User name: test test
+User email: test@gmail.com
+Table inserted_id: 28
+-------------------------

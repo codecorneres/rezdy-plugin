@@ -1674,123 +1674,146 @@ function getGroupValue($value)
 
                                     if(paymentIntentsData.response == true){
                                         //console.log("id:"+paymentIntentsData.data.id);
+                                        Airwallex.confirmPaymentIntent({
+                                            element: airwallexCard, // Provide Card element
+                                            intent_id: paymentIntentsData.data.id, // Payment Intent ID
+                                            client_secret: paymentIntentsData.data.client_secret, // Client Secret
+                                            
+                                        }).then((response) => {
 
-                                        var bookingData = {
-                                                action: 'booking_checkout',
-                                                priceValue: priceValue,
-                                                selectedcountryCode: selectedcountryCode,
-                                                method: method,
-                                                status: paymentIntentsData.data.status,
-                                                intent_id: paymentIntentsData.data.id,
-                                                rezdy_session_id: session_id
-                                            };
+                                            //console.log(response);
+                                          
+                                           // alert("Payment Successfully Confirm!");
+                                            var status = response.status;
+                                            var currency = response.currency;
 
-                                            var hiddenInput = document.createElement('input');
-                                            hiddenInput.setAttribute('type', 'hidden');
-                                            hiddenInput.setAttribute('name', 'stripeToken');
-                                            hiddenInput.setAttribute('value', airwallexToken);
-                                            bookingForm.appendChild(hiddenInput);
+                                            var bookingData = {
+                                                    action: 'booking_checkout',
+                                                    priceValue: priceValue,
+                                                    selectedcountryCode: selectedcountryCode,
+                                                    method: method,
+                                                    status: status,
+                                                    currency: currency,
+                                                    intent_id: paymentIntentsData.data.id,
+                                                    rezdy_session_id: session_id
+                                                };
 
-                                            var aBookingFormData = new FormData(bookingForm);
-                                            for (var key in bookingData) {
-                                                aBookingFormData.append(key, bookingData[key]);
-                                            }
-                                            var response = fetch(ajax_object.ajax_url, {
-                                                    method: 'POST',
-                                                    body: aBookingFormData
-                                                })
-                                                .then(function(response) {
-                                                    return response.json();
-                                                })
-                                                .then(function(data) {
-                                                    console.log("rezdy bookling:"+data);
+                                                var hiddenInput = document.createElement('input');
+                                                hiddenInput.setAttribute('type', 'hidden');
+                                                hiddenInput.setAttribute('name', 'stripeToken');
+                                                hiddenInput.setAttribute('value', airwallexToken);
+                                                bookingForm.appendChild(hiddenInput);
 
-                                                    //var baseURL = "< ?php echo home_url(); ?>";
+                                                var aBookingFormData = new FormData(bookingForm);
+                                                for (var key in bookingData) {
+                                                    aBookingFormData.append(key, bookingData[key]);
+                                                }
+                                                var response = fetch(ajax_object.ajax_url, {
+                                                        method: 'POST',
+                                                        body: aBookingFormData
+                                                    })
+                                                    .then(function(response) {
+                                                        return response.json();
+                                                    })
+                                                    .then(function(data) {
+                                                        //var data = JSON.stringify(data);
+                                                        //console.log("rezdy bookling:"+data);
 
-                                                    // Airwallex.confirmPaymentIntent({
-                                                    //     element: airwallexCard, // Provide Card element
-                                                    //     intent_id: paymentIntentsData.data.id, // Payment Intent ID
-                                                    //     client_secret: paymentIntentsData.data.client_secret, // Client Secret
-                                                        
-                                                    // }).then((response) => {
-                                                        
-                                                    //     alert("Payment Successfully Confirm!");
-                                                    //     console.log(response);
-                                                        
-                                                    // })
-                                                    // .catch((response) => {
-                                                    //     console.log('There was an error', response);
-                                                    //     //console.log(response.message);
-                                                    // });
-                                                    // if (data.requestStatus == true) {
+                                                        var baseURL = "<?php echo home_url(); ?>";
 
-                                                    //     var transactionID = data.transactionID;
+                                                        if (data.requestStatus == true) {
 
-                                                    //     if (data.success_url != '') {
-                                                    //         var success_url = data.success_url;
+                                                            var transactionID = data.transactionID;
 
+                                                            if (data.success_url != '') {
+                                                                var success_url = data.success_url;
 
-                                                    //         var transactionID = data.transactionID;
-                                                    //         window.location.href = success_url + '?transactionID=' + transactionID;
+                                                                window.location.href = success_url + '?transactionID=' + transactionID;
 
 
-                                                    //     } else {
-                                                    //         var transactionID = data.transactionID;
-                                                    //         baseURL = baseURL + '/success?transactionID=' + transactionID;
-                                                    //         window.location.href = baseURL;
-                                                    //     }
+                                                            } else {
+                                                               
+                                                                baseURL = baseURL + '/success?transactionID=' + transactionID;
+                                                                window.location.href = baseURL;
+                                                            }
 
-                                                    // }
-                                                    // if (data.requestStatus == false) {
-                                                    //     if (data.transactionID) {
-                                                    //         //payment success but Booking not
-                                                    //         if (data.cancel_url != '') {
-                                                    //             var cancel_url = data.cancel_url;
-                                                    //             var params = new URLSearchParams(cancel_url.search);
-                                                    //             var param = 'cancel';
-                                                    //             if (params.has(param)) {
-                                                    //                 var transactionID = data.transactionID;
-                                                    //                 baseURL = baseURL + '/cancel/' + transactionID;
-                                                    //                 window.location.href = baseURL;
-                                                    //             } else {
-                                                    //                 window.location.href = cancel_url;
-                                                    //             }
-                                                    //         } else {
-                                                    //             var transactionID = data.transactionID;
-                                                    //             baseURL = baseURL + '/cancel/' + transactionID;
-                                                    //             window.location.href = baseURL;
-                                                    //         }
+                                                        }
+                                                        if (data.requestStatus == false) {
+                                                            if (data.transactionID) {
+                                                                //payment success but Booking not
+                                                                if (data.cancel_url != '') {
+                                                                    var cancel_url = data.cancel_url;
+                                                                    var params = new URLSearchParams(cancel_url.search);
+                                                                    var param = 'cancel';
+                                                                    if (params.has(param)) {
+                                                                        var transactionID = data.transactionID;
+                                                                        baseURL = baseURL + '/cancel/' + transactionID;
+                                                                        window.location.href = baseURL;
+                                                                    } else {
+                                                                        window.location.href = cancel_url;
+                                                                    }
+                                                                } else {
+                                                                    var transactionID = data.transactionID;
+                                                                    baseURL = baseURL + '/cancel/' + transactionID;
+                                                                    window.location.href = baseURL;
+                                                                }
 
-                                                    //     } else {
-                                                    //         //payment and Booking both not
-                                                    //         if (data.cancel_url != '') {
-                                                    //             var cancel_url = data.cancel_url;
-                                                    //             var params = new URLSearchParams(cancel_url.search);
-                                                    //             var param = 'cancel';
-                                                    //             if (params.has(param)) {
-                                                    //                 baseURL = baseURL + '/cancel/ ';
-                                                    //                 window.location.href = baseURL;
-                                                    //             } else {
-                                                    //                 window.location.href = cancel_url;
-                                                    //             }
-                                                    //         } else {
-                                                    //             baseURL = baseURL + '/cancel/ ';
-                                                    //             window.location.href = baseURL;
-                                                    //         }
+                                                            } else {
+                                                                //payment and Booking both not
+                                                                if (data.cancel_url != '') {
+                                                                    var cancel_url = data.cancel_url;
+                                                                    var params = new URLSearchParams(cancel_url.search);
+                                                                    var param = 'cancel';
+                                                                    if (params.has(param)) {
+                                                                        baseURL = baseURL + '/cancel/ ';
+                                                                        window.location.href = baseURL;
+                                                                    } else {
+                                                                        window.location.href = cancel_url;
+                                                                    }
+                                                                } else {
+                                                                    baseURL = baseURL + '/cancel/ ';
+                                                                    window.location.href = baseURL;
+                                                                }
 
-                                                    //     }
-                                                    // }
+                                                            }
+                                                        }
 
-                                                })
-                                                .catch(function(error) {
-                                                    console.log(error)
-                                                });
+                                                    })
+                                                    .catch(function(error) {
+                                                        console.log(error);
+                                                        var errorElement = document.getElementById('card-errors');
+                                                        errorElement.textContent = error.message;
+
+                                                        // Re-enable the submit button
+                                                        submit_button.disabled = false;
+                                                        jQuery('.btn-payment').removeClass('btn-invalid');
+                                                    });
+                                            
+                                        })
+                                        .catch((error) => {
+                                            console.log('There was an error', error);
+                                            console.log(error.message);
+                                            
+                                            var errorElement = document.getElementById('card-errors');
+                                            errorElement.textContent = error.message;
+
+                                            // Re-enable the submit button
+                                            submit_button.disabled = false;
+                                            jQuery('.btn-payment').removeClass('btn-invalid');
+                                            alert(error.message);
+                                        });
 
                                     }
                                 })
                                 .catch(function(error) {
                                     console.log(error);
-                                });
+                                    var errorElement = document.getElementById('card-errors');
+                                    errorElement.textContent = error.message;
+
+                                    // Re-enable the submit button
+                                    submit_button.disabled = false;
+                                    jQuery('.btn-payment').removeClass('btn-invalid');
+                                                });
                     
                             
                         }

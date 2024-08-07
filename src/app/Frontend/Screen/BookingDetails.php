@@ -1205,6 +1205,7 @@ class BookingDetails extends Screen
                     
                     $token = $_POST['stripeToken'];
                     $status = $_POST['status'];
+                    
                     $transactionID = $_POST['intent_id'];
 
 
@@ -1220,7 +1221,7 @@ class BookingDetails extends Screen
                     $current_timestamp = current_time('mysql');
                     $rezdy_params = json_encode($itemParams);
 
-                    $paymentObject = array("rezdy_order_id" => '', "transactionID" => '', "success_message" => '', "failure_message" => '', "order_status" => 0, "IP_address" => $user_ip, "username" => $username, "useremail" => $useremail,  "firstName" => $po_firstName, "lastName" => $po_lastName, "phone" => $po_phone, "country" => $po_country, "date_time" => $current_timestamp, "response_time" => '', "totalAmount" => number_format($_POST["priceValue"], 2, '.', ''),  "totalPaid" => '', "payment_method" => 'AIRWALLEX', "paypal_token" => '', "paypal_payer_id" => '', "rezdy_booking_status" => '', "rezdy_total_amount" => '', "rezdy_total_paid" => '', "rezdy_due_amount" => '', "rezdy_created_date" => '', "rezdy_confirmed_date" => '');
+                    $paymentObject = array("rezdy_order_id" => '', "transactionID" => '', "success_message" => '', "failure_message" => '', "order_status" => 0, "IP_address" => $user_ip, "username" => $username, "useremail" => $useremail,  "firstName" => $po_firstName, "lastName" => $po_lastName, "phone" => $po_phone, "country" => $po_country, "date_time" => $current_timestamp, "response_time" => '', "totalAmount" => number_format($_POST["priceValue"], 2, '.', ''),  "totalPaid" => '', "payment_method" => 'AIRWALLEX', "paypal_token" => '', "paypal_payer_id" => '', "rezdy_booking_status" => '', "rezdy_total_amount" => '', "rezdy_total_paid" => '', "rezdy_due_amount" => '', "rezdy_payment_type" =>'CREDITCARD', "rezdy_created_date" => '', "rezdy_confirmed_date" => '');
 
                     $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
 
@@ -1250,7 +1251,7 @@ class BookingDetails extends Screen
                         "rezdy_total_amount" => $paymentObject['rezdy_total_amount'],
                         "rezdy_total_paid" => $paymentObject['rezdy_total_paid'],
                         "rezdy_due_amount" => $paymentObject['rezdy_due_amount'],
-                        "rezdy_payment_type" => "CREDITCARD",
+                        "rezdy_payment_type" => $paymentObject['rezdy_payment_type'],
                         "rezdy_created_date" => $paymentObject['rezdy_created_date'],
                         "rezdy_confirmed_date" => $paymentObject['rezdy_confirmed_date']
                     );
@@ -1265,7 +1266,7 @@ class BookingDetails extends Screen
                     $paymentstatus = 'Airwallex payment started';
                     $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Attempt: " . $paymentstatus . PHP_EOL . "User name: " . $username . PHP_EOL . "User email: " . $useremail . PHP_EOL . "Table inserted_id: " . $custom_id . PHP_EOL . "-------------------------" . PHP_EOL;
 
-                    $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+                    $log_dir = $plugin_dir . 'src/airwallex_payment_logs/airwallex_logs/';
 
                     // Create the directory if it doesn't exist
                     if (!file_exists($log_dir)) {
@@ -1275,35 +1276,38 @@ class BookingDetails extends Screen
                     $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
                     file_put_contents($fileName, $log, FILE_APPEND);
 
-                    //try {
+                    try {
                     
-                    if ( !empty($transactionID)) {
+                        if ( $status === "SUCCEEDED") {
 
-                        $amount_captured = round($_POST['priceValue'] * 100);
-                        $status = 'SUCCEEDED';
-                        $currency = 'EUR';
+                            $amount_captured = round($_POST['priceValue'] * 100);
+                            
+                            $currency = $_POST['currency'];
 
-                        $attemps = 'Airwallex Payment completed';
-                        $totalPaid = round($amount_captured / 100);
-                        $userName = $_POST["fname"] . " " . $_POST["lname"];
-                        $this->airwallexUpdateOrder($status, $failure_message = '', $rezdy_order_id = '', $transactionID, $order_status = 1, $totalPaid, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
-                    } else {
+                            $attemps = 'Airwallex Payment completed';
+                            $totalPaid = round($amount_captured / 100);
+                            $userName = $_POST["fname"] . " " . $_POST["lname"];
+                            $this->airwallexUpdateOrder($status, $failure_message = '', $rezdy_order_id = '', $transactionID, $order_status = 1, $totalPaid, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
+                        } else {
+                            $error = getError()->message;
+                            $attemps = 'Airwallex payment failed';
+                            $userName = $_POST["fname"] . " " . $_POST["lname"];
+                            $this->failedAirwallex($error, $order_status = 2, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
+                        }
+                    
+                    } catch (Airwallex $e) {
                         $error = $e->getError()->message;
                         $attemps = 'Airwallex payment failed';
                         $userName = $_POST["fname"] . " " . $_POST["lname"];
                         $this->failedAirwallex($error, $order_status = 2, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
                     }
-                    
-                    // } catch (Airwallex $e) {
-                    //     $error = $e->getError()->message;
-                    //     $attemps = 'Airwallex payment failed';
-                    //     $userName = $_POST["fname"] . " " . $_POST["lname"];
-                    //     $this->failedAirwallex($error, $order_status = 2, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
-                    //  }
 
                     if ($transactionID) {
 
                         global $wpdb;
+
+                        
+                        $itemParams['payments'][0]['type'] = "CREDITCARD";
 
                         $itemParams['payments'][0]['label'] = "Airwallex Payment Intent Id: " . $transactionID;
 
@@ -1330,7 +1334,7 @@ class BookingDetails extends Screen
                         curl_close($ch);
                         $resultArray = json_decode($result, true);
 
-                        print_r($resultArray);
+                        //print_r($resultArray);
                         
                         $rezdy_order_id = $resultArray['booking']['orderNumber'];
                         $rezdy_booking_status = $resultArray['booking']['status'];
@@ -1503,7 +1507,7 @@ class BookingDetails extends Screen
         $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Payment status: " . $attemps . PHP_EOL . "User name: " . $userName . PHP_EOL . "User email: " . $userEmail . PHP_EOL .  "Table inserted_id: " . $inserted_id . PHP_EOL . "-------------------------" . PHP_EOL;
 
 
-        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        $log_dir = $plugin_dir . 'src/airwallex_payment_logs/airwallex_logs/';
         if (!file_exists($log_dir)) {
             mkdir($log_dir, 0755, true);
         }
@@ -1537,7 +1541,7 @@ class BookingDetails extends Screen
         $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Status: " . $attemps . PHP_EOL . "User name: " . $userName . PHP_EOL . "User email: " . $userEmail . PHP_EOL .  "Reason:" . $failure_message . PHP_EOL . "Table inserted_id: " . $inserted_id . PHP_EOL . "-------------------------" . PHP_EOL;
 
 
-        $log_dir = $plugin_dir . 'src/payment_logs/airwallex_logs/';
+        $log_dir = $plugin_dir . 'src/airwallex_payment_logs/airwallex_logs/';
         if (!file_exists($log_dir)) {
             mkdir($log_dir, 0755, true);
         }
