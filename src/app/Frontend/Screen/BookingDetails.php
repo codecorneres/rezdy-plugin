@@ -1205,9 +1205,8 @@ class BookingDetails extends Screen
                     
                     $token = $_POST['stripeToken'];
                     $status = $_POST['status'];
-                    
+                    $isError = $_POST['isError'];
                     $transactionID = $_POST['intent_id'];
-
 
                     $plugin_dir = trailingslashit(plugin_dir_path($this->appContext->getPluginFile()));
                     $items_nameString = implode(", ", $items_name);
@@ -1276,33 +1275,26 @@ class BookingDetails extends Screen
                     $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
                     file_put_contents($fileName, $log, FILE_APPEND);
 
-                    try {
                     
-                        if ( $status === "SUCCEEDED") {
+                    if ( $status === "SUCCEEDED") {
 
-                            $amount_captured = round($_POST['priceValue'] * 100);
-                            
-                            $currency = $_POST['currency'];
+                        $amount_captured = round($_POST['priceValue'] * 100);
+                        
+                        $currency = $_POST['currency'];
 
-                            $attemps = 'Airwallex Payment completed';
-                            $totalPaid = round($amount_captured / 100);
-                            $userName = $_POST["fname"] . " " . $_POST["lname"];
-                            $this->airwallexUpdateOrder($status, $failure_message = '', $rezdy_order_id = '', $transactionID, $order_status = 1, $totalPaid, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
-                        } else {
-                            $error = getError()->message;
-                            $attemps = 'Airwallex payment failed';
-                            $userName = $_POST["fname"] . " " . $_POST["lname"];
-                            $this->failedAirwallex($error, $order_status = 2, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
-                        }
-                    
-                    } catch (Airwallex $e) {
-                        $error = $e->getError()->message;
+                        $attemps = 'Airwallex Payment completed';
+                        $totalPaid = round($amount_captured / 100);
+                        $userName = $_POST["fname"] . " " . $_POST["lname"];
+                        $this->airwallexUpdateOrder($status, $failure_message = '', $rezdy_order_id = '', $transactionID, $order_status = 1, $totalPaid, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
+                    } else {
+                        
+                        $error = $_POST['error'];
                         $attemps = 'Airwallex payment failed';
                         $userName = $_POST["fname"] . " " . $_POST["lname"];
                         $this->failedAirwallex($error, $order_status = 2, $attemps, $plugin_dir, $inserted_id, $userName, $_POST["email"]);
                     }
 
-                    if ($transactionID) {
+                    if ( ($status === "SUCCEEDED") && $transactionID) {
 
                         global $wpdb;
 

@@ -1,0 +1,132 @@
+User: ::1 - August 8, 2024, 12:02 pm
+Attempt: Airwallex payment started
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 29|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:13 pm
+Attempt: Airwallex payment started
+User name: Testt Test
+User email: test@gmail.com
+Table inserted_id: 30|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:13 pm
+Status: Airwallex payment failed
+User name: Testt Test
+User email: test@gmail.com
+Reason:authentication_declined
+Table inserted_id: 30
+-------------------------
+User: ::1 - August 8, 2024, 12:17 pm
+Attempt: Airwallex payment started
+User name: Testt Test
+User email: test@gmail.com
+Table inserted_id: 31|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:17 pm
+Status: Airwallex payment failed
+User name: Testt Test
+User email: test@gmail.com
+Reason:CAPTURE_REQUESTED
+Table inserted_id: 31
+-------------------------
+User: ::1 - August 8, 2024, 12:22 pm
+Attempt: Airwallex payment started
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 32|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:22 pm
+Payment status: Airwallex Payment completed
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 32
+-------------------------
+User: ::1 - August 8, 2024, 12:23 pm
+Attempt: Airwallex payment started
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 33|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:23 pm
+Status: Airwallex payment failed
+User name: Test Test
+User email: test@gmail.com
+Reason:no_3ds_liability_shift
+Table inserted_id: 33
+-------------------------
+User: ::1 - August 8, 2024, 12:35 pm
+Attempt: Airwallex payment started
+User name: Testt Test
+User email: test@gmail.com
+Table inserted_id: 34|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:35 pm
+Status: Airwallex payment failed
+User name: Testt Test
+User email: test@gmail.com
+Reason:no_3ds_liability_shift
+Table inserted_id: 34
+-------------------------
+User: ::1 - August 8, 2024, 12:41 pm
+Attempt: Airwallex payment started
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 35|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:41 pm
+Status: Airwallex payment failed
+User name: Test Test
+User email: test@gmail.com
+Reason:authentication_declined
+Table inserted_id: 35
+-------------------------
+User: ::1 - August 8, 2024, 12:43 pm
+Attempt: Airwallex payment started
+User name: Test1 Test
+User email: test@gmail.com
+Table inserted_id: 36|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:43 pm
+Payment status: Airwallex Payment completed
+User name: Test1 Test
+User email: test@gmail.com
+Table inserted_id: 36
+-------------------------
+User: ::1 - August 8, 2024, 12:51 pm
+Attempt: Airwallex payment started
+User name: Test1 Test
+User email: test@gmail.com
+Table inserted_id: 37|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:51 pm
+Payment status: Airwallex Payment completed
+User name: Test1 Test
+User email: test@gmail.com
+Table inserted_id: 37
+-------------------------
+User: ::1 - August 8, 2024, 12:54 pm
+Attempt: Airwallex payment started
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 38|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:54 pm
+Payment status: Airwallex Payment completed
+User name: Test Test
+User email: test@gmail.com
+Table inserted_id: 38
+-------------------------
+User: ::1 - August 8, 2024, 12:56 pm
+Attempt: Airwallex payment started
+User name: Testt Test
+User email: test@gmail.com
+Table inserted_id: 39|PKMY00|website ( localhost/wp661 )
+-------------------------
+User: ::1 - August 8, 2024, 12:56 pm
+Status: Airwallex payment failed
+User name: Testt Test
+User email: test@gmail.com
+Reason:authentication_declined
+Table inserted_id: 39
+-------------------------
