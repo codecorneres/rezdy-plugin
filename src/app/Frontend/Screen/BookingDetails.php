@@ -2012,7 +2012,7 @@ class BookingDetails extends Screen
 
         $guzzleClient           = new RezdyAPI(get_option('cc_rezdy_api_key'));
         $selected_date = date('Y-m-d 00:00:00', strtotime($_POST['session_date']));
-        $lastDate = date("Y-m-t", strtotime($selected_date));
+        $lastDate = date("Y-m-d", strtotime($selected_date));
         $lastDateTime = date("Y-m-d H:i:s", strtotime("$lastDate 23:59:59"));
         $availabilitySearch = new SessionSearch([
             'productCode' => $_POST['product_code'],

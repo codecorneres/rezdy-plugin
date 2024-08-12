@@ -305,17 +305,6 @@ function getGroupValue($value)
                                         </label>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
-                                    <div class="first">
-                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
-                                        <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
-                                            <div class="payment-content">
-                                                Pay with PayPal
-                                            </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>" width="150" height="35" class="rezdy-checkout">
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
                                 <!-- ======== Airwallex ===== -->
                                 <?php if ((get_option('cc_airwallex_enabled') == 'yes')) : ?>
                                     <div class="first">
@@ -330,6 +319,17 @@ function getGroupValue($value)
                                     </div>
                                 <?php endif; ?>
                                 <!-- ======= End Airwallex ====== -->
+                                <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
+                                        <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
+                                            <div class="payment-content">
+                                                Pay with PayPal
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>" width="150" height="35" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </fieldset>
                         <div class="form-row stripe_card" style="display:none;">

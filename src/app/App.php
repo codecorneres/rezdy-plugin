@@ -22,7 +22,7 @@ class App
     const DB_VERSION_OPTION = 'cc:db_version';
     const SETTINGS_TABLE = 'cc_settings';
     const ALLOWED_POST_TYPE = ['rome', 'florence', 'barcelona'];
-   
+
 
     public function __construct(string $plugin_file)
     {
@@ -115,10 +115,11 @@ class App
     {
         //self::createToursPostTypes();
         add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)', 'index.php?checkout_id=$matches[1]&pagenamecustom=checkout', 'top');
-        add_rewrite_rule('^success/?', 'index.php?transactionID=$matches[1]&pagenamecustom=success', 'top');
-        add_rewrite_rule('^cancel/([^/]+)', 'index.php?cancel=$matches[1]', 'top');
-        add_rewrite_rule('^cancel/?', 'index.php?cancel=1', 'top'); // Updated rule for the cancel page
-        add_rewrite_rule('^return?([^/]+)', 'index.php?token=$matches[1]&PayerID=$matches[2]', 'top');
+        add_rewrite_rule('^success/?$', 'index.php?transactionID=$matches[1]&pagenamecustom=success', 'top');
+        add_rewrite_rule('^cancel/([^/]+)/?$', 'index.php?cancel=$matches[1]', 'top');
+        add_rewrite_rule('^cancel/?$', 'index.php?cancel=1', 'top');
+        //add_rewrite_rule('^return?([^/]+)', 'index.php?token=$matches[1]&PayerID=$matches[2]', 'top');
+        add_rewrite_rule('^return/([^/]+)/([^/]+)/?$', 'index.php?token=$matches[1]&PayerID=$matches[2]', 'top');
         add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
         add_action('template_redirect', [$this, 'custom_template_redirect']);
         flush_rewrite_rules();
