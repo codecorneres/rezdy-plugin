@@ -49,6 +49,10 @@ class Booking
         if (empty($atts)) {
             return false;
         } else {
+            $atts = shortcode_atts( array(
+                'productcode' => '',
+                'action_type' => 'booking',
+            ), $atts, 'rezdy_booking_form' );
             return $this->callPageScreenMethod('render_booking_form', $atts);
         }
     }

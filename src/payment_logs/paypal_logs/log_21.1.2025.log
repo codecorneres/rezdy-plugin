@@ -1,0 +1,132 @@
+User: 127.0.0.1 - January 21, 2025, 7:14 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 904|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:14 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 904|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:27 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 905|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:27 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 905|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:30 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 906|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:30 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 906|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:35 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 907|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:35 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 907|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:36 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 908|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 7:36 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 908|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:14 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 909|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:14 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 909|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:23 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 910|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:23 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 910|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:36 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 911|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:37 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 911|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:37 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 912|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:37 am
+Attempt: Error : Issue from:  Booking Rezdy Object was not right, please try again
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 912|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:40 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 913|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:55 am
+Attempt: Paypal Payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 914|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:55 am
+Payment status: COMPLETED
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 914
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 8:55 am
+Rezdy booking status: CONFIRMED
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 914
+-------------------------

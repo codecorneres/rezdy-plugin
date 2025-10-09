@@ -1,0 +1,81 @@
+User: 2600:8800:2483:1300:d129:8e0e:87c6:ff72 - April 23, 2025, 3:30 am
+Attempt: Airwallex payment started
+User name: Steffani Brown
+User email: sbsellsaz@gmail.com
+Table inserted_id: 1739|PRQZ0S, PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 2600:8800:2483:1300:d129:8e0e:87c6:ff72 - April 23, 2025, 3:30 am
+Intent ID Created: int_nlpdmh2z9h6oo51161e
+User name: Steffani Brown
+User email: sbsellsaz@gmail.com
+Table inserted_id: 1739|PRQZ0S, PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 2600:8800:2483:1300:d129:8e0e:87c6:ff72 - April 23, 2025, 3:30 am
+Payment status: Airewallex payment completed
+User name: Steffani Brown
+User email: sbsellsaz@gmail.com
+Table inserted_id: 1739
+-------------------------
+User: 2600:8800:2483:1300:d129:8e0e:87c6:ff72 - April 23, 2025, 3:30 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: Steffani Brown
+User email: sbsellsaz@gmail.com
+Table inserted_id: 1739
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:02 am
+Attempt: Airwallex payment started
+User name: Ana Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1740|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:02 am
+Intent ID Created: int_nlpdp87rdh6ovmnl8fn
+User name: Ana Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1740|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:02 am
+Error Code: issuer_declined
+Error: This card doesn\'t have sufficient funds or credit. Please try a different card
+User name: Ana Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1740|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:04 am
+Attempt: Airwallex payment started
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1741|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:04 am
+Intent ID Created: int_nlpdmh2z9h6ovojd4ir
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1741|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:04 am
+Error Code: issuer_declined
+Error: Something went wrong. Please contact your card issuer.
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1741|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:09 am
+Attempt: Airwallex payment started
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1742|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:09 am
+Intent ID Created: int_nlpdp87rdh6ovtxi32l
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1742|PLBURQ|website ( carpediemtours )
+-------------------------
+User: 2a01:36d:106:212d:e937:9204:94d8:1ae9 - April 23, 2025, 8:10 am
+Error Code: authentication_declined
+Error: You have failed to authenticate the payment. Try again and contact your card issuer or switch to a different payment method if your retry fails.
+User name: Anna Bykova
+User email: melismund@hotmail.com
+Table inserted_id: 1742|PLBURQ|website ( carpediemtours )
+-------------------------

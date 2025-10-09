@@ -1,0 +1,203 @@
+[
+    {
+        "origin": "theme-cdt",
+        "lists": [
+            {
+                "name": "madrid",
+                "klarna_enabled": true,
+                "tours": [
+                    "PEDN0P",
+                    "PP0MXL"
+                ]
+            },
+            {
+                "name": "budapest",
+                "klarna_enabled": false,
+                "tours": [
+                    "PLBURQ",
+                    "PBW5Z8"
+                ]
+            },
+            {
+                "name": "lisbon",
+                "klarna_enabled": true,
+                "tours": [
+                    "PM8CWV",
+                    "PA5HVB",
+                    "PSVRY4"
+                ]
+            },
+            {
+                "name": "barcelona",
+                "klarna_enabled": true,
+                "tours": [
+                    "PNXS0F",
+                    "PW6XPL",
+                    "PDMRAS"
+                ]
+            },
+            {
+                "name": "london",
+                "klarna_enabled": true,
+                "tours": [
+                    "PPAZVK",
+                    "PD8PYJ",
+                    "PHRP2R",
+                    "PK1JTH",
+                    "PNQ0SR"
+                ]
+            },
+            {
+                "name": "florence",
+                "klarna_enabled": true,
+                "tours": [
+                    "P1S02P",
+                    "PYHAPN"
+                ]
+            },
+            {
+                "name": "rome",
+                "klarna_enabled": true,
+                "tours": [
+                    "PVUPY1",
+                    "PKDWEN",
+                    "PCLGP1",
+                    "PFU1EX",
+                    "PG1VYH",
+                    "P68R9Z",
+                    "PWYVFV",
+                    "PR1PWW",
+                    "P3G9TL",
+                    "PDBUK4",
+                    "PWABD0",
+                    "PHYUSJ",
+                    "PQYU0A",
+                    "PFMLM0",
+                    "PRBNX3",
+                    "PJEK8D",
+                    "PY1WWW",
+                    "PEK6W7",
+                    "P6FFTT",
+                    "P09QZB",
+                    "PRQZ0S",
+                    "PRHAPT",
+                    "PBT3YV",
+                    "PJ69F4",
+                    "PBHZDZ",
+                    "PFVZX0",
+                    "PY1WWW",
+                    "PPVTCT"
+                ]
+            }
+        ]
+    },
+    {
+        "origin": "theme-rwc",
+        "lists": [
+            {
+                "name": "rome",
+                "klarna_enabled": true,
+                "tours": [
+                    "PNSKM6",
+                    "PCWGJR",
+                    "PGPFPS",
+                    "PAH705",
+                    "P0L6HL",
+                    "P1MQTN",
+                    "PK0ZCC",
+                    "PTXDYR",
+                    "PZFETT",
+                    "PFP9NX",
+                    "PYXBUG"
+                ]
+            }
+        ]
+    },
+    {
+        "origin": "theme-jtr",
+        "lists": [
+            {
+                "name": "rome",
+                "klarna_enabled": true,
+                "tours": [
+                    "P6UCJM",
+                    "PD8PYJ",
+                    "PPAZVK"
+                ]
+            }
+        ]
+    },
+    {
+        "origin": "theme-tipsy",
+        "lists": [
+            {
+                "name": "london",
+                "klarna_enabled": true,
+                "tours": [
+                    "PAWH13",
+                    "PKU25S",
+                    "PAWH13",
+                    "P4CQSZ"
+                ]
+            },
+            {
+                "name": "rome",
+                "klarna_enabled": true,
+                "tours": [
+                    "PUV1RY",
+                    "PK1KZB",
+                    "P0Q6ZU",
+                    "PASRR3",
+                    "PMTCAX",
+                    "P2098N",
+                    "PWH7DJ",
+                    "PGRVZB",
+                    "PDF0QX",
+                    "P0XXAN",
+                    "PY1WWW"
+                ]
+            },
+            {
+                "name": "barcelona",
+                "klarna_enabled": true,
+                "tours": [
+                    "P1EKC1",
+                    "PEGBMD",
+                    "PRV6M5"
+                ]
+            },
+            {
+                "name": "budapest",
+                "klarna_enabled": false,
+                "tours": [
+                    "PBZV1X",
+                    "PLBURQ"
+                ]
+            },
+            {
+                "name": "lisbon",
+                "klarna_enabled": true,
+                "tours": [
+                    "PSDG4U",
+                    "PSTZBR"
+                ]
+            },
+            {
+                "name": "florence",
+                "klarna_enabled": true,
+                "tours": [
+                    "PYMCHW",
+                    "P1W11T"
+                ]
+            },
+            {
+                "name": "madrid",
+                "klarna_enabled": true,
+                "tours": [
+                    "P53ZVX",
+                    "PUW1EU"
+                ]
+            }
+        ]
+    }
+]

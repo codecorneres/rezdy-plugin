@@ -1,0 +1,30 @@
+User: 82.8.201.131 - July 20, 2025, 8:06 am
+Attempt: Paypal Payment started
+User name: Dana Kalder
+User email: kalderdana@gmail.com
+Table inserted_id: 2223|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 82.8.201.131 - July 20, 2025, 8:08 am
+Payment status: COMPLETED
+User name: Dana Kalder
+User email: kalderdana@gmail.com
+Table inserted_id: 2223
+-------------------------
+User: 82.8.201.131 - July 20, 2025, 8:08 am
+Rezdy booking status: CONFIRMED
+User name: Dana Kalder
+User email: kalderdana@gmail.com
+Table inserted_id: 2223
+-------------------------
+User: 82.8.201.131 - July 20, 2025, 8:08 am
+Payment status: Error: UNPROCESSABLE_ENTITY: The requested action could not be performed, semantically incorrect, or failed business validation.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 82.8.201.131 - July 20, 2025, 8:08 am
+Payment status: Error: UNPROCESSABLE_ENTITY: The requested action could not be performed, semantically incorrect, or failed business validation.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------

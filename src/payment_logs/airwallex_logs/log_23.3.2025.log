@@ -1,0 +1,91 @@
+User: 2601:603:207f:db0:d9ba:9af:9a1a:b0f9 - March 23, 2025, 4:23 pm
+Attempt: Airwallex payment started
+User name: Ryan Sandberg
+User email: ryan.m.sandberg@gmail.com
+Table inserted_id: 1610|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2601:603:207f:db0:d9ba:9af:9a1a:b0f9 - March 23, 2025, 4:24 pm
+Intent ID Created: int_nlpd2q7swh5r33is4ir
+User name: Ryan Sandberg
+User email: ryan.m.sandberg@gmail.com
+Table inserted_id: 1610|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2601:603:207f:db0:d9ba:9af:9a1a:b0f9 - March 23, 2025, 4:24 pm
+Payment status: Airewallex payment completed
+User name: Ryan Sandberg
+User email: ryan.m.sandberg@gmail.com
+Table inserted_id: 1610
+-------------------------
+User: 2601:603:207f:db0:d9ba:9af:9a1a:b0f9 - March 23, 2025, 4:24 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Ryan Sandberg
+User email: ryan.m.sandberg@gmail.com
+Table inserted_id: 1610
+-------------------------
+User: 174.84.237.151 - March 23, 2025, 5:58 pm
+Attempt: Airwallex payment started
+User name: David Blind
+User email: davidblind75@yahoo.com
+Table inserted_id: 1611|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 174.84.237.151 - March 23, 2025, 5:58 pm
+Intent ID Created: int_nlpd2q7swh5r5oulfq2
+User name: David Blind
+User email: davidblind75@yahoo.com
+Table inserted_id: 1611|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 174.84.237.151 - March 23, 2025, 5:58 pm
+Payment status: Airewallex payment completed
+User name: David Blind
+User email: davidblind75@yahoo.com
+Table inserted_id: 1611
+-------------------------
+User: 174.84.237.151 - March 23, 2025, 5:58 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: David Blind
+User email: davidblind75@yahoo.com
+Table inserted_id: 1611
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:33 pm
+Attempt: Airwallex payment started
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1612|PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:33 pm
+Intent ID Created: int_nlpdhps6gh5r8bks4m2
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1612|PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:33 pm
+Error Code: authentication_declined
+Error: You have failed to authenticate the payment. Try again and contact your card issuer or switch to a different payment method if your retry fails.
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1612|PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:38 pm
+Attempt: Airwallex payment started
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1613|PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:38 pm
+Intent ID Created: int_nlpdhps6gh5r8gwvkee
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1613|PRQZ0S|website ( carpediemtours )
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:38 pm
+Payment status: Airewallex payment completed
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1613
+-------------------------
+User: 47.161.13.45 - March 23, 2025, 7:38 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Candy Raglin
+User email: candyggx@yahoo.com
+Table inserted_id: 1613
+-------------------------

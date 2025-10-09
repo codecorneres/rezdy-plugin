@@ -1,0 +1,44 @@
+User: 61.247.227.239 - October 24, 2024, 7:02 am
+Attempt: Google Pay element updated
+User name: TEST TEST
+User email: deepak@gma.com
+Table inserted_id: 54|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:02 am
+Error Code: not_found
+Error While Updating Payment Intent: The requested endpoint does not exist [/api/v1/pa/payment_intents/update]
+User name: TEST TEST
+User email: deepak@gma.com
+Table inserted_id: 54|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:02 am
+Error Code: not_found
+Error: The requested endpoint does not exist [/api/v1/pa/payment_intents/update]
+User name: TEST TEST
+User email: deepak@gma.com
+Table inserted_id: 54|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:06 am
+Attempt: Google Pay element created
+User name: TEST TEST
+User email: deepak@gma.com
+Table inserted_id: 55|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:06 am
+Google Pay Intent ID Created: int_hkdmpjdzjh159tpo91t
+User name: TEST TEST
+User email: deepak@gma.com
+Table inserted_id: 55|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:18 am
+Attempt: Google Pay element updated
+User name: TEST TEST
+User email: deepakdd@gma.com
+Table inserted_id: 55|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - October 24, 2024, 7:18 am
+Google Pay Intent ID Updated: int_hkdmpjdzjh159tpo91t
+User name: TEST TEST
+User email: deepakdd@gma.com
+Table inserted_id: 55|PA5HVB|website ( staging.carpediemtours )
+-------------------------

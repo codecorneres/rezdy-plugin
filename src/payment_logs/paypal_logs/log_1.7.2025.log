@@ -1,0 +1,90 @@
+User: 172.56.177.174 - July 1, 2025, 6:08 am
+Payment status: Error: RESOURCE_NOT_FOUND: The specified resource does not exist.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 7:43 am
+Attempt: Paypal Payment started
+User name: Michelle Guttenberger
+User email: michelleguttenberger@gmx.de
+Table inserted_id: 1992|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 7:44 am
+Payment status: COMPLETED
+User name: Michelle Guttenberger
+User email: michelleguttenberger@gmx.de
+Table inserted_id: 1992
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 7:44 am
+Rezdy booking status: CONFIRMED
+User name: Michelle Guttenberger
+User email: michelleguttenberger@gmx.de
+Table inserted_id: 1992
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 7:44 am
+Payment status: COMPLETED
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 7:44 am
+Rezdy booking status: 
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 8:04 am
+Payment status: COMPLETED
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2a02:3033:263:4413:2468:6d80:73af:5eec - July 1, 2025, 8:04 am
+Rezdy booking status: 
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2001:8003:34dc:1101:d104:6cc0:3807:742f - July 1, 2025, 9:02 am
+Attempt: Paypal Payment started
+User name: michael westcott
+User email: mwestcott74@hotmail.com
+Table inserted_id: 1993|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 2001:8003:34dc:1101:d104:6cc0:3807:742f - July 1, 2025, 9:03 am
+Payment status: COMPLETED
+User name: michael westcott
+User email: mwestcott74@hotmail.com
+Table inserted_id: 1993
+-------------------------
+User: 2001:8003:34dc:1101:d104:6cc0:3807:742f - July 1, 2025, 9:03 am
+Rezdy booking status: CONFIRMED
+User name: michael westcott
+User email: mwestcott74@hotmail.com
+Table inserted_id: 1993
+-------------------------
+User: 2a02:c7c:380e:df00:357c:7abf:d52:90f9 - July 1, 2025, 9:10 am
+Attempt: Paypal Payment started
+User name: Trea  Sanson-Fisher
+User email: davejpato@hotmail.com
+Table inserted_id: 1994|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 2003:ea:2719:c500:c5a0:f51e:acbd:fdaa - July 1, 2025, 8:09 pm
+Payment status: Error: RESOURCE_NOT_FOUND: The specified resource does not exist.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2003:ea:2719:c500:c5a0:f51e:acbd:fdaa - July 1, 2025, 8:09 pm
+Payment status: Error: RESOURCE_NOT_FOUND: The specified resource does not exist.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 2003:ea:2719:c500:c5a0:f51e:acbd:fdaa - July 1, 2025, 8:09 pm
+Payment status: Error: RESOURCE_NOT_FOUND: The specified resource does not exist.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------

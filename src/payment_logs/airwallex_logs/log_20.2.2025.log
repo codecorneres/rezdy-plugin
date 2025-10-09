@@ -1,0 +1,48 @@
+User: 158.47.255.246 - February 20, 2025, 11:12 am
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: alina@carpediemtours.com
+Table inserted_id: 1498|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - February 20, 2025, 11:12 am
+Intent ID Created: int_nlpdnvnb5h4snyvp5o2
+User name: TEST TEST
+User email: alina@carpediemtours.com
+Table inserted_id: 1498|PFVZX0|website ( carpediemtours )
+-------------------------
+User: 158.47.255.246 - February 20, 2025, 11:12 am
+Payment status: Airewallex payment completed
+User name: TEST TEST
+User email: alina@carpediemtours.com
+Table inserted_id: 1498
+-------------------------
+User: 158.47.255.246 - February 20, 2025, 11:12 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: TEST TEST
+User email: alina@carpediemtours.com
+Table inserted_id: 1498
+-------------------------
+User: 2601:58b:4580:6450:752c:5e86:633c:500d - February 20, 2025, 4:02 pm
+Attempt: Airwallex payment started
+User name: Lynn Fort
+User email: lynn.m.fort@gmail.com
+Table inserted_id: 1499|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2601:58b:4580:6450:752c:5e86:633c:500d - February 20, 2025, 4:02 pm
+Intent ID Created: int_nlpdnvnb5h4svypda68
+User name: Lynn Fort
+User email: lynn.m.fort@gmail.com
+Table inserted_id: 1499|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2601:58b:4580:6450:752c:5e86:633c:500d - February 20, 2025, 4:02 pm
+Payment status: Airewallex payment completed
+User name: Lynn Fort
+User email: lynn.m.fort@gmail.com
+Table inserted_id: 1499
+-------------------------
+User: 2601:58b:4580:6450:752c:5e86:633c:500d - February 20, 2025, 4:02 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Lynn Fort
+User email: lynn.m.fort@gmail.com
+Table inserted_id: 1499
+-------------------------

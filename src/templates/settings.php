@@ -58,6 +58,16 @@
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <th scope="row"><label for="rezdy_color_picker"><?php _e('Default Currency', 'cc-rezdy-api'); ?></label></th>
+                        <td>
+                            <select name="default_currency" id="default_currency" class="regular-text">
+                                <option value="EUR" <?php if (!empty($default_currency) && $default_currency == 'EUR') echo 'selected="selected"'; ?>>EUR</option>
+                                <option value="USD" <?php if (!empty($default_currency) && $default_currency == 'USD') echo 'selected="selected"'; ?>>USD</option>
+                                <option value="GBP" <?php if (!empty($default_currency) && $default_currency == 'GBP') echo 'selected="selected"'; ?>>GBP</option>
+                            </select>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <!----Payment checkboxs start--->
@@ -78,6 +88,12 @@
                                 <label for="airwallex_enabled"><?php _e('Airwallex', 'cc-rezdy-api'); ?> &nbsp; </label>
                                 <input name="airwallex_enabled" value="yes" type="checkbox" id="airwallex_enabled" class="regular-text" <?php if (isset($airwallex_enabled) && $airwallex_enabled == 'yes') echo "checked='checked'"; ?>>
                             </td>
+                            <!------ //GooglePay  --->
+                            <td class="payment-gateway-box">
+                                <label for="googlepay_enabled"><?php _e('GooglePay', 'cc-rezdy-api'); ?> &nbsp; </label>
+                                <input name="googlepay_enabled" value="yes" type="checkbox" id="googlepay_enabled" class="regular-text" <?php if (isset($googlepay_enabled) && $googlepay_enabled == 'yes') echo "checked='checked'"; ?>>
+                            </td>
+                            <!------ //GooglePay end --->
                         </tr>
                     </tbody>
                 </table>
@@ -149,7 +165,78 @@
             </div>
             <!-- ============= end ============ -->
 
+            <!-- ========== //GooglePay ======== -->
+            <div class="googlepay-settings payment-settings" id="googlepay-settings">
+                <h3><?php _e('Airwallex Settings For GooglePay', 'cc-rezdy-api'); ?></h3>
+                <p><a href="https://airwallex.com/app/login" target="_blank">Airwallex Login</a></p>
+
+                <table class="form-table" role="presentation">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><label for="airwallex_live"><?php _e('Airwallex Live Account For GooglePay', 'cc-rezdy-api'); ?></label></th>
+                            <td><input name="airwallex_live" value="yes" type="checkbox" id="airwallex_live" class="regular-text" <?php if (isset($airwallex_live) && $airwallex_live == 'yes') echo "checked='checked'"; ?>></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="airwallex_client_id"><?php _e('Airwallex Client ID', 'cc-rezdy-api'); ?></label></th>
+                            <td><input name="airwallex_client_id" value="<?php echo esc_attr($airwallex_client_id); ?>" type="text" id="airwallex_client_id" class="regular-text"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><label for="airwallex_secret_api_key"><?php _e('Airwallex Secret Key', 'cc-rezdy-api'); ?></label></th>
+                            <td><input name="airwallex_secret_api_key" value="<?php echo esc_attr($airwallex_secret_api_key); ?>" type="text" id="airwallex_secret_api_key" class="regular-text"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- ============= //GooglePay end ============ -->
+
+
             <!----Payment Gateways end----->
+
+            <!----For Tapfiliate --->
+            <h3><?php _e('Tapfiliate Settings', 'cc-rezdy-api'); ?></h3>
+            <p><a href="https://carpediemtours.tapfiliate.com/" target="_blank">Tapfiliate Login</a></p>
+
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="tapfiliate_api_key"><?php _e('Tapfiliate API Key', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="tapfiliate_api_key" value="<?php echo esc_attr($tapfiliate_api_key); ?>" type="text" id="tapfiliate_api_key" class="regular-text"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!----For Tapfiliate --->
+
+            <!----For Monday Integration --->
+            <h3><?php _e('Monday Settings', 'cc-rezdy-api'); ?></h3>
+            <p>Note: Monday Integration will not work if one of these field is empty!</p>
+
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="monday_api_key"><?php _e('Monday API Key', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="monday_api_key" value="<?php echo esc_attr($monday_api_key); ?>" type="text" id="monday_api_key" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="monday_board_id"><?php _e('Monday Board ID', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="monday_board_id" value="<?php echo esc_attr($monday_board_id); ?>" type="text" id="monday_board_id" class="regular-text"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!----For Monday Integration --->
+
+            <!----For Klaviyo Checkout Newsletter Integration --->
+            <h3><?php _e('Klaviyo Checkout Newsletter Settings', 'cc-rezdy-api'); ?></h3>
+            <p>Note: Klaviyo Checkout Integration will not work API key is empty!</p>
+
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="klaviyo_api_key"><?php _e('Klaviyo API Key', 'cc-rezdy-api'); ?></label></th>
+                        <td><input name="klaviyo_api_key" value="<?php echo esc_attr($klaviyo_api_key); ?>" type="text" id="klaviyo_api_key" class="regular-text"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!----For Klaviyo Checkout Newsletter Integration --->
 
             <h3><?php _e('URL Settings', 'cc-rezdy-api'); ?></h3>
             <table class="form-table" role="presentation">
@@ -178,15 +265,24 @@
             const stripeCheckbox = document.getElementById('stripe_enabled');
             const paypalCheckbox = document.getElementById('paypal_enabled');
             const airwallexCheckbox = document.getElementById('airwallex_enabled');
+            const googlePayCheckbox = document.getElementById('googlepay_enabled'); //GooglePay
 
             document.getElementById('stripe-settings').style.display = stripeCheckbox.checked ? 'block' : 'none';
             document.getElementById('paypal-settings').style.display = paypalCheckbox.checked ? 'block' : 'none';
-            document.getElementById('airwallex-settings').style.display = airwallexCheckbox.checked ? 'block' : 'none';
+            if (airwallexCheckbox) {
+                document.getElementById('airwallex-settings').style.display = airwallexCheckbox.checked ? 'block' : 'none';
+            }
+
+            document.getElementById('googlepay-settings').style.display = googlePayCheckbox.checked ? 'block' : 'none'; //GooglePay
         }
 
         document.getElementById('stripe_enabled').addEventListener('change', togglePaymentSettings);
         document.getElementById('paypal_enabled').addEventListener('change', togglePaymentSettings);
-        document.getElementById('airwallex_enabled').addEventListener('change', togglePaymentSettings);
+        if (document.getElementById('airwallex_enabled')) {
+            document.getElementById('airwallex_enabled').addEventListener('change', togglePaymentSettings);
+        }
+
+        document.getElementById('googlepay_enabled').addEventListener('change', togglePaymentSettings); //GooglePay
 
         // Initial call to set the correct display on page load
         togglePaymentSettings();

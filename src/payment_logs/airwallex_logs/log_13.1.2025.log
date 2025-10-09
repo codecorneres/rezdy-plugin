@@ -1,0 +1,72 @@
+User: 87.160.102.55 - January 13, 2025, 8:00 am
+Attempt: Airwallex payment started
+User name: Tim Strotmann
+User email: tim.strotmann@web.de
+Table inserted_id: 889|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 87.160.102.55 - January 13, 2025, 8:01 am
+Intent ID Created: int_nlpdmw9czh3mmcoivqe
+User name: Tim Strotmann
+User email: tim.strotmann@web.de
+Table inserted_id: 889|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 87.160.102.55 - January 13, 2025, 8:01 am
+Payment status: Airewallex payment completed
+User name: Tim Strotmann
+User email: tim.strotmann@web.de
+Table inserted_id: 889
+-------------------------
+User: 87.160.102.55 - January 13, 2025, 8:01 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: Tim Strotmann
+User email: tim.strotmann@web.de
+Table inserted_id: 889
+-------------------------
+User: 158.47.255.246 - January 13, 2025, 8:50 am
+Attempt: Airwallex payment started
+User name: Test Test
+User email: Silina742@gmail.com
+Table inserted_id: 890|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 158.47.255.246 - January 13, 2025, 8:50 am
+Intent ID Created: int_nlpd8n25rh3mnpzoxgy
+User name: Test Test
+User email: Silina742@gmail.com
+Table inserted_id: 890|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 158.47.255.246 - January 13, 2025, 8:50 am
+Payment status: Airewallex payment completed
+User name: Test Test
+User email: Silina742@gmail.com
+Table inserted_id: 890
+-------------------------
+User: 158.47.255.246 - January 13, 2025, 8:50 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: Test Test
+User email: Silina742@gmail.com
+Table inserted_id: 890
+-------------------------
+User: 18.168.47.123 - January 13, 2025, 11:08 am
+Attempt: Airwallex payment started
+User name: Treena Pearcey
+User email: Treenajp70@gmail.com
+Table inserted_id: 891|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 18.168.47.123 - January 13, 2025, 11:08 am
+Intent ID Created: int_nlpdftbmsh3mriyj6wu
+User name: Treena Pearcey
+User email: Treenajp70@gmail.com
+Table inserted_id: 891|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 18.168.47.123 - January 13, 2025, 11:08 am
+Payment status: Airewallex payment completed
+User name: Treena Pearcey
+User email: Treenajp70@gmail.com
+Table inserted_id: 891
+-------------------------
+User: 18.168.47.123 - January 13, 2025, 11:09 am
+Rezdy booking status: Rezdy Booking NOT DONE
+User name: Treena Pearcey
+User email: Treenajp70@gmail.com
+Table inserted_id: 891
+-------------------------

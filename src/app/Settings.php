@@ -87,37 +87,21 @@ class Settings
         }
     }
 
-    public static function prepareData(array $args): array
-    {
-    }
+    public static function prepareData(array $args): array {}
 
-    public static function insert(array $args): int
-    {
-    }
+    public static function insert(array $args): int {}
 
-    public static function firstRow()
-    {
-    }
+    public static function firstRow() {}
 
-    public static function insertBulk(array $items): int
-    {
-    }
+    public static function insertBulk(array $items): int {}
 
-    public static function push(string $message): int
-    {
-    }
+    public static function push(string $message): int {}
 
-    public static function update(int $id, array $args): bool
-    {
-    }
+    public static function update(int $id, array $args): bool {}
 
-    public static function delete(array $ids): int
-    {
-    }
+    public static function delete(array $ids): int {}
 
-    public static function deleteAll(): int
-    {
-    }
+    public static function deleteAll(): int {}
 
     public static function delete_Tables_Options()
     {
@@ -142,10 +126,12 @@ class Settings
         delete_option("cc_picked_color");
         delete_option("cc_stripe_enabled");
         delete_option("cc_paypal_enabled");
-        delete_option("cc_airwallex_enabled");
-        delete_option("cc_airwallex_client_id");
-        delete_option("cc_airwallex_secret_api_key");
-        delete_option("cc_airwallex_live");
+        delete_option("cc_airwallex_enabled"); ##airwallex
+        delete_option("cc_airwallex_client_id");  ##airwallex
+        delete_option("cc_airwallex_secret_api_key"); ##airwallex
+        delete_option("cc_airwallex_live"); ##airwallex
+        delete_option("cc_monday_api_key"); ##monday api
+        delete_option("cc_monday_board_id"); ##monday board id
 
 
         setcookie('wordpress_session_custom', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN);
@@ -154,6 +140,32 @@ class Settings
         // Optionally, you may also destroy the cookie value from the current session
         if (isset($_SESSION['wordpress_session_custom'])) {
             unset($_SESSION['wordpress_session_custom']);
+        }
+    }
+
+    /**
+     * Add a new column to the table rezdy_plugin_transactions
+     *
+     * @return void
+     */
+    public static function alterRezdyPluginTransactionsTable()
+    {
+        global $wpdb;
+
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+
+        $column_name = 'monday_item_id';
+        $column_definition = 'VARCHAR(255) DEFAULT NULL';
+
+        $column_exists = $wpdb->get_results( "
+            SHOW COLUMNS FROM $rezdy_plugin_transactions LIKE '$column_name'
+        ");
+
+        if ( empty( $column_exists ) ) {
+            $wpdb->query( "
+                ALTER TABLE $rezdy_plugin_transactions
+                ADD COLUMN $column_name $column_definition
+            " );
         }
     }
 }

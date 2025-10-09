@@ -1,0 +1,30 @@
+User: 2001:4452:2cd:9a00:3961:2f8c:71f0:5e26 - August 18, 2025, 10:00 am
+Attempt: Order created without payment methods
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 2535|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 180.150.36.82 - August 18, 2025, 1:57 pm
+Payment status: Error: RESOURCE_NOT_FOUND: The specified resource does not exist.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 180.150.36.82 - August 18, 2025, 2:01 pm
+Attempt: Paypal Payment started
+User name: Linda Scarr
+User email: lin1909@gmail.com
+Table inserted_id: 2537|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 180.150.36.82 - August 18, 2025, 2:01 pm
+Payment status: COMPLETED
+User name: Linda Scarr
+User email: lin1909@gmail.com
+Table inserted_id: 2537
+-------------------------
+User: 180.150.36.82 - August 18, 2025, 2:01 pm
+Rezdy booking status: CONFIRMED
+User name: Linda Scarr
+User email: lin1909@gmail.com
+Table inserted_id: 2537
+-------------------------

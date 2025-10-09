@@ -1,0 +1,30 @@
+User: 62.149.42.250 - May 21, 2025, 9:41 am
+Attempt: Paypal Payment started
+User name: Ido Gerson
+User email: ido.nvidia@gmail.com
+Table inserted_id: 1518|P6UCJM|website ( jackrippertour )
+-------------------------
+User: 62.149.42.250 - May 21, 2025, 9:42 am
+Payment status: COMPLETED
+User name: Ido Gerson
+User email: ido.nvidia@gmail.com
+Table inserted_id: 1518
+-------------------------
+User: 62.149.42.250 - May 21, 2025, 9:42 am
+Rezdy booking status: CONFIRMED
+User name: Ido Gerson
+User email: ido.nvidia@gmail.com
+Table inserted_id: 1518
+-------------------------
+User: 62.149.42.250 - May 21, 2025, 9:43 am
+Payment status: Error: UNPROCESSABLE_ENTITY: The requested action could not be performed, semantically incorrect, or failed business validation.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------
+User: 62.149.42.250 - May 21, 2025, 9:43 am
+Payment status: Error: UNPROCESSABLE_ENTITY: The requested action could not be performed, semantically incorrect, or failed business validation.
+User name: 
+User email: 
+Table inserted_id: 
+-------------------------

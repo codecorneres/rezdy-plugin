@@ -22,6 +22,9 @@ class Checkout
         add_action('wp_ajax_booking_checkout', [$this, 'booking_checkout_callback']);
         add_action('wp_ajax_nopriv_booking_checkout', [$this, 'booking_checkout_callback']);
 
+        add_action('wp_ajax_direct_add_monday_item', [$this, 'direct_add_monday_item_callback']);
+        add_action('wp_ajax_nopriv_direct_add_monday_item', [$this, 'direct_add_monday_item_callback']);
+
         add_action('wp_ajax_delete_db_sessions', [$this, 'delete_db_sessions_callback']);
         add_action('wp_ajax_nopriv_delete_db_sessions', [$this, 'delete_db_sessions_callback']);
 
@@ -32,6 +35,21 @@ class Checkout
         add_action('wp_ajax_airwallex_after_confirm', [$this, 'airwallex_after_confirm']);
         add_action('wp_ajax_nopriv_airwallex_after_confirm', [$this, 'airwallex_after_confirm']);
         // =================
+
+        //========= Start - Airwallex Klarna =====
+        add_action('wp_ajax_airwallex_klarna_payment', [$this, 'airwallex_klarna_payment']);
+        add_action('wp_ajax_nopriv_airwallex_klarna_payment', [$this, 'airwallex_klarna_payment']);
+        //========= End - Airwallex Klarna =====
+
+        //========= Email validation Ajax =====
+        add_action('wp_ajax_email_validation', [$this, 'email_validation']);
+        add_action('wp_ajax_nopriv_email_validation', [$this, 'email_validation']);
+        // =================
+
+        //===== Update Monday Transaction =====//
+        add_action('wp_ajax_update_monday_transaction', [$this, 'update_monday_transaction']);
+        add_action('wp_ajax_nopriv_update_monday_transaction', [$this, 'update_monday_transaction']);
+        //===== Update Monday Transaction =====//
     }
 
     function quote_booking_checkout_callback()
@@ -43,10 +61,28 @@ class Checkout
     {
         return $this->callPageScreenMethod('booking_checkout_callback');
     }
+
+    function direct_add_monday_item_callback()
+    {
+        return $this->callPageScreenMethod('direct_add_monday_item_callback');
+    }
     //========= airwallex =====
     function airwallex_after_confirm()
     {
         return $this->callPageScreenMethod('airwallex_after_confirm');
+    }
+    //========= start - airwallex klarna =====
+    function airwallex_klarna_payment()
+    {
+        return $this->callPageScreenMethod('airwallex_klarna_payment');
+    }
+    // =================
+    // =================
+
+    //========= Email validation Ajax =====
+    function email_validation()
+    {
+        return $this->callPageScreenMethod('email_validation');
     }
     // =================
     function delete_db_sessions_callback()
@@ -82,6 +118,11 @@ class Checkout
         return $this->callPageScreenMethod('return_render');
     }
 
+    public function notify_returnRedirect() ##IPN_HUB
+    {
+        return $this->callPageScreenMethod('notify_return_render');
+    }
+
     private function callPageScreenMethod(string $method)
     {
         return call_user_func([$this->getFormObject(BookingDetails::class), $method]);
@@ -89,7 +130,11 @@ class Checkout
 
     public function getFormObject(string $class)
     {
-
         return $this->formContext[$class] ?? ($this->formContext[$class] = new $class($this->checkoutContext));
+    }
+
+    public function update_monday_transaction()
+    {
+        return $this->callPageScreenMethod('update_monday_transaction');
     }
 }

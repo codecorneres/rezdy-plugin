@@ -1,0 +1,48 @@
+User: 61.247.227.239 - August 6, 2024, 6:26 am
+Attempt: Airwallex payment started
+User name: Demo test
+User email: demo@gmail.com
+Table inserted_id: 4|PJ69F4|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - August 6, 2024, 6:26 am
+Intent ID Created: int_hkdmsgc8sgyq536qqul
+User name: Demo test
+User email: demo@gmail.com
+Table inserted_id: 4|PJ69F4|website ( staging.carpediemtours )
+-------------------------
+User: 61.247.227.239 - August 6, 2024, 6:26 am
+Payment status: Airewallex payment completed
+User name: Demo test
+User email: demo@gmail.com
+Table inserted_id: 4
+-------------------------
+User: 61.247.227.239 - August 6, 2024, 6:26 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: Demo test
+User email: demo@gmail.com
+Table inserted_id: 4
+-------------------------
+User: 158.47.255.246 - August 6, 2024, 7:52 am
+Attempt: Airwallex payment started
+User name: Alina Simonova
+User email: silina742@gmail.com
+Table inserted_id: 5|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 158.47.255.246 - August 6, 2024, 7:52 am
+Intent ID Created: int_hkdmsgc8sgyq7gzhpfv
+User name: Alina Simonova
+User email: silina742@gmail.com
+Table inserted_id: 5|PA5HVB|website ( staging.carpediemtours )
+-------------------------
+User: 158.47.255.246 - August 6, 2024, 7:52 am
+Payment status: Airewallex payment completed
+User name: Alina Simonova
+User email: silina742@gmail.com
+Table inserted_id: 5
+-------------------------
+User: 158.47.255.246 - August 6, 2024, 7:53 am
+Rezdy booking status: Rezdy Booking Successfull
+User name: Alina Simonova
+User email: silina742@gmail.com
+Table inserted_id: 5
+-------------------------

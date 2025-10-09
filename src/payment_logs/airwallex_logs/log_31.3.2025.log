@@ -1,0 +1,62 @@
+User: 2600:387:15:151b::b - March 31, 2025, 4:15 pm
+Attempt: Airwallex payment started
+User name: Susan Baldwin
+User email: Susan.Baldwin@Truist.com
+Table inserted_id: 1638|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2600:387:15:151b::b - March 31, 2025, 4:15 pm
+Intent ID Created: int_nlpd7jr99h5zw89kyv4
+User name: Susan Baldwin
+User email: Susan.Baldwin@Truist.com
+Table inserted_id: 1638|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2600:387:15:151b::b - March 31, 2025, 4:15 pm
+Payment status: Airewallex payment completed
+User name: Susan Baldwin
+User email: Susan.Baldwin@Truist.com
+Table inserted_id: 1638
+-------------------------
+User: 2600:387:15:151b::b - March 31, 2025, 4:15 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Susan Baldwin
+User email: Susan.Baldwin@Truist.com
+Table inserted_id: 1638
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:56 pm
+Attempt: Airwallex payment started
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1639|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:56 pm
+Intent ID Created: int_nlpdnsxssh605mvd5lj
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1639|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:56 pm
+Error Code: authentication_declined
+Error: You have failed to authenticate the payment. Try again and contact your card issuer or switch to a different payment method if your retry fails.
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1639|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:57 pm
+Attempt: Airwallex payment started
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1640|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:57 pm
+Intent ID Created: int_nlpd42lsxh605nv75zs
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1640|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 79.8.202.200 - March 31, 2025, 9:57 pm
+Error Code: authentication_declined
+Error: You have failed to authenticate the payment. Try again and contact your card issuer or switch to a different payment method if your retry fails.
+User name: Sarah Beukelman
+User email: sarah_irene95@yahoo.com
+Table inserted_id: 1640|PY1WWW|website ( carpediemtours )
+-------------------------

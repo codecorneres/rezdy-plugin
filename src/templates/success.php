@@ -1,6 +1,7 @@
 <?php defined('ABSPATH') || exit; ?>
 
 <?php
+get_header();
 global $wp_query, $wpdb;
 
 $transactionID = $wp_query->query_vars['transactionID'];
@@ -35,6 +36,14 @@ $bookingStatus = ($status == 'PENDING_CUSTOMER') ? 'Pending' : 'Success';
     <title><?php echo $bookingStatus; ?> Page</title>
     <!-- Add your CSS styles here -->
     <style>
+        header {
+            display: none;
+        }
+
+        main#content {
+            display: none;
+        }
+
         .success_container {
             max-width: 800px;
             margin: 170px auto 50px;

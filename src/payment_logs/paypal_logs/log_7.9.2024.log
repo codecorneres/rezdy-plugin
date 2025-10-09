@@ -1,0 +1,19 @@
+User: 188.219.112.210 - September 7, 2024, 9:27 pm
+Attempt: Stripe payment started
+User name: Ariel  Snider
+User email: ariel.thom@colorado.edu
+Table inserted_id: 18|PRHAPT|website ( staging.carpediemtours )
+-------------------------
+User: 188.219.112.210 - September 7, 2024, 9:27 pm
+Status: Stripe payment failed
+User name: Ariel  Snider
+User email: ariel.thom@colorado.edu
+Reason:Your card was declined. Your request was in test mode, but used a non test (live) card. For a list of valid test cards, visit: https://stripe.com/docs/testing.
+Table inserted_id: 18
+-------------------------
+User: 188.219.112.210 - September 7, 2024, 9:29 pm
+Attempt: Paypal Payment started
+User name: Ariel  Snider
+User email: ariel.thom@colorado.edu
+Table inserted_id: 19|PRHAPT|website ( staging.carpediemtours )
+-------------------------

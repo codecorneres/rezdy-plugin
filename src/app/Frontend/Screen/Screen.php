@@ -3,14 +3,27 @@
 namespace CC_RezdyAPI\Frontend\Screen;
 
 use CC_RezdyAPI\App;
-
+use CC_RezdyAPI\Rezdy\Requests\Monday;
+use CC_RezdyAPI\Rezdy\Util\RezdyCurrency;
+use CC_RezdyAPI\Frontend\Screen\AirwallexKlarna;
 class Screen
 {
     protected $errors = [];
 
+    protected $monday;
+
+    public $appContext;
+
+    public $rezdyCurrency;
+
+    public $airwallexKlarna;
+
     public function __construct(App $appContext)
     {
         $this->appContext = $appContext;
+        $this->monday = new Monday;
+        $this->rezdyCurrency = new RezdyCurrency;
+        $this->airwallexKlarna = new AirwallexKlarna;
     }
 
     public function init()

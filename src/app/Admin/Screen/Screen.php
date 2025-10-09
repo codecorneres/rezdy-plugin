@@ -3,14 +3,18 @@
 namespace CC_RezdyAPI\Admin\Screen;
 
 use CC_RezdyAPI\App;
+use CC_RezdyAPI\Rezdy\Util\RezdyCurrency;
 
 class Screen
 {
     protected $errors = [];
 
+    public $rezdyCurrency;
+
     public function __construct( App $appContext )
     {
         $this->appContext = $appContext;
+        $this->rezdyCurrency = new RezdyCurrency;
     }
 
     public function init()

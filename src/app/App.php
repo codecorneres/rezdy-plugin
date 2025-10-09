@@ -6,7 +6,14 @@ use CC_RezdyAPI\Admin\Admin;
 use CC_RezdyAPI\Page\Page;
 use CC_RezdyAPI\Frontend\Booking;
 use CC_RezdyAPI\Frontend\Checkout;
+use CC_RezdyAPI\Frontend\Screen\AirwallexKlarna;
+use CC_RezdyAPI\Frontend\Screen\BookingDetails;
+use CC_RezdyAPI\Rezdy\Requests\Monday;
 use CC_RezdyAPI\Rezdy\Util\Config;
+use CC_RezdyAPI\Rezdy\Util\RezdyCurrency;
+use CC_RezdyAPI\Rezdy\Util\RezdyGravityForms;
+use CC_RezdyAPI\Rezdy\Util\RezdyMultistepPlanner;
+use CC_RezdyAPI\Rezdy\Util\RezdyWPForms;
 
 class App
 {
@@ -22,10 +29,27 @@ class App
     const DB_VERSION_OPTION = 'cc:db_version';
     const SETTINGS_TABLE = 'cc_settings';
     const ALLOWED_POST_TYPE = ['rome', 'florence', 'barcelona'];
-   
+
 
     public function __construct(string $plugin_file)
     {
+        // Setup Rezdy Currencies
+        $rezdyCurrency = new RezdyCurrency();
+        $rezdyCurrency->setup_currencies_data();
+        $rezdyCurrency->setup_currencies_scripts();
+
+        // Setup RezdyGravityForms
+        $rezdyGravityForms = new RezdyGravityForms();
+        $rezdyGravityForms->setup_hooks();
+
+        // Setup RezdyWPForms
+        $rezdyWPForms = new RezdyWPForms();
+        $rezdyWPForms->setup_hooks();
+
+        // Setup Multistep Form
+        $rezdyMultistepPlanner = new RezdyMultistepPlanner();
+        $rezdyMultistepPlanner->setup_hooks();
+
         $this->plugin_file = $plugin_file;
         $this->adminContext = new Admin($this);
         $this->pageContext = new Page($this);
@@ -46,6 +70,11 @@ class App
 
     public function setup()
     {
+        // define some constants
+        if (! defined('PLUGIN_URL')) {
+            define('PLUGIN_URL', plugins_url('/', __DIR__));
+        }
+
         add_action('plugins_loaded', [$this, 'loaded']);
         add_filter('acf/settings/load_json', [$this, 'my_acf_json_load_point']);
         add_filter('acf/settings/save_json', [$this, 'my_acf_json_save_point']);
@@ -54,6 +83,8 @@ class App
 
         // deactivation
         register_deactivation_hook($this->getPluginFile(), [$this, 'deactivation']);
+
+        \CC_RezdyAPI\Settings::alterRezdyPluginTransactionsTable();
     }
 
     function my_acf_json_save_point($path)
@@ -90,6 +121,8 @@ class App
     {
         \CC_RezdyAPI\Settings::delete_Tables_Options();
         flush_rewrite_rules();
+
+        RezdyCurrency::deactivation();
     }
 
     public function loaded()
@@ -97,7 +130,81 @@ class App
         // REST endpoints
         add_action('rest_api_init', [$this, 'setupRestApiEndpoints']);
         add_action('init', [$this, 'custom_rewrite_rule']);
+        add_action('init', [$this, 'tapfiliate_init']); ##For Tapfiliate
+        add_action('init', [$this, 'airwallex_klarna_init']);
         add_filter('body_class', [$this, 'custom_body_class']);
+        add_action('init', [$this, 'monday_transaction_thank_you']);
+        add_action('template_redirect', [$this, 'booking_cookies']);
+        add_action('wp_enqueue_scripts', [$this, 'add_scripts']);
+        add_filter('body_class', [$this, 'private_booking_isolated_body_class']);
+
+        // Start the session
+        $this->start_session();
+    }
+
+    public function private_booking_isolated_body_class($classes)
+    {
+        if (!is_array($classes)) {
+            $classes = [];
+        }
+
+        $code = get_query_var('private_booking_rezdy');
+        if (!empty($code)) {
+            $classes[] = 'private-booking-isolated-page';
+        }
+
+        return $classes;
+    }
+
+    public function start_session()
+    {
+        if (! headers_sent()) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+        }
+    }
+
+    public function add_scripts()
+    {
+        wp_enqueue_script('rezdy-scripts', PLUGIN_URL . 'assets/includes/js/rezdy-scripts.js', array(), rand(111111, 999999), true);
+        wp_localize_script('rezdy-scripts', 'rezdyScriptsObject', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('rezdy_nonce'),
+        ));
+    }
+
+    public function booking_cookies()
+    {
+        // Start the session
+        $this->start_session();
+
+        // Save the custom cookie for the checkout
+        $this->save_cookie();
+    }
+
+    public function save_cookie()
+    {
+        if (is_admin()) {
+            return;
+        }
+
+        $cookie_name = "CUSTOMSESSIONID";
+
+        if (! isset($_COOKIE[$cookie_name]) && ! headers_sent()) {
+            $session_id = session_id();
+            setcookie(
+                $cookie_name,
+                $session_id,
+                array(
+                    'expires' => time() + (86400 * 30),
+                    'path' => '/',
+                    'secure' => is_ssl(),
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                )
+            );
+        }
     }
 
     public function custom_body_class($classes)
@@ -116,17 +223,92 @@ class App
         //self::createToursPostTypes();
         add_rewrite_rule('^checkout/([$\-A-Za-z0-9]*)', 'index.php?checkout_id=$matches[1]&pagenamecustom=checkout', 'top');
         add_rewrite_rule('^success/?', 'index.php?transactionID=$matches[1]&pagenamecustom=success', 'top');
-        add_rewrite_rule('^cancel/([^/]+)', 'index.php?cancel=$matches[1]', 'top');
-        add_rewrite_rule('^cancel/?', 'index.php?cancel=1', 'top'); // Updated rule for the cancel page
+        add_rewrite_rule('^cancel/([^/]+)/?$', 'index.php?cancel=$matches[1]', 'top');
+        add_rewrite_rule('^cancel/?$', 'index.php?cancel=1', 'top'); // Updated rule for the cancel page
         add_rewrite_rule('^return?([^/]+)', 'index.php?token=$matches[1]&PayerID=$matches[2]', 'top');
+
+        add_rewrite_rule('^notify_return/?$', 'index.php?pagenamecustom=notify_return', 'top');  ##IPN_HUB
+
         add_filter('query_vars', [$this, 'custom_query_vars'], 1, 1);
         add_action('template_redirect', [$this, 'custom_template_redirect']);
         flush_rewrite_rules();
     }
 
+    public function tapfiliate_init() ##For Tapfiliate
+    {
+        global $wpdb;
+
+        // Check if the 'ref' query parameter exists in the URL
+        if (isset($_GET['ref'])) {
+            $tapfiliate_referral_code = sanitize_text_field($_GET['ref']);
+            setcookie('tapfiliate_referral_code', $tapfiliate_referral_code, time() + 86400, '/');
+        }
+
+
+        // Add columns in rezdy_plugin_transactions
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $columns_to_check = [
+            'tapfiliate_ref_code' => 'VARCHAR(255) DEFAULT NULL',
+            'tapfiliate_click_id' => 'VARCHAR(255) DEFAULT NULL',
+            'tapfiliate_conversion_id' => 'VARCHAR(255) DEFAULT NULL',
+            'tapfiliate_external_id' => 'VARCHAR(255) DEFAULT NULL',
+        ];
+
+        $existing_columns = $wpdb->get_col("DESC $rezdy_plugin_transactions", 0);
+        foreach ($columns_to_check as $column => $column_definition) {
+            if (!in_array($column, $existing_columns)) {
+                $wpdb->query("ALTER TABLE $rezdy_plugin_transactions ADD $column $column_definition");
+            }
+        }
+    }
+
+    public function airwallex_klarna_init()
+    {
+        global $wpdb;
+
+        // Add columns in rezdy_plugin_transactions
+        $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+        $columns_to_check = [
+            'klarna_uid' => 'VARCHAR(255) DEFAULT NULL',
+            'klarna_rezdy_processed' => 'VARCHAR(255) DEFAULT NULL',
+        ];
+
+        $existing_columns = $wpdb->get_col("DESC $rezdy_plugin_transactions", 0);
+        foreach ($columns_to_check as $column => $column_definition) {
+            if (!in_array($column, $existing_columns)) {
+                $wpdb->query("ALTER TABLE $rezdy_plugin_transactions ADD $column $column_definition");
+            }
+        }
+
+        // Setup the thank you process
+        $airwallexKlarna = new AirwallexKlarna;
+
+        if (isset($_GET['k-uid']) && isset($_GET['awx_return_result']) && strpos($_SERVER['REQUEST_URI'], '/thank-you') !== false) {
+            $k_uid = $_GET['k-uid'];
+            $klarna_result = $_GET['awx_return_result'];
+
+            if (! empty($k_uid) && $klarna_result == 'success') {
+                $airwallexKlarna->fetch_payment_and_update_transactions($k_uid);
+            }
+        }
+    }
+
     public function custom_template_redirect()
     {
         global $wp_query, $wpdb;
+
+        if (isset($_GET['debug'])) {
+            // wp_die(json_encode([$wp_query->query_vars]));
+        }
+
+        // for private booking tabs
+        if (isset($wp_query->query_vars['private_booking_rezdy'])) {
+            $template = PLUGIN_DIR_PATH . 'templates/private-booking-isolated.php';
+            if (file_exists($template)) {
+                load_template($template, true);
+                exit;
+            }
+        }
 
         if (isset($wp_query->query_vars['checkout_id'])) {
             $this->checkoutContext->makeBooking('render');
@@ -143,6 +325,13 @@ class App
         if (isset($wp_query->query_vars['token']) && isset($wp_query->query_vars['PayerID'])) {
             $this->checkoutContext->returnRedirect('return_render');
         }
+
+        ##IPN_HUB
+        // if ($wp_query->query_vars['pagenamecustom'] == 'notify_return') {
+        if (isset($wp_query->query_vars['pagenamecustom']) && $wp_query->query_vars['pagenamecustom'] == 'notify_return') {
+            $this->checkoutContext->notify_returnRedirect('notify_return_render');
+        }
+
 
         $successSlug = $this->getSuccessOptionUrl();
         if (isset($wp_query->query_vars['pagename']) && $wp_query->query_vars['pagename'] == $successSlug) {
@@ -195,6 +384,9 @@ class App
         $query_vars[] = 'PayerID';
         $query_vars[] = 'pagename';
         $query_vars[] = 'pagenamecustom';
+
+        // for private booking tabs
+        $query_vars[] = 'private_booking_rezdy';
         return $query_vars;
     }
 
@@ -393,5 +585,26 @@ class App
         ];
 
         register_post_type("barcelona", $args);
+    }
+
+    public function monday_transaction_thank_you()
+    {
+        global $wpdb;
+
+        if (isset($_GET['transactionID']) && strpos($_SERVER['REQUEST_URI'], '/thank-you') !== false) {
+            $transactionID = sanitize_text_field($_GET['transactionID']);
+            $type = 'paied';
+            $table = $wpdb->prefix . 'rezdy_plugin_transactions';
+
+            $query = "SELECT * FROM {$table} WHERE `transactionID` = '{$transactionID}'";
+            $transaction_row = $wpdb->get_row($query);
+
+            if ($transaction_row && $transaction_row->monday_item_id) {
+                // Update to status on Monday
+                $status = $type == 'failed' ? 2 : 1;
+                $monday = new Monday;
+                $monday->update_item_status((string) $transaction_row->monday_item_id, $status);
+            }
+        }
     }
 }

@@ -3,11 +3,11 @@
 <?php get_header(); ?>
 
 <?php
-
-
 global $wpdb;
 
 $_ARRAY_SESSION = array();
+$rezdy_currency_text = $_COOKIE['rezdy_currency_text'] ?? get_option('cc_default_currency') ?? 'EUR';
+$rezdy_currency_symbol = $_COOKIE['rezdy_currency_symbol'] ?? '€';
 
 if ($session_id == '') {
     wp_redirect(home_url());
@@ -24,8 +24,6 @@ if ($session_id == '') {
         $_ARRAY_SESSION[] = json_decode($row->sessionData, true);
     }
 }
-
-
 
 if (!empty($response)) {
     foreach ($response as $key => $value) {
@@ -56,11 +54,6 @@ if (isset($_ARRAY_SESSION[0]) && !empty($_ARRAY_SESSION[0]) &&  isset($_ARRAY_SE
     wp_redirect(home_url());
     exit();
 }
-
-
-
-
-
 
 ##Update sessionData
 $session_data_to_update = array(
@@ -98,7 +91,8 @@ function getGroupValue($value)
     <form class="booking-checkout">
         <div class="container">
             <div class="button" id="booking_checkout_container">
-                <a href="<?php echo home_url(); ?>" target="_self" id="make_another_booking" onclick="makeAnotherBooking(this)">Make another booking</a>
+                <a href="<?php echo home_url(); ?>" target="_self" id="make_another_booking"
+                    onclick="makeAnotherBooking(this)">Make another booking</a>
             </div>
 
             <div class="checkout-details">
@@ -116,15 +110,18 @@ function getGroupValue($value)
                             <div class="form-wrapper tour_<?= $k; ?>_schedule_time">
 
                                 <strong><?= $detail['name']; ?></strong>
-                                <input type="hidden" value="<?= $detail['productCode']; ?>" name="order[<?= $k; ?>][product_code]">
+                                <input type="hidden" value="<?= $detail['productCode']; ?>"
+                                    name="order[<?= $k; ?>][product_code]">
                                 <small class="first">
                                     <small class="two">
-                                        <input type="hidden" value="<?= $detail['sessionDate']; ?>" name="order[<?= $k; ?>][sessionDate]">
+                                        <input type="hidden" value="<?= $detail['sessionDate']; ?>"
+                                            name="order[<?= $k; ?>][sessionDate]">
                                         Date:&nbsp;<?= $detail['sessionDate']; ?>
                                     </small>
                                 </small>
                                 <small class="third">
-                                    <a href="javascript:void(0)" class="pointer editbooking" data-target="edit-<?= $k; ?>" onclick="editbooking(this)">Edit Booking</a>
+                                    <a href="javascript:void(0)" class="pointer editbooking" data-target="edit-<?= $k; ?>"
+                                        onclick="editbooking(this)">Edit Booking</a>
                                 </small>
 
                             </div>
@@ -132,44 +129,63 @@ function getGroupValue($value)
                             <!-- Edit Booking toggle-->
                             <div class="order-edit-item edit-<?= $k; ?>" style="display:none;">
 
-                                <fieldset class="no-legend edit_booking_<?= $detail['productCode']; ?>_<?= $detail['schedule_time']; ?>">
-                                    <input type="hidden" class="quantityRequiredMax" value="<?= (!empty($detail['quantityRequiredMax'])) ? $detail['quantityRequiredMax'] : ''; ?>" />
+                                <fieldset
+                                    class="no-legend edit_booking_<?= $detail['productCode']; ?>_<?= $detail['schedule_time']; ?>">
+                                    <input type="hidden" class="quantityRequiredMax"
+                                        value="<?= (!empty($detail['quantityRequiredMax'])) ? $detail['quantityRequiredMax'] : ''; ?>" />
                                     <?php foreach ($detail['priceOptions'] as $key => $options) { ?>
                                         <div class="form-flex">
                                             <div class="label-box">
                                                 <input type="hidden" name="ItemQuantity[<?= $detail['productCode']; ?>][<?= $key; ?>][priceOption][id]" value="<?= $options['priceOptionID']; ?>">
                                                 <h6><?php echo ($options['label'] == 'Quantity') ? 'Everyone' : $options['label']; ?></h6>
-                                                <p class="price" data-currency-base="" data-original-amount="<?php echo $options['price']; ?>"><?php echo '€' . $options['price']; ?></p>
+                                                <p class="price" data-currency-base="" data-original-amount="<?php echo $options['price']; ?>">
+                                                    <?php echo $rezdy_currency_symbol . $options['price']; ?>
+                                                </p>
                                             </div>
                                             <div class="options-box">
                                                 <?php if ($options['quantity'] > 20 && !str_contains($options['label'], 'Group')) : ?>
 
-                                                    <input type="number" name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]" class="checkout-quantity-input" value="<?php echo $options['quantity']; ?>" onkeyup="updateInputValue(this)">
+                                                    <input type="number"
+                                                        name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]"
+                                                        class="checkout-quantity-input" value="<?php echo $options['quantity']; ?>"
+                                                        onkeyup="updateInputValue(this)">
 
                                                 <?php else : ?>
 
                                                     <?php if (str_contains($options['label'], 'Group')) : $result = getGroupValue($options['label']); ?>
-                                                        <select name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]" class="checkout_quantity">
+                                                        <select
+                                                            name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]"
+                                                            class="checkout_quantity">
                                                             <?php foreach ($result as  $r) : ?>
-                                                                <option value="<?php echo $r; ?>" <?php if ($options['quantity'] == $r) echo 'selected="selected"'; ?>><?php echo $r; ?></option>
+                                                                <option value="<?php echo $r; ?>"
+                                                                    <?php if ($options['quantity'] == $r) echo 'selected="selected"'; ?>>
+                                                                    <?php echo $r; ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
-                                                        <input type="number" name="" class="checkout-quantity-input" style="display: none;" onkeyup="updateInputValue(this)">
+                                                        <input type="number" name="" class="checkout-quantity-input"
+                                                            style="display: none;" onkeyup="updateInputValue(this)">
                                                     <?php else : ?>
-                                                        <select name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]" class="checkout_quantity" onchange="checkout_quantity(this)">
+                                                        <select
+                                                            name="ItemQuantity[<?= $options['priceOptionID']; ?>][<?= $key; ?>][quantity]"
+                                                            class="checkout_quantity" onchange="checkout_quantity(this)">
                                                             <?php if (!empty($detail['quantityRequiredMax']) && $detail['quantityRequiredMax'] <= 20) : ?>
                                                                 <?php for ($i = 0; $i <= $detail['quantityRequiredMax']; $i++) : ?>
-                                                                    <option value="<?php echo $i; ?>" <?php if ($options['quantity'] == $i) echo 'selected="selected"'; ?>><?php echo $i; ?></option>
+                                                                    <option value="<?php echo $i; ?>"
+                                                                        <?php if ($options['quantity'] == $i) echo 'selected="selected"'; ?>>
+                                                                        <?php echo $i; ?></option>
                                                                 <?php endfor; ?>
                                                             <?php else : ?>
                                                                 <?php for ($i = 0; $i <= 20; $i++) : ?>
-                                                                    <option value="<?php echo $i; ?>" <?php if ($options['quantity'] == $i) echo 'selected="selected"'; ?>><?php echo $i; ?></option>
+                                                                    <option value="<?php echo $i; ?>"
+                                                                        <?php if ($options['quantity'] == $i) echo 'selected="selected"'; ?>>
+                                                                        <?php echo $i; ?></option>
                                                                 <?php endfor; ?>
                                                                 <option value="21" data-value="21">>20</option>
                                                             <?php endif; ?>
 
                                                         </select>
-                                                        <input type="number" name="" class="checkout-quantity-input" style="display: none;" onkeyup="updateInputValue(this)">
+                                                        <input type="number" name="" class="checkout-quantity-input"
+                                                            style="display: none;" onkeyup="updateInputValue(this)">
                                                     <?php endif; ?>
 
 
@@ -182,7 +198,10 @@ function getGroupValue($value)
                                     <?php  } ?>
 
                                     <div class=" update-container">
-                                        <input name="btn-update-item" class="update-item btn fl mt-sm mb-sm" type="button" value="Update" data-product-code="<?= $detail['productCode']; ?>" data-schedule-time="<?= $detail['schedule_time']; ?>" data-session-date="<?= $detail['sessionDate']; ?>" onclick="updateItem(this)">
+                                        <input name="btn-update-item" class="update-item btn fl mt-sm mb-sm" type="button"
+                                            value="Update" data-product-code="<?= $detail['productCode']; ?>"
+                                            data-schedule-time="<?= $detail['schedule_time']; ?>"
+                                            data-session-date="<?= $detail['sessionDate']; ?>" onclick="updateItem(this)">
                                     </div>
                                 </fieldset>
 
@@ -190,17 +209,28 @@ function getGroupValue($value)
 
                             <!-- form-data -->
                             <?php for ($i = 0; $i < $detail['totalQuantity']; $i++) : ?>
-                                <fieldset class="Billing_Contact participant_details tour_<?= $k; ?>_schedule_time" style="--feild-number: '<?= $i + 1 ?>';">
+                                <fieldset class="Billing_Contact participant_details tour_<?= $k; ?>_schedule_time"
+                                    style="--feild-number: '<?= $i + 1 ?>';">
                                     <legend class="toggle">Participant</legend>
                                     <div class="content">
                                         <div class="first">
                                             <label for="fname">First Name</label>
+                                            <div class="input-icon">
+                                                <input class="fields participant_firstname" type="text" id="fname"
+                                                    name="participant[<?= $k; ?>][<?= $i; ?>][first_name]" autocomplete="off"
+                                                    onchange="participantFirstname(this)" onkeyup="billingField(this)" required>
 
-                                            <input class="fields participant_firstname" type="text" id="fname" name="participant[<?= $k; ?>][<?= $i; ?>][first_name]" onchange="participantFirstname(this)">
+                                                <span class="input-addon"></span>
+                                            </div>
                                         </div>
                                         <div class="last">
                                             <label for="lname">Last Name</label>
-                                            <input class="fields participant_lastname" type="text" id="lname" name="participant[<?= $k; ?>][<?= $i; ?>][last_name]" onchange="participantLastname(this)">
+                                            <div class="input-icon">
+                                                <input class="fields participant_lastname" type="text" id="lname"
+                                                    name="participant[<?= $k; ?>][<?= $i; ?>][last_name]" autocomplete="off"
+                                                    onchange="participantLastname(this)" onkeyup="billingField(this)" required>
+                                                <span class="input-addon"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -223,28 +253,36 @@ function getGroupValue($value)
                                 <div class="first">
                                     <label for="fname">First Name</label>
                                     <div class="input-icon">
-                                        <input class="fields billing-field billing_participant_firstname" type="text" required id="fname" name="fname" onkeyup="billingField(this)" required>
+                                        <input class="fields billing-field billing_participant_firstname" type="text"
+                                            id="fname" name="fname" autocomplete="off" onkeyup="billingField(this)"
+                                            required>
                                         <span class="input-addon"></span>
                                     </div>
                                 </div>
                                 <div class="last">
                                     <label for="lname">Last Name</label>
                                     <div class="input-icon">
-                                        <input class="fields billing-field billing_participant_lastname" type="text" required id="lname" name="lname" onkeyup="billingField(this)" required>
+                                        <input class="fields billing-field billing_participant_lastname" type="text"
+                                            id="lname" name="lname" autocomplete="off" onkeyup="billingField(this)"
+                                            required>
                                         <span class="input-addon"></span>
                                     </div>
                                 </div>
                                 <div class="mobile">
                                     <label for="phone">Mobile</label>
                                     <div class="input-icon">
-                                        <input class="fields billing-field billing_participant_tel" type="tel" id="phone" name="phone" onkeyup="billingField(this)" required>
+                                        <input class="fields billing-field billing_participant_tel" type="tel"
+                                            id="phone" name="phone" autocomplete="off" onkeyup="billingField(this)"
+                                            required>
                                         <span class="input-addon"></span>
                                     </div>
                                 </div>
                                 <div class="email">
                                     <label for="email">Email</label>
                                     <div class="input-icon">
-                                        <input class="fields billing-field billing_participant_email" type="email" required id="email" name="email" onkeyup="billingField(this)" required>
+                                        <input class="fields billing-field billing_participant_email" type="email"
+                                            id="email" name="email" autocomplete="off" onkeyup="billingField(this)"
+                                            required>
                                         <span class="input-addon"></span>
                                     </div>
                                 </div>
@@ -253,7 +291,8 @@ function getGroupValue($value)
                                     <?php
                                     $countries = array("af" => "Afghanistan", "ax" => "Aland Islands", "al" => "Albania", "dz" => "Algeria", "as" => "American Samoa", "ad" => "Andorra", "ao" => "Angola", "ai" => "Anguilla", "aq" => "Antarctica", "ag" => "Antigua and Barbuda", "ar" => "Argentina", "am" => "Armenia", "aw" => "Aruba", "au" => "Australia", "at" => "Austria", "az" => "Azerbaijan", "bs" => "Bahamas", "bh" => "Bahrain", "bd" => "Bangladesh", "bb" => "Barbados", "by" => "Belarus", "be" => "Belgium", "bz" => "Belize", "bj" => "Benin", "bm" => "Bermuda", "bt" => "Bhutan", "bo" => "Bolivia", "bq" => "Bonaire", "ba" => "Bosnia and Herzegovina", "bw" => "Botswana", "bv" => "Bouvet Island", "br" => "Brazil", "io" => "British Indian Ocean Territory", "bn" => "Brunei Darussalam", "bg" => "Bulgaria", "bf" => "Burkina Faso", "bi" => "Burundi", "kh" => "Cambodia", "cm" => "Cameroon", "ca" => "Canada", "cv" => "Cape Verde", "ky" => "Cayman Islands", "cf" => "Central African Republic", "td" => "Chad", "cl" => "Chile", "cn" => "China", "cx" => "Christmas Island", "cc" => "Cocos (Keeling) Islands", "co" => "Colombia", "km" => "Comoros", "cg" => "Congo", "cd" => "Congo, The Democratic Republic Of The", "ck" => "Cook Islands", "cr" => "Costa Rica", "ci" => "Cote D'ivoire", "hr" => "Croatia", "cu" => "Cuba", "cw" => "Curacao", "cy" => "Cyprus", "cz" => "Czech Republic", "dk" => "Denmark", "dj" => "Djibouti", "dm" => "Dominica", "do" => "Dominican Republic", "ec" => "Ecuador", "eg" => "Egypt", "sv" => "El Salvador", "gq" => "Equatorial Guinea", "er" => "Eritrea", "ee" => "Estonia", "et" => "Ethiopia", "fk" => "Falkland Islands", "fo" => "Faroe Islands", "fj" => "Fiji", "fi" => "Finland", "fr" => "France", "gf" => "French Guiana", "pf" => "French Polynesia", "tf" => "French Southern Territories", "ga" => "Gabon", "gm" => "Gambia", "ge" => "Georgia", "de" => "Germany", "gh" => "Ghana", "gi" => "Gibraltar", "gr" => "Greece", "gl" => "Greenland", "gd" => "Grenada", "gp" => "Guadeloupe", "gu" => "Guam", "gt" => "Guatemala", "gg" => "Guernsey", "gn" => "Guinea", "gw" => "Guinea-Bissau", "gy" => "Guyana", "ht" => "Haiti", "hm" => "Heard Island and Mcdonald Islands", "va" => "Holy See (Vatican City State)", "hn" => "Honduras", "hk" => "Hong Kong", "hu" => "Hungary", "is" => "Iceland", "in" => "India", "id" => "Indonesia", "ir" => "Iran", "iq" => "Iraq", "ie" => "Ireland", "im" => "Isle Of Man", "il" => "Israel", "it" => "Italy", "jm" => "Jamaica", "jp" => "Japan", "je" => "Jersey", "jo" => "Jordan", "kz" => "Kazakhstan", "ke" => "Kenya", "ki" => "Kiribati", "kp" => "Korea, Democratic People's Republic Of", "kr" => "Korea, Republic Of", "kw" => "Kuwait", "kg" => "Kyrgyzstan", "la" => "Lao People's Democratic Republic", "lv" => "Latvia", "lb" => "Lebanon", "ls" => "Lesotho", "lr" => "Liberia", "ly" => "Libya", "li" => "Liechtenstein", "lt" => "Lithuania", "lu" => "Luxembourg", "mo" => "Macao", "mk" => "Macedonia", "mg" => "Madagascar", "mw" => "Malawi", "my" => "Malaysia", "mv" => "Maldives", "ml" => "Mali", "mt" => "Malta", "mh" => "Marshall Islands", "mq" => "Martinique", "mr" => "Mauritania", "mu" => "Mauritius", "yt" => "Mayotte", "mx" => "Mexico", "fm" => "Micronesia", "md" => "Moldova", "mc" => "Monaco", "mn" => "Mongolia", "me" => "Montenegro", "ms" => "Montserrat", "ma" => "Morocco", "mz" => "Mozambique", "mm" => "Myanmar", "na" => "Namibia", "nr" => "Nauru", "np" => "Nepal", "nl" => "Netherlands", "nc" => "New Caledonia", "nz" => "New Zealand", "ni" => "Nicaragua", "ne" => "Niger", "ng" => "Nigeria", "nu" => "Niue", "nf" => "Norfolk Island", "mp" => "Northern Mariana Islands", "no" => "Norway", "om" => "Oman", "pk" => "Pakistan", "pw" => "Palau", "ps" => "Palestinian Territory", "pa" => "Panama", "pg" => "Papua New Guinea", "py" => "Paraguay", "pe" => "Peru", "ph" => "Philippines", "pn" => "Pitcairn", "pl" => "Poland", "pt" => "Portugal", "pr" => "Puerto Rico", "qa" => "Qatar", "re" => "Reunion", "ro" => "Romania", "ru" => "Russian Federation", "rw" => "Rwanda", "bl" => "Saint Barthelemy", "sh" => "Saint Helena", "kn" => "Saint Kitts and Nevis", "lc" => "Saint Lucia", "mf" => "Saint Martin", "pm" => "Saint Pierre and Miquelon", "vc" => "Saint Vincent and The Grenadines", "ws" => "Samoa", "sm" => "San Marino", "st" => "Sao Tome and Principe", "sa" => "Saudi Arabia", "sn" => "Senegal", "rs" => "Serbia", "sc" => "Seychelles", "sl" => "Sierra Leone", "sg" => "Singapore", "sx" => "Sint Maarten", "sk" => "Slovakia", "si" => "Slovenia", "sb" => "Solomon Islands", "so" => "Somalia", "za" => "South Africa", "gs" => "South Georgia and The South Sandwich Islands", "ss" => "South Sudan", "es" => "Spain", "lk" => "Sri Lanka", "sd" => "Sudan", "sr" => "Suriname", "sj" => "Svalbard and Jan Mayen", "sz" => "Swaziland", "se" => "Sweden", "ch" => "Switzerland", "sy" => "Syrian Arab Republic", "tw" => "Taiwan", "tj" => "Tajikistan", "tz" => "Tanzania", "th" => "Thailand", "tl" => "Timor-Leste", "tg" => "Togo", "tk" => "Tokelau", "to" => "Tonga", "tt" => "Trinidad and Tobago", "tn" => "Tunisia", "tr" => "Turkey", "tm" => "Turkmenistan", "tc" => "Turks and Caicos Islands", "tv" => "Tuvalu", "ug" => "Uganda", "ua" => "Ukraine", "ae" => "United Arab Emirates", "gb" => "United Kingdom", "us" => "United States", "um" => "United States Minor Outlying Islands", "uy" => "Uruguay", "uz" => "Uzbekistan", "vu" => "Vanuatu", "ve" => "Venezuela", "vn" => "Vietnam", "vg" => "Virgin Islands, British", "vi" => "Virgin Islands, U.S.", "wf" => "Wallis and Futuna", "eh" => "Western Sahara", "ye" => "Yemen", "zm" => "Zambia", "zw" => "Zimbabwe");
                                     ?>
-                                    <select data-fieldtype="COUNTRY" name="country" class="country-select fields billing-field" onkeyup="billingField(this)">
+                                    <select data-fieldtype="COUNTRY" name="country"
+                                        class="country-select fields billing-field" onkeyup="billingField(this)">
                                         <option value="">Select...</option>
                                         <?php foreach ($countries as $code => $name) { ?>
                                             <option value="<?php echo $code; ?>"><?php echo $name; ?></option>
@@ -262,7 +301,8 @@ function getGroupValue($value)
                                 </div>
                                 <div class="text-area">
                                     <label for="text-area">Special requirements </label>
-                                    <textarea class="fields" id="text-area" name="comments" rows="10" cols="50"></textarea>
+                                    <textarea class="fields" id="text-area" name="comments" rows="10"
+                                        cols="50"></textarea>
                                 </div>
                             </div>
                         </fieldset>
@@ -293,48 +333,87 @@ function getGroupValue($value)
                             <div class="method_contents" id="method_contents_ID">
                                 <?php if ((get_option('cc_stripe_enabled') == 'yes')) : ?>
                                     <div class="first">
-                                        <input type="radio" id="stripe" name="radio" class="stripe_credit_card" onclick="stripeCreditCard(this)">
-                                        <label for="paymentOption" class="mls stripe_credit_card" onclick="stripeCreditCard(this)">
+                                        <input type="radio" id="stripe" name="radio" class="stripe_credit_card"
+                                            onclick="stripeCreditCard(this)">
+                                        <label for="paymentOption" class="mls stripe_credit_card"
+                                            onclick="stripeCreditCard(this)">
                                             <div class="payment-content">
                                                 Pay by Credit Card<br>
                                                 <!-- <small class="tight">
                                             Credit Card Surcharge: +€0.00
                                         </small> -->
                                             </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
-                                    <div class="first">
-                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
-                                        <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
-                                            <div class="payment-content">
-                                                Pay with PayPal
-                                            </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>" width="150" height="35" class="rezdy-checkout">
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>"
+                                                alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
                                         </label>
                                     </div>
                                 <?php endif; ?>
                                 <!-- ======== Airwallex ===== -->
                                 <?php if ((get_option('cc_airwallex_enabled') == 'yes')) : ?>
                                     <div class="first">
-                                        <input type="radio" id="airwallex" name="radio" class="airwallex_payment_card" onclick="airwallexPaymentCard(this)">
-                                        <label for="paymentOption" class="mls airwallex_payment_card" onclick="airwallexPaymentCard(this)">
+                                        <input type="radio" id="airwallex" name="radio" class="airwallex_payment_card"
+                                            onclick="airwallexPaymentCard(this)">
+                                        <label for="paymentOption" class="mls airwallex_payment_card"
+                                            onclick="airwallexPaymentCard(this)">
                                             <div class="payment-content">
-                                                Pay by Airwallex<br>
-
+                                                Pay by Credit Card<br>
                                             </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/airwallex_logo.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/airwallex_cards.svg'; ?>"
+                                                alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                    <div class="first first__klarna <?php echo (! $klarna_enabled) ? 'first__klarna-hidden' : ''; ?>">
+                                        <input type="radio" id="klarna" name="radio" class="KlarnaPayment"
+                                            onclick="KlarnaPayment(this)">
+                                        <label for="paymentOption" class="mls KlarnaPayment"
+                                            onclick="KlarnaPayment(this)">
+                                            <div class="payment-content">
+                                                Pay with Klarna<br>
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/Wordmark_Pink_And_Black.png'; ?>"
+                                                alt="RezdyPay payment" width="75" height="30" class="rezdy-checkout">
                                         </label>
                                     </div>
                                 <?php endif; ?>
                                 <!-- ======= End Airwallex ====== -->
+                                <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment"
+                                            onclick="PayPalPayment(this)">
+                                        <label for="paymentOption" class="mls mls-2 PayPalPayment"
+                                            onclick="PayPalPayment(this)">
+                                            <div class="payment-content">
+                                                Pay with PayPal
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>"
+                                                width="150" height="35" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- ======== //GooglePay ===== -->
+                                <?php if ((get_option('cc_googlepay_enabled') == 'yes')) : ?>
+                                    <div class="first">
+                                        <input type="radio" id="googlePay" name="radio" class="googlepay_payment_card"
+                                            onclick="googlePayPaymentCard(this)">
+                                        <label for="paymentOption" class="mls googlepay_payment_card"
+                                            onclick="googlePayPaymentCard(this)">
+                                            <div class="payment-content">
+                                                Pay by GooglePay<br>
+
+                                            </div>
+                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/googlepay_logo.svg'; ?>"
+                                                alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
+                                <!-- ======= End //GooglePay ====== -->
                             </div>
                         </fieldset>
                         <div class="form-row stripe_card" style="display:none;">
                             <label for="card-element">
-                                <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>" alt=""> Secure and Encrypted Payment
+                                <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>"
+                                    alt=""> Secure and Encrypted Payment
                             </label>
                             <div class="card-detail-wrapper">
                                 <div class="accepted-card-list">
@@ -345,27 +424,32 @@ function getGroupValue($value)
                                         <ul class="m-0 p-0">
                                             <li>
                                                 <span class="pay-card card-visa">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/visa.svg'; ?>" alt="">
+                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/visa.svg'; ?>"
+                                                        alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-master">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/master.svg'; ?>" alt="">
+                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/master.svg'; ?>"
+                                                        alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-american">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/amex.svg'; ?>" alt="">
+                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/amex.svg'; ?>"
+                                                        alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-diners">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/diners.svg'; ?>" alt="">
+                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/diners.svg'; ?>"
+                                                        alt="">
                                                 </span>
                                             </li>
                                             <li>
                                                 <span class="pay-card card-discover">
-                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/discover.svg'; ?>" alt="">
+                                                    <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/discover.svg'; ?>"
+                                                        alt="">
                                                 </span>
                                             </li>
                                         </ul>
@@ -383,12 +467,19 @@ function getGroupValue($value)
                             <div id="card-errors" role="alert"></div>
                         </div>
                         <div class="form-row PayPal_mode" style="display:none;">
-                            <p>You will be directed to a secure paypal payment website with click on PayPal button to complete your payment</p>
+                            <p>You will be directed to a secure paypal payment website with click on PayPal button to
+                                complete your payment</p>
                             <div id="paypal-button-container"></div>
+                        </div>
+                        <div class="form-row Klarna_mode" style="display:none;">
+                            <p>You will be directed to a secure Klarna payment website with click on Klarna button to
+                                complete your payment</p>
+                            <div id="klarna-button-container"></div>
                         </div>
                         <div class="form-row airwallex_card" style="display:none;">
                             <label for="card-element">
-                                <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>" alt=""> Secure and Encrypted Payment
+                                <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>"
+                                    alt=""> Secure and Encrypted Payment
                             </label>
                             <div class="card-detail-wrapper">
                                 <!-- <div class="accepted-card-list">
@@ -439,31 +530,79 @@ function getGroupValue($value)
                             <div id="airwallex-card-errors" role="alert"></div>
 
                         </div>
+                        <!---- For GooglePay Element Start ---->
+                        <div id="googlepay-skeleton" class="skeleton-loader" style="display: none;"></div>
+                        <div class="form-row google_pay_element" style="display: none;">
+                            <label for="card-element">
+                                <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icons8-lock-black.png'; ?>"
+                                    alt=""> Secure and Encrypted Payment
+                            </label>
+                            <div class="card-detail-wrapper" id="googlePay_details_wrapper">
+                                <!-- Add empty container for the GooglePay element -->
+                                <!-- <div id="googlepay_element" class="googlePayElement">
+                                </div> -->
+                            </div>
+
+                            <!-- Used to display form errors. -->
+                            <div id="google-pay-errors" role="alert"></div>
+
+                        </div>
+                        <!---- For GooglePay Element End ---->
                     </div>
 
 
-                    <?php if ($totalPrice != 0) : ?>
+                    <?php if ($totalPrice != 0) :
+                        if (isset($_ARRAY_SESSION[0]) && !empty($_ARRAY_SESSION[0]) &&  isset($_ARRAY_SESSION[0][$session_id]) && !empty($_ARRAY_SESSION[0][$session_id])): //store total price
+                            $_ARRAY_SESSION[0]['finalPrice'] = $totalPrice;
+                            ##Update sessionData
+                            $session_data_to_update = array(
+                                'sessionData' => json_encode($_ARRAY_SESSION[0])
+                            );
+                            $where = array(
+                                'sessionID' => $session_id,
+                            );
+                            $wpdb->update($table_add_to_cart_data, $session_data_to_update, $where);
+                        endif;
+                    ?>
                         <!-- button -->
-                        <button type="button" class="btn btn-payment btn-submit pointer btn-invalid" id="create-booking" data-method="" onclick="create_booking()">
+                        <button type="button" class="btn btn-payment btn-submit pointer btn-invalid" id="create-booking"
+                            data-method="" onclick="create_booking()">
                             <span class="btn-payment-total">
-                                <span class="bookingButtonText">Pay</span>&nbsp;<span class="update-on-order-total-change price" data-currency-base="EUR" data-original-amount="€<?= $totalPrice; ?>" data-price-value="<?= $totalPrice; ?>" title="Estimated conversion from 59">€<?= $totalPrice; ?></span>
+                                <span class="bookingButtonText">Pay</span>&nbsp;<span
+                                    class="update-on-order-total-change price" data-currency-base="EUR"
+                                    data-original-amount="<?php echo $rezdy_currency_symbol . $totalPrice; ?>" data-price-value="<?= $totalPrice; ?>"
+                                    title="Estimated conversion from 59"><?php echo $rezdy_currency_symbol . convert_currency_only($totalPrice); ?></span>
                             </span>
 
                             <small class="invalid" id="paybutton_require_text">
                                 Please enter all required fields
                             </small>
                         </button>
+                        <div class="agreement_box" style="display: flex; gap: 10px; align-items: center;">
+                            <input type="checkbox" id="agreement_checkbox" onchange="agreementCheckboxDisplay(this)" />
+                            <label for="agreement_checkbox">I have read and agree to the <a href="/terms-conditions" target="_blank">Terms & Conditions</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a></label>
+                        </div>
+                        <small id="agreement_box-message" style="color: red; display: none;">You must agree to the Terms &amp; Conditions and Privacy Policy before continuing</small>
                     <?php else : ?>
                         <!-- button -->
-                        <button type="button" class="btn btn-payment btn-submit pointer btn-invalid" id="create-booking" data-method="" onclick="create_booking()">
+                        <button type="button" class="btn btn-payment btn-submit pointer btn-invalid" id="create-booking"
+                            data-method="" onclick="create_booking()">
                             <span class="btn-payment-total">
-                                <span class="bookingButtonText">Book Now</span>&nbsp;<span class="update-on-order-total-change price" data-currency-base="EUR" data-original-amount="€<?= $totalPrice; ?>" data-price-value="<?= $totalPrice; ?>" title="Estimated conversion from 59"></span>
+                                <span class="bookingButtonText">Book Now</span>&nbsp;<span
+                                    class="update-on-order-total-change price" data-currency-base="EUR"
+                                    data-original-amount="<?php echo $rezdy_currency_symbol . $totalPrice; ?>" data-price-value="<?= $totalPrice; ?>"
+                                    title="Estimated conversion from 59"></span>
                             </span>
 
                             <small class="invalid" id="paybutton_require_text">
                                 Complete your Booking
                             </small>
                         </button>
+                        <div class="agreement_box" style="display: flex; gap: 10px; align-items: center;">
+                            <input type="checkbox" id="agreement_checkbox" onchange="agreementCheckboxDisplay(this)" />
+                            <label for="agreement_checkbox">I have read and agree to the <a href="/terms-conditions" target="_blank">Terms & Conditions</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a></label>
+                        </div>
+                        <small id="agreement_box-message" style="color: red; display: none;">You must agree to the Terms &amp; Conditions and Privacy Policy before continuing</small>
                     <?php endif; ?>
                 </div>
 
@@ -472,13 +611,16 @@ function getGroupValue($value)
                     <div class="card-inner">
                         <div class="card">
                             <div class="text-right">
-                                <small class="price-label">EUR</small>
+                                <small class="price-label"><?php echo $rezdy_currency_text; ?></small>
                             </div>
                             <?php
 
                             foreach ($response as $k => $detail) : ?>
                                 <div class="main-item tour_<?= $k; ?>_schedule_time">
-                                    <a class="item-delete" data-select_tour="tour_<?= $k; ?>_schedule_time" data-session="<?= $detail['schedule_time']; ?>" data-tour_url="<?= $detail['tour_url']; ?>" href="javascript:void(0)" onclick="itemDelete(this)">×</a>
+                                    <a class="item-delete" data-select_tour="tour_<?= $k; ?>_schedule_time"
+                                        data-session="<?= $detail['schedule_time']; ?>"
+                                        data-tour_url="<?= $detail['tour_url']; ?>" href="javascript:void(0)"
+                                        onclick="itemDelete(this)">×</a>
                                     <div class="product-close">
                                         <div class="contents">
                                             <strong class="product-name">
@@ -492,7 +634,7 @@ function getGroupValue($value)
                                             </small>
                                         </div>
                                         <div class="eur-price">
-                                            <strong class="price">€<?= $detail['totalPrice']; ?></strong>
+                                            <strong class="price"><?php echo $rezdy_currency_symbol . convert_currency_only($detail['totalPrice']); ?></strong>
                                         </div>
                                     </div>
                                     <?php
@@ -500,21 +642,26 @@ function getGroupValue($value)
                                         <?php if ($options['quantity'] > 0) : ?>
                                             <div class="sub-itm">
                                                 <div class="price_left">
-                                                    <input type="hidden" value="<?= $options['label']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][optionLabel]" id="">
+                                                    <input type="hidden" value="<?= $options['label']; ?>"
+                                                        name="priceOptions[<?= $k; ?>][<?= $i; ?>][optionLabel]" id="">
 
-                                                    <input type="hidden" value="<?= $options['price']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][price]" id="">
+                                                    <input type="hidden" value="<?= $options['price']; ?>"
+                                                        name="priceOptions[<?= $k; ?>][<?= $i; ?>][price]" id="">
 
-                                                    <input type="hidden" value="<?= $detail['name']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][name]" id="">
+                                                    <input type="hidden" value="<?= $detail['name']; ?>"
+                                                        name="priceOptions[<?= $k; ?>][<?= $i; ?>][name]" id="">
 
-                                                    <small><?= ($options['label'] == 'Quantity') ? 'Everyone' : $options['label']; ?> <br><small class="price">€<?= $options['price']; ?></small>
+                                                    <small><?= ($options['label'] == 'Quantity') ? 'Everyone' : $options['label']; ?>
+                                                        <br><small class="price"><?php echo $rezdy_currency_symbol . convert_currency_only($options['price']); ?></small>
                                                     </small>
                                                 </div>
                                                 <div class="center-digit">
-                                                    <input type="hidden" value="<?= $options['quantity']; ?>" name="priceOptions[<?= $k; ?>][<?= $i; ?>][value]" id="">
+                                                    <input type="hidden" value="<?= $options['quantity']; ?>"
+                                                        name="priceOptions[<?= $k; ?>][<?= $i; ?>][value]" id="">
                                                     <small><?= $options['quantity']; ?></small>
                                                 </div>
                                                 <div class="price_right">
-                                                    <small class="price">€<?= $options['sessionTotalPrice']; ?></small>
+                                                    <small class="price"><?php echo $rezdy_currency_symbol . convert_currency_only($options['sessionTotalPrice']); ?></small>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -528,10 +675,14 @@ function getGroupValue($value)
                                 $Index = 0;
                                 foreach ($_ARRAY_SESSION[0]['voucherCode']['codes'] as $codeIndex => $codeRowData) :
                             ?>
-                                    <div class="main-item added_voucher" id="applied_codes_div" data-applied-code="<?= $codeIndex; ?>">
-                                        <input type="hidden" name="applied_voucher_codes[<?= $Index; ?>][codeName]" value="<?= $codeIndex; ?>">
-                                        <input type="hidden" name="applied_voucher_codes[<?= $Index; ?>][codePrice]" value="<?= $codeRowData['totalPaid']; ?>">
-                                        <a class="item-delete" data-item-type="Voucher" data-code="<?= $codeIndex; ?>" href="javascript:void(0)" onclick="itemDelete(this)">×</a>
+                                    <div class="main-item added_voucher" id="applied_codes_div"
+                                        data-applied-code="<?= $codeIndex; ?>">
+                                        <input type="hidden" name="applied_voucher_codes[<?= $Index; ?>][codeName]"
+                                            value="<?= $codeIndex; ?>">
+                                        <input type="hidden" name="applied_voucher_codes[<?= $Index; ?>][codePrice]"
+                                            value="<?= $codeRowData['totalPaid']; ?>">
+                                        <a class="item-delete" data-item-type="Voucher" data-code="<?= $codeIndex; ?>"
+                                            href="javascript:void(0)" onclick="itemDelete(this)">×</a>
                                         <div class="product-close">
                                             <div class="contents">
                                                 <strong class="code">
@@ -546,14 +697,16 @@ function getGroupValue($value)
                                                 ?>
                                                     <br>
                                                     <small class="block">
-                                                        There will be <span class="price" title="Estimated conversion from 67.2">€<?= $codeRowData['remaining']; ?></span> remaining on your voucher
+                                                        There will be <span class="price"
+                                                            title="Estimated conversion from 67.2"><?php echo $rezdy_currency_symbol . $codeRowData['remaining']; ?></span>
+                                                        remaining on your voucher
                                                     </small>
                                                 <?php
                                                 }
                                                 ?>
                                             </div>
                                             <div class="eur-price">
-                                                <strong class="code-price">€<?= $codeRowData['totalPaid']; ?></strong>
+                                                <strong class="code-price"><?php echo $rezdy_currency_symbol . convert_currency_only($codeRowData['totalPaid']); ?></strong>
                                             </div>
                                         </div>
                                     </div>
@@ -566,10 +719,13 @@ function getGroupValue($value)
                             if (isset($_ARRAY_SESSION[0]['couponCode']) && !empty($_ARRAY_SESSION[0]['couponCode']['code'])) {
                                 foreach ($_ARRAY_SESSION[0]['couponCode']['code'] as $codeIndex => $codeRowData) :
                             ?>
-                                    <div class="main-item added_coupon" id="applied_codes_div" data-applied-code="<?= $codeIndex; ?>">
+                                    <div class="main-item added_coupon" id="applied_codes_div"
+                                        data-applied-code="<?= $codeIndex; ?>">
                                         <input type="hidden" name="applied_coupon_code[codeName]" value="<?= $codeIndex; ?>">
-                                        <input type="hidden" name="applied_coupon_code[codePrice]" value="<?= $codeRowData['totalPaid']; ?>">
-                                        <a class="item-delete" data-item-type="PromoCode" data-code="<?= $codeIndex; ?>" href="javascript:void(0)" onclick="itemDelete(this)">×</a>
+                                        <input type="hidden" name="applied_coupon_code[codePrice]"
+                                            value="<?= $codeRowData['totalPaid']; ?>">
+                                        <a class="item-delete" data-item-type="PromoCode" data-code="<?= $codeIndex; ?>"
+                                            href="javascript:void(0)" onclick="itemDelete(this)">×</a>
                                         <div class="product-close">
                                             <div class="contents">
                                                 <strong class="code">
@@ -581,7 +737,7 @@ function getGroupValue($value)
                                                 </strong>
                                             </div>
                                             <div class="eur-price">
-                                                <strong class="code-price">€<?= $codeRowData['totalPaid']; ?></strong>
+                                                <strong class="code-price"><?php echo $rezdy_currency_symbol . convert_currency_only($codeRowData['totalPaid']); ?></strong>
                                             </div>
                                         </div>
                                     </div>
@@ -597,7 +753,8 @@ function getGroupValue($value)
                                 </div>
                                 <div class="toggle-content">
                                     <div class="input-field">
-                                        <input type="text" name="" id="p_v_code" class="fields" placeholder="Enter Voucher, Coupon or Promo Code">
+                                        <input type="text" name="" id="p_v_code" class="fields"
+                                            placeholder="Enter Voucher, Coupon or Promo Code">
                                     </div>
                                     <div class="apply-btn button">
                                         <input type="button" id="p_v_apply" value="Apply" onclick="pvapply(this)">
@@ -612,21 +769,26 @@ function getGroupValue($value)
                                 <a href=""><strong>Subtotal</strong></a>
                                 <a href="javascript:void(0)" class="info-subtotal">
                                     Includes taxes & fees&nbsp
-                                    <img class="info-image" src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icon-info-dark.svg'; ?>">
+                                    <img class="info-image"
+                                        src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/icon-info-dark.svg'; ?>">
                                 </a>
                             </div>
                             <div class="price">
-                                <strong class="alltotal"><?= '€' . $totalPrice; ?></strong>
+                                <strong class="alltotal"><?php echo $rezdy_currency_symbol . convert_currency_only($totalPrice); ?></strong>
                             </div>
                         </div>
                         <div class="total">
                             <div class="total_eur">
-                                <strong>Total (<span class="price-label">EUR</span>)</strong>
+                                <strong>Total (<span class="price-label"><?php echo $rezdy_currency_text; ?></span>)</strong>
                             </div>
                             <div class="price">
-                                <strong class="alltotal"><?= '€' . $totalPrice; ?></strong>
+                                <strong class="alltotal"><?php echo $rezdy_currency_symbol . convert_currency_only($totalPrice); ?></strong>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-extra">
+                        <label for="extra__newsletter">Click here to subscribe to our newsletter for exclusive offers, product launches, and pro travel tips</label>
+                        <input type="checkbox" name="extra__newsletter" id="extra__newsletter" value="yes">
                     </div>
                 </div>
             </div>
@@ -647,15 +809,21 @@ function getGroupValue($value)
 <?php if (get_option('cc_stripe_enabled') == 'yes') : ?>
     <script src="https://js.stripe.com/v3/"></script>
 <?php endif; ?>
-<!-- ====== Airwallex ====== -->
-<?php if (get_option('cc_airwallex_enabled') == 'yes') : ?>
+<!-- ====== Airwallex OR GooglePay ====== -->
+<?php if (get_option('cc_airwallex_enabled') == 'yes' || get_option('cc_googlepay_enabled') == 'yes') : ?>
     <script src="https://checkout.airwallex.com/assets/elements.bundle.min.js"></script>
 <?php endif; ?>
-<!-- ===== End Airwallex ===== -->
+<!-- ===== End Airwallex OR GooglePay ===== -->
 
-<script src="<?php echo plugin_dir_url(__FILE__) . 'js/jquery-2.2.4.min.js'; ?>"></script>
+<!-- <script src="<?php echo plugin_dir_url(__FILE__) . 'js/jquery-2.2.4.min.js'; ?>"></script> -->
 <script>
+    let created_monday_items = false;
+
     var cardFill = false;
+
+    var ableToIntentCreate = false; // ## GooglePay
+
+    let finalAllTotalDue = <?php echo $totalPrice ?? 999999; ?>;
 
     //Form to make Disabled
     var submit_button = document.getElementById('create-booking');
@@ -700,10 +868,11 @@ function getGroupValue($value)
     }
 
 
-    // ===== Airwallex Element ======
+    // ===== Airwallex OR GooglePay Element ======
     var cc_airwallex_enabled = "<?php echo get_option('cc_airwallex_enabled'); ?>";
-    if (cc_airwallex_enabled) {
-        if (cc_airwallex_enabled == 'yes') {
+    var cc_googlepay_enabled = "<?php echo get_option('cc_googlepay_enabled'); ?>";
+    if (cc_airwallex_enabled || cc_googlepay_enabled) {
+        if (cc_airwallex_enabled == 'yes' || cc_googlepay_enabled == 'yes') {
             var cc_airwallex_live = "<?php echo get_option('cc_airwallex_live'); ?>";
             const env = (cc_airwallex_live) ? 'prod' : 'demo';
             Airwallex.init({
@@ -714,7 +883,7 @@ function getGroupValue($value)
             var airwallexElement = airwallexCard.mount("airwallex_element");
         }
     }
-    // ======= End Airwallex Card Element =============
+    // ======= End Airwallex Card OR GooglePay Element =============
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -727,7 +896,8 @@ function getGroupValue($value)
         bodyElement.classList.add('my-booking-checkout');
 
         // Add Progress bar Div under header
-        var customContent = '<div class="progress-bar__wrapper"><div class="progress" role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 5px"><div class="progress-bar" style="width: 0%"></div></div></div>';
+        var customContent =
+            '<div class="progress-bar__wrapper"><div class="progress" role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 5px"><div class="progress-bar" style="width: 0%"></div></div></div>';
         jQuery(customContent).insertAfter(".loading_dot");
 
 
@@ -756,7 +926,7 @@ function getGroupValue($value)
 
         var pricespan_OnLoad = document.querySelector('.update-on-order-total-change');
         var priceValue_OnLoad = pricespan_OnLoad.getAttribute('data-price-value');
-        if (priceValue_OnLoad <= 0) {
+        if (<?php echo $totalPrice; ?> <= 0) {
             if (document.querySelector('.payment_m')) {
                 document.querySelector('.payment_m').style.display = 'none';
             }
@@ -842,46 +1012,48 @@ function getGroupValue($value)
     function stripeCreditCard(element) {
         var target = element;
 
-        var mathodType = '';
-        var radioButtonStripeJS = document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]');
-        radioButtonStripeJS.checked = true;
-        var radioButtonPayPalJS = document.querySelectorAll('input[type="radio"][class="PayPalPayment"]');
-        radioButtonPayPalJS.checked = false;
+        submit_button.style.display = 'block';
+
+
+        document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]').checked = true;
+
+        document.querySelectorAll('input[type="radio"][class="PayPalPayment"]').checked = false;
+
+        document.querySelectorAll('input[type="radio"][class="KlarnaPayment"]').checked = false;
 
         // ====== airwallex =====
-        var radioButtonAirwallexJS = document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]');
-        radioButtonAirwallexJS.checked = false;
+        document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]').checked = false;
         // ======================
 
-        var method_contents = jQuery('.method_contents');
-        method_contents.addClass('checked');
+        document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = false;
 
-        var radioButtonStripe = jQuery('input.stripe_credit_card');
-        radioButtonStripe.addClass('selected').attr('checked', true);
-        var radioButtonPayPal = jQuery('input.PayPalPayment');
-        radioButtonPayPal.removeClass('selected').removeAttr('checked');
-        // ==== airwallex =====
-        var radioButtonAirwallex = jQuery('input.airwallex_payment_card');
-        radioButtonAirwallex.removeClass('selected').removeAttr('checked');
-        // ===================
-        mathodType = 'stripe';
-        submit_button.setAttribute('data-method', mathodType);
+        jQuery('.method_contents').addClass('checked');
 
-        var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
-        var target_div_stripe = document.getElementsByClassName('stripe_card');
+        jQuery('input.stripe_credit_card').addClass('selected').attr('checked', true);
+
+        jQuery('input.PayPalPayment').removeClass('selected').removeAttr('checked');
+
+        jQuery('input.KlarnaPayment').removeClass('selected').removeAttr('checked');
 
         // ==== airwallex =====
-        var target_div_airwallex = document.getElementsByClassName('airwallex_card');
+        jQuery('input.airwallex_payment_card').removeClass('selected').removeAttr('checked');
         // ===================
 
 
-        if (target_div_stripe[0].style.display == 'none' || target_div_stripe[0].style.display === '') {
-            target_div_stripe[0].style.display = 'block';
-            target_div_PayPal[0].style.display = 'none';
+        jQuery('input.googlepay_payment_card').removeClass('selected').removeAttr('checked');
+
+        submit_button.setAttribute('data-method', 'stripe');
+
+
+        if (document.getElementsByClassName('stripe_card')[0].style.display == 'none' || document.getElementsByClassName('stripe_card')[0].style.display === '') {
+            document.getElementsByClassName('stripe_card')[0].style.display = 'block';
+            document.getElementsByClassName('PayPal_mode')[0].style.display = 'none';
+            document.getElementsByClassName('Klarna_mode')[0].style.display = 'none';
             // ==== airwallex =====
-            target_div_airwallex[0].style.display = 'none';
+            document.getElementsByClassName('airwallex_card')[0].style.display = 'none';
             // ====================
-            radioButtonStripe.addClass('selected').attr('checked', true);
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
+            jQuery('input.stripe_credit_card').addClass('selected').attr('checked', true);
 
 
             // Handle real-time validation errors
@@ -931,59 +1103,102 @@ function getGroupValue($value)
     }
 
     function PayPalPayment(element) {
+
         var target = element;
-        var mathodType = '';
-        var radioButtonPayPalJS = document.querySelectorAll('input[type="radio"][class="PayPalPayment"]');
-        radioButtonPayPalJS.checkedcardFill = true;
-        var radioButtonStripeJS = document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]');
-        radioButtonStripeJS.checked = false;
+        submit_button.style.display = 'block';
+
+        document.querySelectorAll('input[type="radio"][class="PayPalPayment"]').checked = true;
+
+        document.querySelectorAll('input[type="radio"][class="KlarnaPayment"]').checked = false;
+
+        document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]').checked = false;
         // ==== airwallex =====
-        var radioButtonAirwallexJS = document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]');
-        radioButtonAirwallexJS.checked = false;
+        document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]').checked = false;
         // ===================
 
-        var method_contents = jQuery('.method_contents');
-        method_contents.addClass('checked');
+        document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = false;
 
+        jQuery('.method_contents').addClass('checked');
 
-        var radioButtonPayPal = jQuery('input.PayPalPayment');
-        radioButtonPayPal.addClass('selected').attr('checked', true);
-        var radioButtonStripe = jQuery('input.stripe_credit_card');
-        radioButtonStripe.removeClass('selected').removeAttr('checked');
+        jQuery('input.PayPalPayment').addClass('selected').attr('checked', true);
 
-        // ==== airwallex =====
-        var radioButtonAirwallex = jQuery('input.airwallex_payment_card');
-        radioButtonAirwallex.removeClass('selected').removeAttr('checked');
-        // ===================
+        jQuery('input.KlarnaPayment').removeClass('selected').removeAttr('checked');
 
-        mathodType = 'PayPal';
-        submit_button.setAttribute('data-method', mathodType);
-
-
-        var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
-        var target_div_stripe = document.getElementsByClassName('stripe_card');
+        jQuery('input.stripe_credit_card').removeClass('selected').removeAttr('checked');
 
         // ==== airwallex =====
-        var target_div_airwallex = document.getElementsByClassName('airwallex_card');
+        jQuery('input.airwallex_payment_card').removeClass('selected').removeAttr('checked');
         // ===================
+
+        jQuery('input.googlepay_payment_card').removeClass('selected').removeAttr('checked');
+
+        submit_button.setAttribute('data-method', 'PayPal');
+
 
         submit_button.disabled = false;
         jQuery('.btn-payment').removeClass('btn-invalid');
 
-        if (target_div_PayPal[0].style.display == 'none' || target_div_PayPal[0].style.display === '') {
-            target_div_PayPal[0].style.display = 'block';
-            target_div_stripe[0].style.display = 'none';
-            target_div_airwallex[0].style.display = 'none';
+        if (document.getElementsByClassName('PayPal_mode')[0].style.display == 'none' || document.getElementsByClassName('PayPal_mode')[0].style.display === '') {
+            document.getElementsByClassName('PayPal_mode')[0].style.display = 'block';
+            document.getElementsByClassName('Klarna_mode')[0].style.display = 'none';
+            document.getElementsByClassName('stripe_card')[0].style.display = 'none';
+            document.getElementsByClassName('airwallex_card')[0].style.display = 'none';
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
             cardFill = true;
         }
         fieldsValidation();
     }
 
-    // ======== Airwallex ===== 
+    function KlarnaPayment(element) {
+
+        var target = element;
+        submit_button.style.display = 'block';
+
+        document.querySelectorAll('input[type="radio"][class="KlarnaPayment"]').checked = true;
+
+        document.querySelectorAll('input[type="radio"][class="PayPalPayment"]').checked = false;
+
+        document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]').checked = false;
+        // ==== airwallex =====
+        document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]').checked = false;
+        // ===================
+
+        document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = false;
+
+        jQuery('.method_contents').addClass('checked');
+
+        jQuery('input.KlarnaPayment').addClass('selected').attr('checked', true);
+
+        jQuery('input.PayPalPayment').removeClass('selected').removeAttr('checked');
+
+        jQuery('input.stripe_credit_card').removeClass('selected').removeAttr('checked');
+
+        // ==== airwallex =====
+        jQuery('input.airwallex_payment_card').removeClass('selected').removeAttr('checked');
+        // ===================
+
+        jQuery('input.googlepay_payment_card').removeClass('selected').removeAttr('checked');
+
+        submit_button.setAttribute('data-method', 'Klarna');
+
+        submit_button.disabled = false;
+        jQuery('.btn-payment').removeClass('btn-invalid');
+
+        if (document.getElementsByClassName('Klarna_mode')[0].style.display == 'none' || document.getElementsByClassName('Klarna_mode')[0].style.display === '') {
+            document.getElementsByClassName('Klarna_mode')[0].style.display = 'block';
+            document.getElementsByClassName('PayPal_mode')[0].style.display = 'none';
+            document.getElementsByClassName('stripe_card')[0].style.display = 'none';
+            document.getElementsByClassName('airwallex_card')[0].style.display = 'none';
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
+            cardFill = true;
+        }
+        fieldsValidation();
+    }
+
+    // ======== Airwallex =====
 
     function airwallexPaymentCard(element) {
-
-
+        submit_button.style.display = 'block';
         const airwallex_element_DIV = document.getElementById('airwallex_element');
         // Check if it has a AirwallexElement--complete class
         if (airwallex_element_DIV.classList.contains('AirwallexElement--complete')) {
@@ -1003,39 +1218,36 @@ function getGroupValue($value)
             updateProgressBar(status);
         }
 
+        document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]').checked = true;
 
-        var mathodType = '';
-        var radioButtonAirwallexJS = document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]');
-        radioButtonAirwallexJS.checked = true;
+        document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]').checked = false;
 
-        var radioButtonStripeJS = document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]');
-        radioButtonStripeJS.checked = false;
-        var radioButtonPayPalJS = document.querySelectorAll('input[type="radio"][class="PayPalPayment"]');
-        radioButtonPayPalJS.checked = false;
+        document.querySelectorAll('input[type="radio"][class="PayPalPayment"]').checked = false;
 
-        var method_contents = jQuery('.method_contents');
-        method_contents.addClass('checked');
+        document.querySelectorAll('input[type="radio"][class="KlarnaPayment"]').checked = false;
 
-        var radioButtonAirwallex = jQuery('input.airwallex_payment_card');
-        radioButtonAirwallex.addClass('selected').attr('checked', true);
+        document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = false;
 
-        var radioButtonStripe = jQuery('input.stripe_credit_card');
-        radioButtonStripe.removeClass('selected').removeAttr('checked');
+        jQuery('.method_contents').addClass('checked');
 
-        var radioButtonPayPal = jQuery('input.PayPalPayment');
-        radioButtonPayPal.removeClass('selected').removeAttr('checked');
+        jQuery('input.airwallex_payment_card').addClass('selected').attr('checked', true);
 
-        mathodType = 'airwallex';
-        submit_button.setAttribute('data-method', mathodType);
+        jQuery('input.stripe_credit_card').removeClass('selected').removeAttr('checked');
 
-        var target_div_PayPal = document.getElementsByClassName('PayPal_mode');
-        var target_div_stripe = document.getElementsByClassName('stripe_card');
-        var target_div_airwallex = document.getElementsByClassName('airwallex_card');
+        jQuery('input.PayPalPayment').removeClass('selected').removeAttr('checked');
 
-        if (target_div_airwallex[0].style.display == 'none' || target_div_airwallex[0].style.display === '') {
-            target_div_airwallex[0].style.display = 'block';
-            target_div_stripe[0].style.display = 'none';
-            target_div_PayPal[0].style.display = 'none';
+        jQuery('input.KlarnaPayment').removeClass('selected').removeAttr('checked');
+
+        jQuery('input.googlepay_payment_card').removeClass('selected').removeAttr('checked');
+
+        submit_button.setAttribute('data-method', 'airwallex');
+
+        if (document.getElementsByClassName('airwallex_card')[0].style.display == 'none' || document.getElementsByClassName('airwallex_card')[0].style.display === '') {
+            document.getElementsByClassName('airwallex_card')[0].style.display = 'block';
+            document.getElementsByClassName('stripe_card')[0].style.display = 'none';
+            document.getElementsByClassName('PayPal_mode')[0].style.display = 'none';
+            document.getElementsByClassName('Klarna_mode')[0].style.display = 'none';
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
 
             // Handle real-time validation errors
             airwallexElement.addEventListener('onChange', (e) => {
@@ -1078,6 +1290,399 @@ function getGroupValue($value)
 
     // ======= end airwallex =====
 
+
+    // ======== GooglePay =====
+
+    function googlePayPaymentCard(element) {
+
+
+        cardFill = true;
+        fieldsValidation();
+
+        var data_method = submit_button.getAttribute('data-method');
+        if (ableToIntentCreate && data_method !== 'GooglePay') {
+
+            submit_button.setAttribute('data-method', 'GooglePay');
+
+
+            googlePayIntent();
+
+            document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = true;
+
+            document.querySelectorAll('input[type="radio"][class="stripe_credit_card"]').checked = false;
+
+            document.querySelectorAll('input[type="radio"][class="PayPalPayment"]').checked = false;
+
+            document.querySelectorAll('input[type="radio"][class="KlarnaPayment"]').checked = false;
+
+            document.querySelectorAll('input[type="radio"][class="airwallex_payment_card"]').checked = false;
+
+            jQuery('.method_contents').addClass('checked');
+
+            jQuery('input.googlepay_payment_card').addClass('selected').attr('checked', true);
+
+            jQuery('input.stripe_credit_card').removeClass('selected').removeAttr('checked');
+
+            jQuery('input.PayPalPayment').removeClass('selected').removeAttr('checked');
+
+            jQuery('input.KlarnaPayment').removeClass('selected').removeAttr('checked');
+
+            jQuery('input.airwallex_payment_card').removeClass('selected').removeAttr('checked');
+
+
+            document.getElementsByClassName('airwallex_card')[0].style.display = 'none';
+            document.getElementsByClassName('stripe_card')[0].style.display = 'none';
+            document.getElementsByClassName('PayPal_mode')[0].style.display = 'none';
+            document.getElementsByClassName('Klarna_mode')[0].style.display = 'none';
+
+        } else {
+
+            cardFill = false;
+            fieldsValidation();
+
+
+            //Scroll Up
+            jQuery("html, body").animate({
+                scrollTop: 0
+            }, 300);
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+    // ======= end GooglePay =====
+
+
+    function googlePayIntent() {
+
+
+        if (!fieldsValidation()) {
+            return false;
+        }
+
+        if (document.getElementById("googlepay_element")) {
+            document.getElementById("googlepay_element").remove();
+        }
+
+        document.getElementById('create-booking').style.display = 'none';
+        document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
+        document.getElementById('googlepay-skeleton').style.display = 'block';
+
+
+        var mathodType = document.getElementById('create-booking').getAttribute('data-method');
+        var session_id = document.querySelector('.session_id').getAttribute('value');
+
+        var stage = 'beforeIntent';
+        var form = document.querySelector('.booking-checkout');
+        var pricespan = document.querySelector('.update-on-order-total-change');
+        var priceValue = pricespan.getAttribute('data-price-value');
+
+        var selected_flag_div = document.querySelector('.iti__selected-flag');
+        var title_text = selected_flag_div.getAttribute('title');
+        var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+
+        var data = {
+            action: 'booking_checkout',
+            priceValue: priceValue,
+            selectedcountryCode: selectedcountryCode,
+            method: mathodType,
+            stage: stage,
+            rezdy_session_id: session_id
+        };
+        var formData = new FormData(form);
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        var response = fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                if (data.hasOwnProperty('paymentStatus')) { //store total price
+                    if (data.paymentStatus == false) {
+                        if (data.cancel_url != '') {
+                            var cancel_url = data.cancel_url;
+                            var params = new URLSearchParams(cancel_url.search);
+                            var param = 'cancel';
+                            if (params.has(param)) {
+                                baseURL = baseURL + '/cancel/ ';
+                                window.location.href = baseURL;
+                            } else {
+                                window.location.href = cancel_url;
+                            }
+                        } else {
+                            baseURL = baseURL + '/cancel/ ';
+                            window.location.href = baseURL;
+                        }
+                    }
+                } else {
+
+                    var isError = false;
+                    if (!data.isError) {
+                        //success
+                        const int_ID = data.int_ID;
+                        const errorCode = data.errorCode;
+                        const errorMessage = data.errorMessage;
+                        const client_secret = data.client_secret;
+                        const inserted_id = data.inserted_id;
+                        const rezdy_params = data.rezdy_params;
+                        const plugin_dir = data.plugin_dir;
+                        const username = data.username;
+                        const useremail = data.useremail;
+                        const custom_id = data.custom_id;
+                        const intentAmount = data.intentAmount;
+                        const intentCurrency = data.intentCurrency;
+
+                        googlePayCreateElement(int_ID, errorCode, errorMessage, client_secret, inserted_id, rezdy_params,
+                            plugin_dir, username, useremail, custom_id, intentAmount, intentCurrency, session_id);
+
+                    } else {
+                        //error
+                        isError = true;
+                        const errorCode = data.errorCode;
+                        const errorMessage = data.errorMessage;
+                        const inserted_id = data.inserted_id;
+                        const rezdy_params = data.rezdy_params;
+                        const plugin_dir = data.plugin_dir;
+                        const username = data.username;
+                        const useremail = data.useremail;
+                        const custom_id = data.custom_id;
+
+                        const status = 'Failed at Payment Intent';
+                        const totalPaid = '';
+                        const int_ID = '';
+                        // After Failedf from confirm payment Intent
+                        googlePayResponse(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail,
+                            status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+                    }
+                }
+            })
+            .catch(function(error) {
+                console.log(error)
+            });
+
+
+
+
+
+
+    }
+
+
+    async function googlePayCreateElement(int_ID, errorCode, errorMessage, client_secret, inserted_id, rezdy_params,
+        plugin_dir, username, useremail, custom_id, intentAmount, intentCurrency, session_id) {
+
+
+        const googlePay_details_wrapper = document.getElementById('googlePay_details_wrapper');
+        const googlePayDiv = document.createElement('div');
+        googlePayDiv.id = 'googlepay_element'; // The div where the Google Pay button will be mounted
+
+        googlePay_details_wrapper.appendChild(googlePayDiv);
+
+        var type = 'googlePayButton';
+        Airwallex.destroyElement(type);
+
+        const googlepay = Airwallex.createElement(type, {
+            mode: 'payment', // 'payment' or 'recurring'
+            intent_id: int_ID,
+            client_secret: client_secret,
+            countryCode: 'GB',
+            amount: {
+                value: intentAmount,
+                currency: intentCurrency,
+            },
+            merchantInfo: {
+                merchantName: 'Airwallex',
+            },
+            buttonColor: 'black',
+            buttonType: 'book',
+            //emailRequired: true,
+            origin: window.location.origin,
+        });
+        const domElement = googlepay.mount('googlepay_element');
+
+
+        domElement.addEventListener('onReady', (event) => {
+
+            event.preventDefault();
+
+            document.getElementById('googlepay-skeleton').style.display = 'none';
+
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'block';
+        });
+
+        // STEP #6: Add an event listener to handle errors
+        domElement.addEventListener('onError', (event) => {
+            event.preventDefault();
+            const {
+                error
+            } = event.detail;
+
+            document.getElementById('google-pay-errors').style.display = 'block'; // Example: show error
+            document.getElementById('google-pay-errors').textContent = error
+                .message; // Example: set error message
+            console.error('There was an error', error);
+
+            // Handle error
+            const isError = true;
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            const status = 'Failed Payment for Google Pay';
+            const totalPaid = '';
+
+            googlePayResponse(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail,
+                status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+
+        });
+
+
+        // STEP #7: Add an event listener to handle errors
+        domElement.addEventListener('onSuccess', (event) => {
+            // handle your success event
+
+            event.preventDefault();
+
+            const isError = false;
+            const errorCode = '';
+            const errorMessage = '';
+            const totalPaid = event.detail.intent.captured_amount;
+            const int_ID = event.detail.intent.id;
+            const status = event.detail.intent.status;
+            var loadingElement = document.querySelector('.loading_dot');
+            loadingElement.style.display = 'block'; // show the loader
+
+            googlePayResponse(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail,
+                status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+
+
+        });
+    }
+
+    function googlePayResponse(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status,
+        totalPaid, isError, errorCode, errorMessage, custom_id) {
+
+        if (isError == false) {
+            var stage = 'afterIntentSuccess';
+        } else {
+            var stage = 'afterIntentError';
+        }
+
+
+        var submit_button = document.getElementById('create-booking');
+        var mathodType = document.getElementById('create-booking').getAttribute('data-method');
+        var form = document.querySelector('.booking-checkout');
+        var pricespan = document.querySelector('.update-on-order-total-change');
+        var priceValue = pricespan.getAttribute('data-price-value');
+
+        var selected_flag_div = document.querySelector('.iti__selected-flag');
+        var title_text = selected_flag_div.getAttribute('title');
+        var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+
+        var mathod = 'GooglePay';
+        var data = {
+            action: 'booking_checkout',
+            method: mathodType,
+            stage: stage,
+            priceValue: priceValue,
+            selectedcountryCode: selectedcountryCode,
+            rezdy_session_id: session_id,
+            transactionID: `${int_ID}`,
+            inserted_id: `${inserted_id}`,
+            rezdy_params: `${rezdy_params}`,
+            plugin_dir: `${plugin_dir}`,
+            username: `${username}`,
+            useremail: `${useremail}`,
+            status: `${status}`,
+            totalPaid: `${totalPaid}`,
+            isError: isError,
+            errorCode: `${errorCode}`,
+            errorMessage: `${errorMessage}`,
+            custom_id: `${custom_id}`,
+
+        };
+
+
+        var formData = new FormData(form);
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        var response = fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+
+                var baseURL = "<?php echo home_url(); ?>";
+                if (data.requestStatus == true) {
+
+                    var transactionID = data.transactionID;
+
+                    if (data.success_url != '') {
+                        var success_url = data.success_url;
+
+
+                        var transactionID = data.transactionID;
+                        window.location.href = success_url + '?transactionID=' + transactionID;
+
+
+                    } else {
+                        var transactionID = data.transactionID;
+                        baseURL = baseURL + '/success?transactionID=' + transactionID;
+                        window.location.href = baseURL;
+                    }
+
+                }
+                if (data.requestStatus == false) {
+                    if (data.transactionID) {
+                        //payment success but Booking not
+                        if (data.cancel_url != '') {
+                            var cancel_url = data.cancel_url;
+                            var params = new URLSearchParams(cancel_url.search);
+                            var param = 'cancel';
+                            if (params.has(param)) {
+                                var transactionID = data.transactionID;
+                                baseURL = baseURL + '/cancel/' + transactionID;
+                                window.location.href = baseURL;
+                            } else {
+                                window.location.href = cancel_url;
+                            }
+                        } else {
+                            var transactionID = data.transactionID;
+                            baseURL = baseURL + '/cancel/' + transactionID;
+                            window.location.href = baseURL;
+                        }
+
+                    }
+                }
+
+
+            })
+            .catch(function(error) {
+                console.log(error)
+            });
+
+
+
+    }
+
+
+
     function updateProgressBar(status) {
 
         if (status == false) {
@@ -1106,13 +1711,40 @@ function getGroupValue($value)
 
     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 
-    function isValidEmail(email) {
-        return emailPattern.test(email);
+    //========= Email validation Ajax start =====
+    async function isValidEmail(email) {
+        //return emailPattern.test(email);
+
+        var data = {
+            action: 'email_validation',
+            email: email,
+        };
+
+        var formData = new FormData();
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+
+        try {
+            let response = await fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData,
+            });
+            let result = await response.json();
+
+            return result.response;
+
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+
     }
+    //========= Email validation Ajax end =====
 
     function fieldsValidation() {
         var form = document.querySelector('.booking-checkout');
-        var requiredFields = form.querySelectorAll('[required]'); // Select all required fields
+        var requiredFields = form.querySelectorAll('[required]');
 
         var allFieldsFilled = true;
         requiredFields.forEach(function(field) {
@@ -1129,7 +1761,8 @@ function getGroupValue($value)
                 if (field.classList.contains('billing_participant_tel')) {
 
                     var placeholder = field.getAttribute('placeholder');
-                    var trimmedPlaceholder = placeholder.replace(/\s/g, ''); // Remove all whitespace characters
+                    var trimmedPlaceholder = placeholder.replace(/\s/g,
+                        ''); // Remove all whitespace characters
                     var lengthWithoutSpaces = trimmedPlaceholder.length;
                     var inputValLen = field.value.length;
 
@@ -1141,30 +1774,33 @@ function getGroupValue($value)
                         field.classList.add('error');
                         field.classList.remove('input-valid');
                         field.closest('.input-icon').classList.remove('input-valid');
-                    }
-                } else if (field.classList.contains('billing_participant_email')) {
 
-                    var email = field.value;
-                    if (isValidEmail(email)) {
-                        field.classList.remove('error');
-                        field.classList.add('input-valid');
-                        field.closest('.input-icon').classList.add('input-valid');
-
-                    } else {
-                        field.classList.add('error');
-                        if (field.classList.contains('input-valid')) {
-                            field.classList.remove('input-valid');
-                        }
-                        if (field.closest('.input-icon').classList.contains('input-valid')) {
-                            field.closest('.input-icon').classList.remove('input-valid');
-                        }
                     }
+                } else if (field.classList.contains(
+                        'billing_participant_email')) { //========= Email validation Ajax start =====
+
+                    // var email = field.value;
+                    // if (isValidEmail(email)) {
+                    //     field.classList.remove('error');
+                    //     field.classList.add('input-valid');
+                    //     field.closest('.input-icon').classList.add('input-valid');
+
+                    // } else {
+                    //     field.classList.add('error');
+                    //     if (field.classList.contains('input-valid')) {
+                    //         field.classList.remove('input-valid');
+                    //     }
+                    //     if (field.closest('.input-icon').classList.contains('input-valid')) {
+                    //         field.closest('.input-icon').classList.remove('input-valid');
+                    //     }
+                    // }
                 } else {
                     if (field.value.trim()) {
 
                         field.classList.remove('error');
                         field.classList.add('input-valid');
                         field.closest('.input-icon').classList.add('input-valid');
+
                     } else {
                         field.classList.add('error');
                         if (field.classList.contains('input-valid')) {
@@ -1180,14 +1816,15 @@ function getGroupValue($value)
 
                 var remainingEmptyFields = [];
                 requiredFields.forEach(function(requiredField) {
-                    if (requiredField.value.trim() && requiredField.classList.contains('input-valid')) {
+                    if (requiredField.value.trim() && requiredField.classList.contains(
+                            'input-valid')) {
                         requiredField.classList.remove('error');
                     } else {
                         remainingEmptyFields.push(requiredField.name);
                     }
                 });
 
-                if (remainingEmptyFields.length == 0) {
+                if (remainingEmptyFields.length == 0 || finalAllTotalDue <= 1) {
                     var pricespan = document.querySelector('.update-on-order-total-change');
                     var data__price__value = pricespan.getAttribute("data-price-value");
                     if (parseInt(data__price__value, 10) <= 0) {
@@ -1197,7 +1834,8 @@ function getGroupValue($value)
                         jQuery('.btn-payment').removeClass('btn-invalid');
                         submit_button.disabled = false;
                     } else {
-                        if (cardFill && cardFill == true) {
+
+                        if ((cardFill && cardFill == true) || finalAllTotalDue < 1) {
                             var status = true;
                             updateProgressBar(status);
                             paybutton_require_textElement.textContent = 'Complete your booking';
@@ -1216,6 +1854,7 @@ function getGroupValue($value)
                         radiolables.forEach(function(radiolable) {
                             radiolable.style.borderBottomColor = '#62ba37';
                         });
+
                     }
 
                 } else {
@@ -1233,22 +1872,36 @@ function getGroupValue($value)
 
             });
         });
+
         if (!allFieldsFilled) {
             submit_button.disabled = true;
             jQuery('.btn-payment').addClass('btn-invalid');
+            paybutton_require_textElement.textContent =
+                'Please enter all required fields'; //========= Email validation Ajax start =====
 
             var radiolables = form.querySelectorAll('.mls');
             radiolables.forEach(function(radiolable) {
                 radiolable.style.borderBottomColor = '#b43c3c';
             });
 
+            return false;
+
         } else {
-            if (cardFill && cardFill == true) {
+
+            var radiolables = form.querySelectorAll('.mls');
+            radiolables.forEach(function(radiolable) {
+                radiolable.style.borderBottomColor = '#62ba37';
+            });
+
+            if ((cardFill && cardFill == true) || finalAllTotalDue < 1) {
                 var status = true;
                 updateProgressBar(status);
                 paybutton_require_textElement.textContent = 'Complete your booking';
                 jQuery('.btn-payment').removeClass('btn-invalid');
                 submit_button.disabled = false;
+                ableToIntentCreate = true;
+
+                return true;
             } else {
 
                 var status = false;
@@ -1256,17 +1909,140 @@ function getGroupValue($value)
                 paybutton_require_textElement.textContent = 'Please enter all required fields';
                 submit_button.disabled = true;
                 jQuery('.btn-payment').addClass('btn-invalid');
+                return false;
             }
 
-            var radiolables = form.querySelectorAll('.mls');
-            radiolables.forEach(function(radiolable) {
-                radiolable.style.borderBottomColor = '#62ba37';
-            });
 
+        }
+
+    }
+
+    function createMondayItem() {
+        const form = document.querySelector('.booking-checkout')
+        const formData = new FormData(form)
+        const formDataJsonNested = formDataToJsonObject(formData)
+        const formDataToJson = parseNestedKeys(formDataJsonNested)
+        const createMondayItemData = prepareMondayItem(formDataToJson)
+
+        const mondayFormData = new FormData()
+        mondayFormData.append('action', 'direct_add_monday_item')
+        mondayFormData.append('items', JSON.stringify(createMondayItemData))
+
+        if (!created_monday_items) {
+            created_monday_items = true
+
+            fetch(ajax_object.ajax_url, {
+                    method: 'POST',
+                    body: mondayFormData
+                })
+                .then(function(response) {
+                    return response.json();
+                })
         }
     }
 
+    function formDataToJsonObject(formData) {
+        const obj = {}
 
+        formData.forEach((value, key) => {
+            if (obj[key]) {
+                if (!Array.isArray(obj[key])) {
+                    obj[key] = [obj[key]]
+                }
+                obj[key].push(value)
+            } else {
+                obj[key] = value
+            }
+        })
+
+        return obj
+    }
+
+    function parseNestedKeys(data) {
+        const result = {}
+
+        for (const fullKey in data) {
+            const keys = fullKey.match(/[^\[\]]+/g)
+            let current = result
+
+            keys.forEach((key, index) => {
+                if (index === keys.length - 1) {
+                    current[key] = data[fullKey];
+                } else {
+                    if (!current[key]) {
+                        current[key] = isNaN(keys[index + 1]) ? {} : []
+                    }
+                    current = current[key]
+                }
+            })
+        }
+
+        return result
+    }
+
+    function prepareMondayItem(data) {
+        const result = []
+        const today = new Date().toISOString().split("T")[0]
+
+        data.order.forEach((order, index) => {
+            const sessionDate = new Date(order.sessionDate)
+            const productCode = order.product_code
+            const priceOptions = data.priceOptions[index]
+            const participants = data.participant[index]
+
+            // remove the first entry
+            participants.shift()
+
+            const adultCount = priceOptions.find((option) => option.optionLabel === "Adult" || option
+                .optionLabel === "Quantity")?.value || 0
+            const childCount = priceOptions.find((option) => option.optionLabel === "Child")?.value || 0
+            const infantCount = priceOptions
+                .filter((option) => option.optionLabel.toLowerCase().includes("infant"))
+                .reduce((sum, option) => sum + parseInt(option.value || 0), 0)
+            const sumPriceOptions = priceOptions.reduce((sum, option) => sum + parseFloat(option.price || 0), 0)
+            const tourName = priceOptions[0]?.name || "Default Tour Name"
+
+            const participantNames = []
+            if (participants.length > 0) {
+                participants.forEach((participant) => {
+                    participantNames.push(`${participant.first_name} ${participant.last_name}`)
+                })
+            }
+
+            const countryCode = document.querySelector('#iti-0__country-listbox li.iti__active').getAttribute(
+                'data-dial-code') || '44'
+            const phoneWithCode = '+' + countryCode + data.phone
+
+            result.push({
+                email__1: {
+                    email: data.email,
+                    text: data.email,
+                },
+                text__1: tourName,
+                phone__1: {
+                    phone: phoneWithCode,
+                    text: phoneWithCode,
+                },
+                date__1: sessionDate.toISOString().split("T")[0],
+                hour__1: {
+                    hour: sessionDate.getHours(),
+                    minute: sessionDate.getMinutes(),
+                },
+                numbers__1: parseInt(adultCount),
+                numbers8__1: parseInt(childCount) + parseInt(infantCount),
+                status: {
+                    index: 0,
+                },
+                numbers5__1: sumPriceOptions,
+                text0__1: productCode,
+                date4: today,
+                item_name: `${data.fname} ${data.lname}`,
+                participants: participantNames
+            })
+        })
+
+        return result
+    }
 
     function alertDiv(alertClass, alertContent) {
 
@@ -1380,19 +2156,56 @@ function getGroupValue($value)
 
     }
 
-    function create_booking() {
+    function isAgreementChecked() {
+        let checkbox = document.getElementById('agreement_checkbox');
+        document.getElementById('agreement_box-message').style.display = 'none';
+
+        if ( ! checkbox.checked ) {
+            document.getElementById('agreement_box-message').style.display = 'block';
+        }
+
+        return checkbox.checked;
+    }
+
+    function agreementCheckboxDisplay(el) {
+        if (el.checked) {
+            document.getElementById('agreement_box-message').style.display = 'none';
+        } else {
+            document.getElementById('agreement_box-message').style.display = 'block';
+        }
+    }
+
+    async function create_booking() {
+
+        if (!fieldsValidation()) {
+            return false;
+        }
+
+        if ( ! isAgreementChecked() ) {
+            return false;
+        }
 
         var submit_button = document.getElementById('create-booking');
         var mathodType = document.getElementById('create-booking').getAttribute('data-method');
         var session_id = document.querySelector('.session_id').getAttribute('value');
+
+        //========repetition_code start======
+        var form = document.querySelector('.booking-checkout');
+        var pricespan = document.querySelector('.update-on-order-total-change');
+        var priceValue = pricespan.getAttribute('data-price-value');
+        var selected_flag_div = document.querySelector('.iti__selected-flag');
+        var title_text = selected_flag_div.getAttribute('title');
+        var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+        paybutton_require_textElement.textContent = 'Processing..';
+        submit_button.disabled = true;
+        jQuery('.btn-payment').addClass('btn-invalid');
+        //========repetition_code end======
+
         if (mathodType == 'stripe') {
 
             var method = 'CREDITCARD';
-            submit_button.disabled = true;
-            jQuery('.btn-payment').addClass('btn-invalid');
-
             // Create payment token
-            stripe.createToken(card).then(function(result) {
+            stripe.createToken(card).then(async function(result) {
                 if (result.error) {
                     console.log(result.error);
                     // Inform the user if there was an error
@@ -1407,327 +2220,289 @@ function getGroupValue($value)
 
                     // Token was created successfully, submit the form with token
 
-                    paybutton_require_textElement.textContent = 'Processing..';
 
+
+                    //========repetition_code start======
                     var tokenID = result.token.id;
-                    var form = document.querySelector('.booking-checkout');
-                    var pricespan = document.querySelector('.update-on-order-total-change');
-                    var priceValue = pricespan.getAttribute('data-price-value');
-
-                    var selected_flag_div = document.querySelector('.iti__selected-flag');
-                    var title_text = selected_flag_div.getAttribute('title');
-                    var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
-
-                    var data = {
-                        action: 'booking_checkout',
-                        priceValue: priceValue,
-                        selectedcountryCode: selectedcountryCode,
-                        method: method,
-                        rezdy_session_id: session_id
-                    };
-
                     var hiddenInput = document.createElement('input');
                     hiddenInput.setAttribute('type', 'hidden');
                     hiddenInput.setAttribute('name', 'stripeToken');
                     hiddenInput.setAttribute('value', tokenID);
                     form.appendChild(hiddenInput);
 
+                    var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
 
-                    var formData = new FormData(form);
-                    for (var key in data) {
-                        formData.append(key, data[key]);
-                    }
+                    if (data) {
+                        var baseURL = "<?php echo home_url(); ?>";
+                        if (data.requestStatus == true) {
 
+                            var transactionID = data.transactionID;
 
-                    var response = fetch(ajax_object.ajax_url, {
-                            method: 'POST',
-                            body: formData
-                        })
-                        .then(function(response) {
-                            return response.json();
-                        })
-                        .then(function(data) {
+                            if (data.success_url != '') {
+                                var success_url = data.success_url;
 
-                            var baseURL = "<?php echo home_url(); ?>";
-                            if (data.requestStatus == true) {
 
                                 var transactionID = data.transactionID;
-
-                                if (data.success_url != '') {
-                                    var success_url = data.success_url;
+                                window.location.href = success_url + '?transactionID=' + transactionID;
 
 
-                                    var transactionID = data.transactionID;
-                                    window.location.href = success_url + '?transactionID=' + transactionID;
+                            } else {
+                                var transactionID = data.transactionID;
+                                baseURL = baseURL + '/success?transactionID=' + transactionID;
+                                window.location.href = baseURL;
+                            }
 
-
+                        }
+                        if (data.requestStatus == false) {
+                            if (data.transactionID) {
+                                //payment success but Booking not
+                                if (data.cancel_url != '') {
+                                    var cancel_url = data.cancel_url;
+                                    var params = new URLSearchParams(cancel_url.search);
+                                    var param = 'cancel';
+                                    if (params.has(param)) {
+                                        var transactionID = data.transactionID;
+                                        baseURL = baseURL + '/cancel/' + transactionID;
+                                        window.location.href = baseURL;
+                                    } else {
+                                        window.location.href = cancel_url;
+                                    }
                                 } else {
                                     var transactionID = data.transactionID;
-                                    baseURL = baseURL + '/success?transactionID=' + transactionID;
+                                    baseURL = baseURL + '/cancel/' + transactionID;
+                                    window.location.href = baseURL;
+                                }
+
+                            } else {
+                                //payment and Booking both not
+                                if (data.cancel_url != '') {
+                                    var cancel_url = data.cancel_url;
+                                    var params = new URLSearchParams(cancel_url.search);
+                                    var param = 'cancel';
+                                    if (params.has(param)) {
+                                        baseURL = baseURL + '/cancel/ ';
+                                        window.location.href = baseURL;
+                                    } else {
+                                        window.location.href = cancel_url;
+                                    }
+                                } else {
+                                    baseURL = baseURL + '/cancel/ ';
                                     window.location.href = baseURL;
                                 }
 
                             }
-                            if (data.requestStatus == false) {
-                                if (data.transactionID) {
-                                    //payment success but Booking not
-                                    if (data.cancel_url != '') {
-                                        var cancel_url = data.cancel_url;
-                                        var params = new URLSearchParams(cancel_url.search);
-                                        var param = 'cancel';
-                                        if (params.has(param)) {
-                                            var transactionID = data.transactionID;
-                                            baseURL = baseURL + '/cancel/' + transactionID;
-                                            window.location.href = baseURL;
-                                        } else {
-                                            window.location.href = cancel_url;
-                                        }
-                                    } else {
-                                        var transactionID = data.transactionID;
-                                        baseURL = baseURL + '/cancel/' + transactionID;
-                                        window.location.href = baseURL;
-                                    }
-
-                                } else {
-                                    //payment and Booking both not
-                                    if (data.cancel_url != '') {
-                                        var cancel_url = data.cancel_url;
-                                        var params = new URLSearchParams(cancel_url.search);
-                                        var param = 'cancel';
-                                        if (params.has(param)) {
-                                            baseURL = baseURL + '/cancel/ ';
-                                            window.location.href = baseURL;
-                                        } else {
-                                            window.location.href = cancel_url;
-                                        }
-                                    } else {
-                                        baseURL = baseURL + '/cancel/ ';
-                                        window.location.href = baseURL;
-                                    }
-
-                                }
-                            }
-                        })
-                        .catch(function(error) {
-                            console.log(error)
-                        });
+                        }
+                    }
+                    //========repetition_code end======
 
                 }
             });
         } else if (mathodType == 'PayPal') {
 
-            paybutton_require_textElement.textContent = 'Processing..';
-            submit_button.disabled = true;
-            jQuery('.btn-payment').addClass('btn-invalid');
-
             var method = 'PAYPAL';
-            var form = document.querySelector('.booking-checkout');
-            var pricespan = document.querySelector('.update-on-order-total-change');
-            var priceValue = pricespan.getAttribute('data-price-value');
 
-            var selected_flag_div = document.querySelector('.iti__selected-flag');
-            var title_text = selected_flag_div.getAttribute('title');
-            var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
-
-            var data = {
-                action: 'booking_checkout',
-                priceValue: priceValue,
-                selectedcountryCode: selectedcountryCode,
-                method: method,
-                rezdy_session_id: session_id
-            };
-            var formData = new FormData(form);
-            for (var key in data) {
-                formData.append(key, data[key]);
+            //========repetition_code start======
+            var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
+            if (data) {
+                if (data.approveUrl) {
+                    location.replace(data.approveUrl);
+                } else if (data.error) {
+                    var alertClass = 'alert-danger';
+                    var alertContent = data.error;
+                    alertDiv(alertClass, alertContent);
+                } else {
+                    var error = 'Something went wrong with payment details!!';
+                    var alertClass = 'alert-danger';
+                    var alertContent = error;
+                    alertDiv(alertClass, alertContent);
+                }
             }
-            var response = fetch(ajax_object.ajax_url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    if (data.approveUrl) {
-                        location.replace(data.approveUrl);
-                    } else if (data.error) {
-                        var alertClass = 'alert-danger';
-                        var alertContent = data.error;
-                        alertDiv(alertClass, alertContent);
-                    } else {
-                        var error = 'Something went wrong with payment details!!';
-                        var alertClass = 'alert-danger';
-                        var alertContent = error;
-                        alertDiv(alertClass, alertContent);
-                    }
-
-
-                })
-                .catch(function(error) {
-                    console.log(error)
-                });
+            //========repetition_code end======
 
             // ====== airwallex create booking ======
 
+        } else if (mathodType == 'Klarna') {
+            var method = 'KLARNA';
+
+            //========repetition_code start======
+            var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
+            if (data) {
+                if (data.isError || ! data.next) {
+                    var alertClass = 'alert-danger';
+                    var alertContent = data.error;
+                    alertDiv(alertClass, alertContent);
+                } else {
+                    location.replace(data.next);
+                }
+            }
         } else if (mathodType == 'airwallex') {
 
-            paybutton_require_textElement.textContent = 'Processing..';
-            submit_button.disabled = true;
-            jQuery('.btn-payment').addClass('btn-invalid');
-
             var method = 'Airwallex';
-            var form = document.querySelector('.booking-checkout');
-            var pricespan = document.querySelector('.update-on-order-total-change');
-            var priceValue = pricespan.getAttribute('data-price-value');
 
-            var selected_flag_div = document.querySelector('.iti__selected-flag');
-            var title_text = selected_flag_div.getAttribute('title');
-            var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+            //========repetition_code start======
+            var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
+            if (data) {
+                var isError = false;
+                if (!data.isError) {
+                    //success
+                    const int_ID = data.int_ID;
+                    const errorCode = data.errorCode;
+                    const errorMessage = data.errorMessage;
+                    const client_secret = data.client_secret;
+                    const inserted_id = data.inserted_id;
+                    const rezdy_params = data.rezdy_params;
+                    const plugin_dir = data.plugin_dir;
+                    const username = data.username;
+                    const useremail = data.useremail;
+                    const custom_id = data.custom_id;
+                    Airwallex.confirmPaymentIntent({
+                        element: Airwallex.getElement('card'),
+                        intent_id: `${int_ID}`, // Payment Intent ID
+                        client_secret: `${client_secret}` // client_secret
+                    }).then((response) => {
+                        const status = response.status;
+                        const totalPaid = response.captured_amount;
+                        // After successfull confirm payment intent
+                        afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir,
+                            username, useremail, status, totalPaid, isError, errorCode, errorMessage,
+                            custom_id);
 
-            var data = {
-                action: 'booking_checkout',
-                priceValue: priceValue,
-                selectedcountryCode: selectedcountryCode,
-                method: method,
-                rezdy_session_id: session_id
-            };
-            var formData = new FormData(form);
-            for (var key in data) {
-                formData.append(key, data[key]);
-            }
-            var response = fetch(ajax_object.ajax_url, {
-                    method: 'POST',
-                    body: formData,
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    var isError = false;
-                    if (!data.isError) {
-                        //success
-                        const int_ID = data.int_ID;
-                        const errorCode = data.errorCode;
-                        const errorMessage = data.errorMessage;
-                        const client_secret = data.client_secret;
-                        const inserted_id = data.inserted_id;
-                        const rezdy_params = data.rezdy_params;
-                        const plugin_dir = data.plugin_dir;
-                        const username = data.username;
-                        const useremail = data.useremail;
-                        const custom_id = data.custom_id;
-                        Airwallex.confirmPaymentIntent({
-                            element: Airwallex.getElement('card'),
-                            intent_id: `${int_ID}`, // Payment Intent ID
-                            client_secret: `${client_secret}` // client_secret
-                        }).then((response) => {
-                            const status = response.status;
-                            const totalPaid = response.captured_amount;
-                            // After successfull confirm payment intent
-                            afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
-
-                        }).catch((error) => {
-                            // Handle error
-                            isError = true;
-                            const errorCode = error.code;
-                            const errorMessage = error.message;
-                            const status = 'Failed at Confirm Intent';
-                            const totalPaid = '';
-                            // After Failedf from confirm payment Intent
-                            afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
-
-                        });
-
-                    } else {
-                        //error
+                    }).catch((error) => {
+                        // Handle error
                         isError = true;
-                        const errorCode = data.errorCode;
-                        const errorMessage = data.errorMessage;
-                        const inserted_id = data.inserted_id;
-                        const rezdy_params = data.rezdy_params;
-                        const plugin_dir = data.plugin_dir;
-                        const username = data.username;
-                        const useremail = data.useremail;
-
-                        const status = 'Failed at Payment Intent';
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        const status = 'Failed at Confirm Intent';
                         const totalPaid = '';
-                        const int_ID = '';
                         // After Failedf from confirm payment Intent
-                        afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
+                        afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir,
+                            username, useremail, status, totalPaid, isError, errorCode, errorMessage,
+                            custom_id);
 
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error)
-                });
+                    });
 
+                } else {
+                    //error
+                    isError = true;
+                    const errorCode = data.errorCode;
+                    const errorMessage = data.errorMessage;
+                    const inserted_id = data.inserted_id;
+                    const rezdy_params = data.rezdy_params;
+                    const plugin_dir = data.plugin_dir;
+                    const username = data.username;
+                    const useremail = data.useremail;
 
+                    const status = 'Failed at Payment Intent';
+                    const totalPaid = '';
+                    const int_ID = '';
+                    // After Failedf from confirm payment Intent
+                    afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username,
+                        useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id);
+
+                }
+            }
+            //========repetition_code end======
 
             // ====== end airwallex booking ======
         } else {
 
-            paybutton_require_textElement.textContent = 'Processing..';
-            submit_button.disabled = true;
-            jQuery('.btn-payment').addClass('btn-invalid');
-
             var method = 'PROMO_CODE';
-            var form = document.querySelector('.booking-checkout');
-            var pricespan = document.querySelector('.update-on-order-total-change');
-            var priceValue = pricespan.getAttribute('data-price-value');
 
-            var selected_flag_div = document.querySelector('.iti__selected-flag');
-            var title_text = selected_flag_div.getAttribute('title');
-            var selectedcountryCode = title_text.substring(title_text.lastIndexOf(":") + 2);
+            //========repetition_code start======
+            var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
+            if (data) {
+                var baseURL = "<?php echo home_url(); ?>";
+                if (data.requestStatus == true) {
 
-            var data = {
-                action: 'booking_checkout',
-                priceValue: priceValue,
-                selectedcountryCode: selectedcountryCode,
-                method: method,
-                rezdy_session_id: session_id
-            };
-            var formData = new FormData(form);
-            for (var key in data) {
-                formData.append(key, data[key]);
-            }
-            var response = fetch(ajax_object.ajax_url, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    var baseURL = "<?php echo home_url(); ?>";
-                    if (data.requestStatus == true) {
+                    var transactionID = data.transactionID;
+
+                    if (data.success_url != '') {
+                        var success_url = data.success_url;
+
 
                         var transactionID = data.transactionID;
-
-                        if (data.success_url != '') {
-                            var success_url = data.success_url;
+                        window.location.href = success_url + '?transactionID=' + transactionID;
 
 
-                            var transactionID = data.transactionID;
-                            window.location.href = success_url + '?transactionID=' + transactionID;
-
-
-                        } else {
-                            var transactionID = data.transactionID;
-                            baseURL = baseURL + '/success?transactionID=' + transactionID;
-                            window.location.href = baseURL;
-                        }
-
+                    } else {
+                        var transactionID = data.transactionID;
+                        baseURL = baseURL + '/success?transactionID=' + transactionID;
+                        window.location.href = baseURL;
                     }
 
+                }
+            }
+            //========repetition_code end======
 
-                })
-                .catch(function(error) {
-                    console.log(error)
-                });
         }
     }
 
-    function afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status, totalPaid, isError, errorCode, errorMessage, custom_id) {
+    //========repetition_code start======
+    async function payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id) {
+
+        // Prepare data for the request
+        const data = {
+            action: 'booking_checkout',
+            priceValue: priceValue,
+            selectedcountryCode: selectedcountryCode,
+            method: method,
+            rezdy_session_id: session_id
+        };
+
+        // Add data to FormData
+        const formData = new FormData(form);
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        try {
+            // Make the AJAX request
+            const response = await fetch(ajax_object.ajax_url, {
+                method: 'POST',
+                body: formData
+            });
+
+            // Check for response status and parse JSON
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            if (responseData.hasOwnProperty('paymentStatus')) { //store total price
+                if (responseData.paymentStatus == false) {
+                    if (responseData.cancel_url != '') {
+                        var cancel_url = responseData.cancel_url;
+                        var params = new URLSearchParams(cancel_url.search);
+                        var param = 'cancel';
+                        if (params.has(param)) {
+                            baseURL = baseURL + '/cancel/ ';
+                            window.location.href = baseURL;
+                        } else {
+                            window.location.href = cancel_url;
+                        }
+                    } else {
+                        baseURL = baseURL + '/cancel/ ';
+                        window.location.href = baseURL;
+                    }
+                }
+            } else {
+                return responseData;
+            } //store total price
+
+
+
+        } catch (error) {
+            console.error('Error during AJAX request:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+    //========repetition_code end======
+
+    function afterConfirmAirwallex(session_id, int_ID, inserted_id, rezdy_params, plugin_dir, username, useremail, status,
+        totalPaid, isError, errorCode, errorMessage, custom_id) {
 
         var dataInner = {
             action: 'airwallex_after_confirm',
@@ -1760,53 +2535,61 @@ function getGroupValue($value)
             .then(function(data) {
                 var baseURL = "<?php echo home_url(); ?>";
                 if (data.requestStatus == true) {
-
                     var transactionID = data.transactionID;
 
-                    if (data.success_url != '') {
-                        var success_url = data.success_url;
-
-
-                        var transactionID = data.transactionID;
-                        window.location.href = success_url + '?transactionID=' + transactionID;
-
-
-                    } else {
-                        var transactionID = data.transactionID;
-                        baseURL = baseURL + '/success?transactionID=' + transactionID;
-                        window.location.href = baseURL;
-                    }
-
+                    updateMondayTransactionStatus(transactionID, 'paid')
+                        .then(function() {
+                            if (data.success_url != '') {
+                                var success_url = data.success_url;
+                                window.location.href = success_url + '?transactionID=' + transactionID;
+                            } else {
+                                baseURL = baseURL + '/success?transactionID=' + transactionID;
+                                window.location.href = baseURL;
+                            }
+                        })
                 }
                 if (data.requestStatus == false) {
                     if (data.transactionID) {
-                        //payment success but Booking not
-                        if (data.cancel_url != '') {
-                            var cancel_url = data.cancel_url;
-                            var params = new URLSearchParams(cancel_url.search);
-                            var param = 'cancel';
-                            if (params.has(param)) {
-                                var transactionID = data.transactionID;
-                                baseURL = baseURL + '/cancel/' + transactionID;
-                                window.location.href = baseURL;
-                            } else {
-                                window.location.href = cancel_url;
-                            }
-                        } else {
-                            var transactionID = data.transactionID;
-                            baseURL = baseURL + '/cancel/' + transactionID;
-                            window.location.href = baseURL;
-                        }
+                        var transactionID = data.transactionID;
 
+                        updateMondayTransactionStatus(transactionID, 'failed')
+                            .then(function() {
+                                //payment success but Booking not
+                                if (data.cancel_url != '') {
+                                    var cancel_url = data.cancel_url;
+                                    var params = new URLSearchParams(cancel_url.search);
+                                    var param = 'cancel';
+                                    if (params.has(param)) {
+                                        baseURL = baseURL + '/cancel/' + transactionID;
+                                        window.location.href = baseURL;
+                                    } else {
+                                        window.location.href = cancel_url;
+                                    }
+                                } else {
+                                    baseURL = baseURL + '/cancel/' + transactionID;
+                                    window.location.href = baseURL;
+                                }
+                            })
                     }
                 }
-
-
-
             })
             .catch(function(error) {
                 console.log(error)
             });
+    }
+
+    function updateMondayTransactionStatus(transactionID, type) {
+        const formData = new FormData()
+        formData.append('action', 'update_monday_transaction')
+        formData.append('transactionID', transactionID)
+        formData.append('type', type)
+
+        return fetch(ajax_object.ajax_url, {
+            method: 'POST',
+            body: formData,
+        }).then(function(res) {
+            return res.json()
+        })
     }
 
     function sendDataToDataLayer() {
@@ -1943,6 +2726,7 @@ function getGroupValue($value)
                         return response.json();
                     })
                     .then(function(data) {
+                        //console.log(data);
                         //Enable input and apply button on click
                         p_v_code.disabled = false;
                         p_v_code.value = '';
@@ -1966,14 +2750,20 @@ function getGroupValue($value)
                             if (data.codeType == 'coupon') {
                                 var codeTypeName = 'PromoCode';
                                 var codeTypeClasses = 'main-item added_coupon'
-                                var inputfieldElement = '<input type="hidden" name="applied_coupon_code[codeName]" value="' + remembercode + '">';
-                                var inputfieldElement2 = '<input type="hidden" name="applied_coupon_code[codePrice]" value="' + data.totalPaid + '">';
+                                var inputfieldElement =
+                                    '<input type="hidden" name="applied_coupon_code[codeName]" value="' + remembercode +
+                                    '">';
+                                var inputfieldElement2 =
+                                    '<input type="hidden" name="applied_coupon_code[codePrice]" value="' + data
+                                    .totalPaid + '">';
                             }
                             if (data.codeType == 'voucher') {
                                 var codeTypeName = 'Voucher';
                                 var codeTypeClasses = 'main-item added_voucher'
-                                var inputfieldElement = '<input type="hidden" name="applied_voucher_codes[' + countAppliedCodes + '][codeName]" value="' + remembercode + '">';
-                                var inputfieldElement2 = '<input type="hidden" name="applied_voucher_codes[' + countAppliedCodes + '][codePrice]" value="' + data.totalPaid + '">';
+                                var inputfieldElement = '<input type="hidden" name="applied_voucher_codes[' +
+                                    countAppliedCodes + '][codeName]" value="' + remembercode + '">';
+                                var inputfieldElement2 = '<input type="hidden" name="applied_voucher_codes[' +
+                                    countAppliedCodes + '][codePrice]" value="' + data.totalPaid + '">';
                             }
 
                             // Create a new div element
@@ -1984,9 +2774,11 @@ function getGroupValue($value)
 
                             var remainingElement = '';
                             if (data.remaining) {
-                                var remainingAmount = '€' + data.remaining;
+                                var remainingAmount = window.rezdy_currency_symbol + data.remaining;
 
-                                remainingElement = '<br><small class="block">There will be <span class="price" title="Estimated conversion from 67.2">' + remainingAmount + '</span> remaining on your voucher</small>';
+                                remainingElement =
+                                    '<br><small class="block">There will be <span class="price" title="Estimated conversion from 67.2">' +
+                                    remainingAmount + '</span> remaining on your voucher</small>';
 
                             }
 
@@ -2007,10 +2799,11 @@ function getGroupValue($value)
                                     ` + remainingElement + `
                                 </div>
                                 <div class="eur-price">
-                                    <strong class="code-price">€` + data.totalPaid + `</strong>
+                                    <strong class="code-price">` + window.rezdy_currency_symbol + window.convertCurrency(data.totalPaid, true) + `</strong>
                                 </div>
                             </div>
                         `;
+                        console.log(window.rezdy_currency_symbol + window.convertCurrency(data.totalPaid, true))
 
                             // Get all existing main-item divs
                             var mainItems = document.querySelectorAll('.main-item');
@@ -2029,22 +2822,23 @@ function getGroupValue($value)
                             var strongElementsArray = Array.from(strongElement);
                             strongElementsArray.forEach(function(element) {
                                 element.textContent = '';
-                                element.textContent = '€' + data.alltotalDue;
+                                element.textContent = window.rezdy_currency_symbol + window.convertCurrency(data.alltotalDue, true);
                             });
 
                             var pricespan = document.querySelector('.update-on-order-total-change');
-                            pricespan.textContent = '€' + data.alltotalDue;
-                            pricespan.setAttribute("data-original-amount", '€' + data.alltotalDue);
+                            pricespan.textContent = window.rezdy_currency_symbol + window.convertCurrency(data.alltotalDue, true);
+                            pricespan.setAttribute("data-original-amount", window.rezdy_currency_symbol + data.alltotalDue);
                             pricespan.setAttribute("data-price-value", data.alltotalDue);
 
                             if (data.amountToUpdate > 0) {
                                 var added_coupon = document.querySelector('.added_coupon');
 
-                                added_coupon.querySelector('[name="applied_coupon_code[codePrice]"]').value = data.amountToUpdate;
+                                added_coupon.querySelector('[name="applied_coupon_code[codePrice]"]').value = data
+                                    .amountToUpdate;
                                 var product_close = added_coupon.querySelector('.product-close');
                                 var eur_price = product_close.querySelector('.eur-price');
                                 var code_price_span = product_close.querySelector('.code-price');
-                                code_price_span.textContent = '€' + data.amountToUpdate;
+                                code_price_span.textContent = window.rezdy_currency_symbol + window.convertCurrency(data.amountToUpdate, true);
 
                             }
 
@@ -2055,6 +2849,7 @@ function getGroupValue($value)
 
 
                             var bookingButtonText = document.querySelector('.bookingButtonText');
+                            finalAllTotalDue = data.alltotalDue
                             if (data.alltotalDue < 0 || data.alltotalDue == 0) {
 
                                 bookingButtonText.textContent = 'Book Now';
@@ -2067,14 +2862,8 @@ function getGroupValue($value)
                                 // submit_button.disabled = false;
                             }
 
-
-
-
-
-
+                            unSelectGooglePay(); // ## GooglePay
                         } else if (data.requestStatus == false) {
-
-
                             var alertClass = 'alert-danger';
                             var alertContent = data.error;
                             alertDiv(alertClass, alertContent);
@@ -2196,9 +2985,9 @@ function getGroupValue($value)
 
                 if (data.response == true) {
 
-                    //var urlToRedirect = window.location.href;
-                    //window.location.href = urlToRedirect;
-                    window.location.reload();
+                    var urlToRedirect = window.location.href;
+                    window.location.href = urlToRedirect;
+                    //window.location.reload();
                 } else {
 
                     var alertClass = 'alert-danger';
@@ -2238,6 +3027,8 @@ function getGroupValue($value)
             dataCode = '';
         }
 
+        unSelectGooglePay(); // ## GooglePay
+
         var sessionID = target.getAttribute('data-session');
         var session_id = document.querySelector('.session_id').getAttribute('value');
         var data = {
@@ -2259,6 +3050,12 @@ function getGroupValue($value)
                 return response.json();
             })
             .then(function(data) {
+                if (data.klarna_enabled == false) {
+                    jQuery('.first__klarna').addClass('first__klarna-hidden');
+                } else {
+                    jQuery('.first__klarna').removeClass('first__klarna-hidden');
+                }
+
                 if (document.querySelector('.payment_m')) {
                     document.querySelector('.payment_m').style.display = 'block';
                 }
@@ -2267,27 +3064,21 @@ function getGroupValue($value)
                     if (elementToRemove) {
                         elementToRemove.remove();
                         if (data.totalDuePrice) {
-
                             var strongElement = document.getElementsByClassName('alltotal');
                             var strongElementsArray = Array.from(strongElement);
                             strongElementsArray.forEach(function(element) {
                                 element.textContent = '';
-                                element.textContent = '€' + data.totalDuePrice;
+                                element.textContent = window.rezdy_currency_symbol + data.totalDuePrice;
                             });
                             var pricespan = document.querySelector('.update-on-order-total-change');
-                            pricespan.textContent = '€' + data.totalDuePrice;
-                            pricespan.setAttribute("data-original-amount", '€' + data.totalDuePrice);
+                            pricespan.textContent = window.rezdy_currency_symbol + data.totalDuePrice;
+                            pricespan.setAttribute("data-original-amount", window.rezdy_currency_symbol + data.totalDuePrice);
                             pricespan.setAttribute("data-price-value", data.totalDuePrice);
-
-
                         }
-
-
 
                         var alertClass = 'alert-danger';
                         var alertContent = data.code_type + ' successfully removed!!';
                         alertDiv(alertClass, alertContent);
-
 
                         var bookingButtonText = document.querySelector('.bookingButtonText');
                         if (data.totalDuePrice > 0) {
@@ -2302,14 +3093,8 @@ function getGroupValue($value)
                         } else {
                             loadingElement.style.display = 'none';
                         }
-
-
                     }
-
-
                 } else if (data.response == true) {
-
-
                     var added_vouchers = document.querySelectorAll('.added_voucher');
                     if (added_vouchers) {
                         if (added_vouchers.length > 0) {
@@ -2323,8 +3108,6 @@ function getGroupValue($value)
                     if (added_coupon) {
                         added_coupon.parentNode.removeChild(added_coupon);
                     }
-
-
 
                     var selectTourValue = target.getAttribute('data-select_tour');
                     var divsToRemove = document.querySelector('.' + selectTourValue);
@@ -2345,22 +3128,19 @@ function getGroupValue($value)
                                 divToRemove.remove();
                                 counter();
                             }
-
                         }
                     });
                     if (data.totalPrice) {
-
                         var strongElement = document.getElementsByClassName('alltotal');
                         var strongElementsArray = Array.from(strongElement);
                         strongElementsArray.forEach(function(element) {
                             element.textContent = '';
-                            element.textContent = '€' + data.totalPrice;
+                            element.textContent = window.rezdy_currency_symbol + data.totalPrice;
                         });
                         var pricespan = document.querySelector('.update-on-order-total-change');
-                        pricespan.textContent = '€' + data.totalPrice;
-                        pricespan.setAttribute("data-original-amount", '€' + data.totalPrice);
+                        pricespan.textContent = window.rezdy_currency_symbol + data.totalPrice;
+                        pricespan.setAttribute("data-original-amount", window.rezdy_currency_symbol + data.totalPrice);
                         pricespan.setAttribute("data-price-value", data.totalPrice);
-
                     }
 
                     if (isMobileDevice()) {
@@ -2368,9 +3148,7 @@ function getGroupValue($value)
                     } else {
                         loadingElement.style.display = 'none';
                     }
-
                 } else {
-
                     if (isMobileDevice()) {
                         jQuery('.loading_dot').hide();
                     } else {
@@ -2394,16 +3172,48 @@ function getGroupValue($value)
         const fieldsets = document.getElementsByClassName('participant_firstname');
         const fieldsetsArray = Array.from(fieldsets);
         const clickedIndex = fieldsetsArray.indexOf(target);
+        var billing_participant_firstname_filled = false;
+        var billing_participant_firstname_filled_All = true;
+        var requiredFields_All = document.querySelector('.booking-checkout').querySelectorAll('[required]');
         if (clickedIndex == 0) {
-            document.querySelector('.billing_participant_firstname').value = target.value;
-            document.querySelector('.billing_participant_firstname').classList.add('input-valid');
-            document.querySelector('.billing_participant_firstname').closest('.input-icon').classList.add('input-valid');
-            var status = false;
-            updateProgressBar(status);
             if (target.value.length == 0) {
+                document.querySelector('.billing_participant_firstname').value = '';
                 document.querySelector('.billing_participant_firstname').classList.remove('input-valid');
-                document.querySelector('.billing_participant_firstname').closest('.input-icon').classList.remove('input-valid');
+                document.querySelector('.billing_participant_firstname').classList.add('error');
+                document.querySelector('.billing_participant_firstname').closest('.input-icon').classList.remove(
+                    'input-valid');
+
+            } else {
+                document.querySelector('.billing_participant_firstname').value = target.value;
+                document.querySelector('.billing_participant_firstname').classList.remove('error');
+                document.querySelector('.billing_participant_firstname').classList.add('input-valid');
+                document.querySelector('.billing_participant_firstname').closest('.input-icon').classList.add(
+                    'input-valid');
+                var status = true;
+                updateProgressBar(status);
+                billing_participant_firstname_filled = true;
             }
+
+            fieldsValidation();
+
+            requiredFields_All.forEach(function(requiredField__Inner) {
+                if (!(requiredField__Inner.value.trim() && requiredField__Inner.classList.contains(
+                        'input-valid'))) {
+                    billing_participant_firstname_filled_All = false;
+                }
+            });
+
+            if (billing_participant_firstname_filled && billing_participant_firstname_filled_All) {
+
+
+                updateGooglePay();
+
+
+            } else {
+
+                unSelectGooglePay();
+            }
+
         }
     }
 
@@ -2412,15 +3222,43 @@ function getGroupValue($value)
         const fieldsets = document.getElementsByClassName('participant_lastname');
         const fieldsetsArray = Array.from(fieldsets);
         const clickedIndex = fieldsetsArray.indexOf(target);
+        var billing_participant_firstname_filled = false;
+        var billing_participant_firstname_filled_All = true;
+        var requiredFields_All = document.querySelector('.booking-checkout').querySelectorAll('[required]');
         if (clickedIndex == 0) {
-            document.querySelector('.billing_participant_lastname').value = target.value;
-            document.querySelector('.billing_participant_lastname').classList.add('input-valid');
-            document.querySelector('.billing_participant_lastname').closest('.input-icon').classList.add('input-valid');
-            var status = false;
-            updateProgressBar(status);
             if (target.value.length == 0) {
+                document.querySelector('.billing_participant_lastname').value = '';
                 document.querySelector('.billing_participant_lastname').classList.remove('input-valid');
-                document.querySelector('.billing_participant_lastname').closest('.input-icon').classList.remove('input-valid');
+                document.querySelector('.billing_participant_lastname').classList.add('error');
+                document.querySelector('.billing_participant_lastname').closest('.input-icon').classList.remove(
+                    'input-valid');
+
+            } else {
+                document.querySelector('.billing_participant_lastname').value = target.value;
+                document.querySelector('.billing_participant_lastname').classList.remove('error');
+                document.querySelector('.billing_participant_lastname').classList.add('input-valid');
+                document.querySelector('.billing_participant_lastname').closest('.input-icon').classList.add('input-valid');
+                var status = true;
+                updateProgressBar(status);
+                billing_participant_firstname_filled = true;
+            }
+
+            fieldsValidation();
+
+            requiredFields_All.forEach(function(requiredField__Inner) {
+                if (!(requiredField__Inner.value.trim() && requiredField__Inner.classList.contains(
+                        'input-valid'))) {
+                    billing_participant_firstname_filled_All = false;
+                }
+            });
+
+            if (billing_participant_firstname_filled && billing_participant_firstname_filled_All) {
+
+                updateGooglePay();
+
+            } else {
+
+                unSelectGooglePay();
             }
         }
     }
@@ -2437,14 +3275,22 @@ function getGroupValue($value)
         });
     });
 
-
+    //========= Email validation Ajax start =====
     //Email validation in change
     const elementsNEW = document.getElementsByClassName('billing_participant_email');
+    var loadingElement = document.querySelector('.loading_dot');
     // Loop through each element and attach an event listener
     Array.from(elementsNEW).forEach(element => {
-        element.addEventListener('change', function() {
+        element.addEventListener('change', async function() {
             var email = this.value;
-            if (isValidEmail(email)) {
+
+            loadingElement.style.display = 'block'; // show the loader
+
+            const isValid = await isValidEmail(email);
+
+            loadingElement.style.display = 'none'; // show the loader
+
+            if (isValid) {
                 this.classList.remove('error');
                 this.classList.add('input-valid');
                 this.closest('.input-icon').classList.add('input-valid');
@@ -2457,8 +3303,88 @@ function getGroupValue($value)
                 if (this.closest('.input-icon').classList.contains('input-valid')) {
                     this.closest('.input-icon').classList.remove('input-valid');
                 }
+
+                fieldsValidation();
             }
 
         });
     });
+    //========= Email validation Ajax end =====
+
+
+
+    //OnChange Event for Google Pay button validation (## Google Pay)
+    const debounceDelay = 2500;
+    let debounceTimer;
+    var requiredFields_OnChange = document.querySelector('.booking-checkout').querySelectorAll('[required]');
+    requiredFields_OnChange.forEach(function(requiredField_OnChange) {
+        requiredField_OnChange.addEventListener('change', function() {
+            clearTimeout(debounceTimer)
+
+            debounceTimer = setTimeout(() => {
+                // Initialize both flags to true before checking all fields
+                var allRemainingFieldsFilled_Inner = true;
+                var allRemainingFieldsFilled_Inner_1 = true;
+
+                // Check if the current field that triggered 'change' has the 'error' class
+                if (requiredField_OnChange.classList.contains('error')) {
+                    allRemainingFieldsFilled_Inner_1 = false;
+                }
+
+                // Now loop through all the required fields to check their validity
+                requiredFields_OnChange.forEach(function(requiredField_OnChange_Inner) {
+                    if (!(requiredField_OnChange_Inner.value.trim() &&
+                            requiredField_OnChange_Inner.classList.contains('input-valid')
+                        )) {
+                        allRemainingFieldsFilled_Inner = false;
+                    }
+                });
+
+                if (allRemainingFieldsFilled_Inner && allRemainingFieldsFilled_Inner_1) {
+                    createMondayItem()
+                    updateGooglePay();
+
+                } else {
+                    unSelectGooglePay();
+                }
+            }, debounceDelay);
+        });
+    });
+
+    function unSelectGooglePay() {
+
+        ableToIntentCreate = false;
+
+        if (submit_button.getAttribute('data-method') == 'GooglePay') {
+
+            document.querySelectorAll('input[type="radio"][class="googlepay_payment_card"]').checked = false;
+
+            jQuery('input.googlepay_payment_card').removeClass('selected').removeAttr('checked');
+
+            document.getElementsByClassName('google_pay_element')[0].style.display = 'none';
+
+            document.getElementById('googlepay-skeleton').style.display = 'none';
+
+            cardFill = false;
+            var status = false;
+            updateProgressBar(status);
+            submit_button.style.display = 'block';
+            submit_button.disabled = true;
+            jQuery('.btn-payment').addClass('btn-invalid');
+            paybutton_require_textElement.textContent = 'Please enter all required fields';
+            submit_button.setAttribute('data-method', '');
+        }
+    }
+
+    function updateGooglePay() {
+
+        ableToIntentCreate = true;
+
+        if (submit_button.getAttribute('data-method') == 'GooglePay') {
+            jQuery('.btn-payment').removeClass('btn-invalid');
+            submit_button.disabled = false;
+            paybutton_require_textElement.textContent = 'Complete your booking';
+            googlePayIntent();
+        }
+    }
 </script>

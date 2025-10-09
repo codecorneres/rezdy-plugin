@@ -1,0 +1,163 @@
+.rezdy-currency-selector {
+    width: auto;
+    min-width: 125px;
+    padding: 0;
+    padding-right: 5px;
+    border: 0;
+    border-radius: 25px;
+    min-height: 50px;
+    position: absolute;
+    right: -5%;
+    top: 0;
+}
+
+.theme-jtr.rezdy-currency-selector {
+    background-color: #EA4335;
+    color: #fff;
+}
+
+.theme-cdt.rezdy-currency-selector {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Start custom dropdown styling */
+.rezdy-currency-dropdown {
+    width: fit-content;
+    position: relative;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--moved .rezdy-dropdown-menu {
+    position: unset;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--moved {
+    margin-left: 20px;
+    margin-bottom: 18px;
+    margin-top: 17px;
+}
+
+@media screen and (min-width: 1440px) {
+    footer .rezdy-currency-dropdown {
+        padding: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    footer .rezdy-currency-dropdown {
+        margin: 0 auto 1rem auto;
+    }
+
+    footer .rezdy-currency-dropdown .rezdy-dropdown-menu.active {
+        margin-left: 12px;
+        margin-top: -1px;
+    }
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 82px;
+    cursor: pointer;
+    box-shadow: 6px 6px 23px -9px #0000002E;
+    width: 125px;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle::after {
+    content: unset;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle .arrow {
+    margin-left: 5px;
+    margin-right: 0;
+    transition: .3s ease-in-out;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle.active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 6px -6px 23px -9px #0000002E;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle.active .arrow {
+    transform: rotate(180deg);
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 125px;
+    z-index: 10;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-menu img {
+    visibility: hidden;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-menu.active {
+    display: block;
+    box-shadow: 2px 10px 10px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--theme-cdt .rezdy-dropdown-item:hover {
+    background: #f0eadc;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--theme-rwc .rezdy-dropdown-item:hover {
+    background: #CCE7CB;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--theme-tipsy .rezdy-dropdown-item:hover {
+    background: #FF159028;
+}
+
+.rezdy-currency-dropdown.rezdy-currency-dropdown--theme-tipsy .rezdy-dropdown-toggle.active span svg path {
+    fill: #ADADAD;
+}
+
+.rezdy-currency-dropdown .separator {
+    margin: 0 5px;
+    color: #aaa;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle span.symbol,
+.rezdy-currency-dropdown .rezdy-dropdown-menu .rezdy-dropdown-item span.symbol {
+    width: 12px;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-toggle span.country,
+.rezdy-currency-dropdown .rezdy-dropdown-menu .rezdy-dropdown-item span.country {
+    width: 24px;
+}
+
+.rezdy-currency-dropdown .rezdy-dropdown-menu .rezdy-dropdown-item .arrow img {
+    visibility: hidden;
+}
+
+/* End custom dropdown styling */

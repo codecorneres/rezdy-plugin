@@ -1,0 +1,94 @@
+User: 127.0.0.1 - January 21, 2025, 1:59 pm
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 915|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 1:59 pm
+Intent ID Created: int_nlpdf7wzlh3vps0fhrz
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 915|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 1:59 pm
+Error Code: risk_declined
+Error: The payment has been declined. Please verify your details or retry with another payment method.
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 915|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:20 pm
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 916|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:20 pm
+Intent ID Created: int_nlpdqxrqth3vqcwf4ub
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 916|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:20 pm
+Error Code: risk_declined
+Error: The payment has been declined. Please verify your details or retry with another payment method.
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 916|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:28 pm
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 917|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:28 pm
+Error Code: API
+Error: Issue from:  Token is not creating from Auth API
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 917|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:37 pm
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 918|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:37 pm
+Intent ID Created: int_hkdmkn9j2h3vqtlhco2
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 918|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:37 pm
+Error Code: unauthorized
+Error: Authentication failed.
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 918|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:47 pm
+Attempt: Airwallex payment started
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 919|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:47 pm
+Intent ID Created: int_hkdm2vcx6h3vr37qyh3
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 919|P6UCJM|website ( jtr-local )
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:47 pm
+Payment status: Airewallex payment completed
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 919
+-------------------------
+User: 127.0.0.1 - January 21, 2025, 2:47 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: TEST TEST
+User email: test.test@mailinator.com
+Table inserted_id: 919
+-------------------------

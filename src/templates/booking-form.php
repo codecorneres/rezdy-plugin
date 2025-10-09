@@ -1,160 +1,433 @@
 <?php defined('ABSPATH') || exit; ?>
-
-<div class="booking-sidebar-widget-box in calendar-widget <?php echo (!empty(get_option('cc_picked_color'))) ? get_option('cc_picked_color') : 'theme-cdt'; ?>">
-    <div class="booking-inner availability-container">
-        <div class="booking-form-list">
-            <?php
-            $cookie_name = "CUSTOMSESSIONID";
-            if (!isset($_COOKIE[$cookie_name])) {
-                session_start();
-                $session_id = session_id();
-                $cookie_value = $session_id;
-                setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-            } else {
-                $session_id = $_COOKIE[$cookie_name];
-            }
-            ?>
-            <input type="hidden" value="<?php echo $session_id; ?>">
-            <form action="<?= esc_url(site_url('/checkout/' . $session_id)); ?>" method="post" id="session-form" onsubmit="return validateForm()">
-                <div class="booking-group">
-                    <div class="booking-single">
-                        <div class="title">
-                            <h5>Enter Number of Participants <span class="required">*</span></h5>
-                        </div>
-                        <input type="hidden" name="OrderItem[preferredDate]" value="" id="selectedDate">
-                        <input type="hidden" name="OrderItem[productCode]" value="<?= $product->product->productCode; ?>" id="productCode">
-                        <input type="hidden" name="OrderItem[quantityRequiredMax]" class="quantityRequiredMax" value="<?= ($quantityRequiredMax) ? $quantityRequiredMax : ''; ?>" id="quantityRequiredMax">
-                        <div class="parent-form-flex">
-                            <?php foreach ($priceOptions as $key => $value) { ?>
-                                <div class="form-flex shadow-box">
-                                    <div class="label-box">
-                                        <input type="hidden" class="priceOption_id" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][id]" id="" value="<?= $value->id; ?>">
-                                        <input type="hidden" class="priceOption_label" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][label]" id="" value="<?= $value->label; ?>">
-                                        <h6 class="priceOptionlabel"><?php echo ($value->label == 'Quantity') ? 'Everyone' : $value->label; ?></h6>
-                                        <p class="price option_price" data-currency-base="<?php echo $product->product->currency; ?>" data-original-amount="<?php echo $value->price; ?>" data-value="<?= $value->id; ?>" data-label="<?php echo $value->label; ?>"><?php echo '€' . $value->price . '.00'; ?></p>
-                                    </div>
-                                    <div class="options-box">
-                                        <select name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][quantity]" id="" class="quantity">
-                                            <?php if ($quantityRequiredMax && $quantityRequiredMax <= 20) : ?>
-                                                <?php for ($i = 0; $i <= $quantityRequiredMax; $i++) : ?>
-                                                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                                <?php endfor; ?>
-                                            <?php else : ?>
-                                                <?php for ($i = 0; $i <= 20; $i++) : ?>
-                                                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                                <?php endfor; ?>
-                                                <option value="21" data-value="21">>20</option>
-                                            <?php endif; ?>
-                                        </select>
-                                        <input type="number" name="" id="" class="quantity-input" style="display: none;">
-                                    </div>
-
-
-                                </div>
-                            <?php  } ?>
-                        </div>
-                        <div class="booking-single">
-                            <div class="title">
-                                <h5>Choose a Date <span class="required">*</span></h5>
-                            </div>
-                            <div class="choose-time-form form-flex ">
-                                <div class="calendar datepicker-container position-relative">
-                                    <div id="datepicker" class="availabilitypicker">
-
-                                    </div>
-
-                                    <div class="rezdy-overlay-loader" style="display: none;">
-                                        <div class="loading-text">Loading...</div>
-                                    </div>
-
-                                </div>
-                                <div class="status-codes">
-                                    <div class="status-single">
-                                        <div class="status-bar today"></div>
-                                        <div class="text">- TODAY’S DATE</div>
-                                    </div>
-                                    <div class="status-single">
-                                        <div class="status-bar available"></div>
-                                        <div class="text">- AVAILABLE DATE</div>
-                                    </div>
-                                    <div class="status-single">
-                                        <div class="status-bar selected"></div>
-                                        <div class="text">- SELECTED DATE</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="booking-single" id="selectTimeDiv">
-                            <div class="title">
-                                <h5>Select Time <span class="required">*</span></h5>
-                            </div>
-                            <div class="choose-time-form form-flex">
-                                <input type="hidden" class="schedule_timeInput" name="schedule_time" value="">
-                                <div class="radio-group-list" id="availability">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="price-box price-summary">
-                        <h5>Price(EUR)</h5>
-                        <h4 class="total-price-value">€0</h4>
-                    </div>
-                    <div class="btn-submit-box">
-                        <input type="hidden" name="tour_url" id="tour_url" value="">
-                        <button type="submit" class="btn-submit form-submit disabled" disabled>Book Now</button>
-                    </div>
-
-                    <!-- <div class="booking-feature-list">
-                        <div class="list-single">
-                            <div class="inner shadow-box">
-                                <span class="icon">
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
-                                    </svg>
-                                </span>
-                                <span class="text">Free 24hr cancellations</span>
-                            </div>
-                        </div>
-                        <div class="list-single">
-                            <div class="inner shadow-box">
-                                <span class="icon">
-                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
-                                    </svg>
-                                </span>
-                                <span class="text">prices are all - inclusive</span>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="form-note">
-                            <p><b>Please note:</b> After your purchase is confirmed we will email you a confirmation.</p>
-                        </div> -->
-            </form>
-        </div>
-    </div>
-</div>
-</div>
+<?php
+$rezdy_currency_text = $_COOKIE['rezdy_currency_text'] ?? get_option('cc_default_currency') ?? 'EUR';
+$rezdy_currency_symbol = $_COOKIE['rezdy_currency_symbol'] ?? '€';
+$cc_picked_color = get_option('cc_picked_color') ?? 'theme-cdt';
+$private_tutor_page_key = 'private_tutor_page';
+switch ($cc_picked_color) {
+    case 'theme-cdt':
+        $private_tutor_page_key = 'private_tutor_page';
+        break;
+    case 'theme-rwc':
+        $private_tutor_page_key = 'private_tutor_page';
+        break;
+    case 'theme-jtr':
+        $private_tutor_page_key = 'private_tutor_page'; // Temporary value
+        break;
+    case 'theme-tipsy':
+        $private_tutor_page_key = 'tour_widgets_private_tutor_page';
+        break;
+    default:
+        break;
+}
+$booking_request_here_url = function_exists( 'get_field' ) ? get_field( $private_tutor_page_key ) : null;
+$instance_id = str_replace( '.', '_', uniqid( 'booking_instance_', true ) );
+?>
 
 <style>
     .ui-datepicker-unselectable {
         cursor: default !important;
     }
 </style>
+<script src="<?php echo plugin_dir_url(__FILE__) . 'js/jquery-2.2.4.min.js'; ?>"></script>
+
+<?php if ( $action_type == 'booking' ) : ?>
+    <div class="booking-widget-tabs booking-widget-tabs--<?php echo $cc_picked_color; ?>">
+        <div class="booking-widget-tabs__item booking-widget-tabs__item--active" data-action="booking-form">
+            <span class="booking-widget-tabs__item__text">Book Group Tour</span>
+        </div>
+        <div class="booking-widget-tabs__item" data-action="booking-private">
+            <span class="booking-widget-tabs__item__text">
+                <img src="<?php echo PLUGIN_URL . 'assets/images/rezdy-booking-privateIcon-diamond.svg'; ?>" alt="Booking Private Diamond Icon" />
+                Book Private Tour
+            </span>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php if ( $action_type == 'booking' ) : ?>
+    <div class="booking-widget-tabs-contents booking-widget-tabs-contents--<?php echo $cc_picked_color; ?>">
+        <div class="booking-widget-tabs-content booking-widget-tabs-content--active" data-content="booking-form">
+            <div class="booking-sidebar-widget-box in calendar-widget <?php echo $cc_picked_color; ?>">
+                <div class="booking-inner availability-container">
+                    <div class="booking-form-list">
+                        <?php
+                            $cookie_name = "CUSTOMSESSIONID";
+                            $cookie_options = array(
+                                'expires' => time() + (86400 * 30),
+                                'path' => '/',
+                                'secure' => is_ssl(),
+                                'httponly' => true,
+                                'samesite' => 'Lax'
+                            );
+                            if (! isset($_COOKIE[$cookie_name])) {
+                                $session_id = session_id();
+                                $cookie_value = $session_id;
+                                setcookie($cookie_name, $cookie_value, $cookie_options);
+                            } else {
+                                $session_id = $_COOKIE[$cookie_name];
+                            }
+                        ?>
+
+                        <input type="hidden" value="<?php echo $session_id; ?>">
+                        <form action="<?= esc_url(site_url('/checkout/' . $session_id)); ?>" method="post" id="session-form" onsubmit="return validateForm()">
+                            <div class="booking-group">
+                                <div class="booking-single">
+                                    <div class="title">
+                                        <h5>Enter Number of Participants <span class="required">*</span></h5>
+                                    </div>
+                                    <input type="hidden" name="OrderItem[preferredDate]" value="" id="selectedDate">
+                                    <input type="hidden" name="OrderItem[productCode]" value="<?= $product->product->productCode; ?>" id="productCode">
+                                    <input type="hidden" name="OrderItem[quantityRequiredMax]" class="quantityRequiredMax" value="<?= ($quantityRequiredMax) ? $quantityRequiredMax : ''; ?>" id="quantityRequiredMax">
+                                    <div class="parent-form-flex">
+                                        <?php foreach ($priceOptions as $key => $value) { ?>
+                                            <?php
+                                                $value_with_currency = convert_currency( $value->price );
+                                            ?>
+                                            <div class="form-flex shadow-box">
+                                                <div class="label-box">
+                                                    <input type="hidden" class="priceOption_id" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][id]" id="" value="<?= $value->id; ?>">
+                                                    <input type="hidden" class="priceOption_label" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][label]" id="" value="<?= $value->label; ?>">
+                                                    <h6 class="priceOptionlabel"><?php echo ($value->label == 'Quantity') ? 'Everyone' : $value->label; ?></h6>
+                                                    <p class="price option_price" data-currency-base="<?php echo $value_with_currency[0]; ?>" data-original-amount="<?php echo $value_with_currency[1]; ?>" data-value="<?= $value->id; ?>" data-label="<?php echo $value->label; ?>" data-converted="true"><?php echo $value_with_currency[0] . $value_with_currency[1]; ?></p>
+                                                </div>
+                                                <div class="options-box">
+                                                    <select name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][quantity]" id="" class="quantity">
+                                                        <?php if ($quantityRequiredMax && $quantityRequiredMax <= 20) : ?>
+                                                            <?php for ($i = 0; $i <= $quantityRequiredMax; $i++) : ?>
+                                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                            <?php endfor; ?>
+                                                        <?php else : ?>
+                                                            <?php for ($i = 0; $i <= 20; $i++) : ?>
+                                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                            <?php endfor; ?>
+                                                            <option value="21" data-value="21">>20</option>
+                                                        <?php endif; ?>
+                                                    </select>
+                                                    <input type="number" name="" id="" class="quantity-input" style="display: none;">
+                                                </div>
+                                            </div>
+                                        <?php  } ?>
+                                    </div>
+                                    <div class="booking-single">
+                                        <div class="title">
+                                            <h5>Choose a Date <span class="required">*</span></h5>
+                                        </div>
+                                        <div class="choose-time-form form-flex ">
+                                            <div class="calendar datepicker-container position-relative">
+                                                <div id="datepicker" class="availabilitypicker">
+
+                                                </div>
+
+                                                <div class="rezdy-overlay-loader" style="display: none;">
+                                                    <div class="loading-text">Loading...</div>
+                                                </div>
+
+                                            </div>
+                                            <div class="status-codes">
+                                                <div class="status-single">
+                                                    <div class="status-bar today"></div>
+                                                    <div class="text">- TODAY’S DATE</div>
+                                                </div>
+                                                <div class="status-single">
+                                                    <div class="status-bar available"></div>
+                                                    <div class="text">- AVAILABLE DATE</div>
+                                                </div>
+                                                <div class="status-single">
+                                                    <div class="status-bar selected"></div>
+                                                    <div class="text">- SELECTED DATE</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="booking-single" id="selectTimeDiv">
+                                        <div class="title">
+                                            <h5>Select Time <span class="required">*</span></h5>
+                                        </div>
+                                        <div class="choose-time-form form-flex">
+                                            <input type="hidden" class="schedule_timeInput" name="schedule_time" value="">
+                                            <div class="radio-group-list" id="availability">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="price-box price-summary">
+                                    <?php
+                                        $toSymbol = convert_currency(0);
+                                    ?>
+                                    <h5><?php echo change_symbol_to_text($toSymbol[0]); ?></h5>
+                                    <h4 class="total-price-value"><?php echo $toSymbol[0]; ?>0</h4>
+                                </div>
+                                <div class="btn-submit-box">
+                                    <input type="hidden" name="tour_url" id="tour_url" value="">
+                                    <button type="submit" class="btn-submit form-submit disabled" disabled>Book Now</button>
+                                </div>
+
+                                <!-- <div class="booking-feature-list">
+                                    <div class="list-single">
+                                        <div class="inner shadow-box">
+                                            <span class="icon">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                            <span class="text">Free 24hr cancellations</span>
+                                        </div>
+                                    </div>
+                                    <div class="list-single">
+                                        <div class="inner shadow-box">
+                                            <span class="icon">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                            <span class="text">prices are all - inclusive</span>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-note">
+                                        <p><b>Please note:</b> After your purchase is confirmed we will email you a confirmation.</p>
+                                    </div> -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <?php if (public_is_klarna_available($product->product->productCode)) : ?>
+                    <div class="booking-klarna booking-klarna--<?php echo $cc_picked_color; ?>">
+                        <img src="<?php echo PLUGIN_URL . 'assets/images/Wordmark_Pink_And_Black 1.svg'; ?>" alt="Klarna Icon" />
+                        <p>Buy now, pay later.</p>
+                        <a href="https://www.klarna.com/uk/payments/">Learn more</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php if (! empty($booking_request_here_url)) : ?>
+                <?php
+                    $booking_request_icon = ($cc_picked_color == 'theme-cdt') ? 'Orange_Isolation_Mode.svg' : 'Yellow_Isolation_Mode.svg';
+                ?>
+
+                <div class="booking-request booking-request--<?php echo $cc_picked_color; ?>" data-action="booking-request" data-href="<?php echo $booking_request_here_url; ?>" style="cursor: pointer;">
+                    <div class="booking-request__title">
+                        <img src="<?php echo PLUGIN_URL . 'assets/images/' . $booking_request_icon; ?>" alt="Request Icon" />
+                        <p>Looking for a private tour?</p>
+                    </div>
+                    <p class="booking-request__text">
+                        Request it <a href="<?php echo $booking_request_here_url; ?>" target="_blank">HERE</a> for a more personalised experience!
+                    </p>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.addEventListener('click', e => {
+                        const el = e.target.closest('[data-action="booking-request"]')
+                            if (el) window.open(el.dataset.href, '_blank')
+                        })
+                    })
+                </script>
+            <?php endif; ?>
+        </div>
+        <div class="booking-widget-tabs-content" data-content="booking-private">
+            <?php echo get_private_booking_tab( $booking_request_here_url, get_the_ID() ); ?>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="booking-sidebar-widget-box in calendar-widget <?php echo $cc_picked_color; ?>">
+        <div class="booking-inner availability-container">
+            <div class="booking-form-list">
+                <?php
+                    $cookie_name = "CUSTOMSESSIONID";
+                    $cookie_options = array(
+                        'expires' => time() + (86400 * 30),
+                        'path' => '/',
+                        'secure' => is_ssl(),
+                        'httponly' => true,
+                        'samesite' => 'Lax'
+                    );
+                    if (! isset($_COOKIE[$cookie_name])) {
+                        $session_id = session_id();
+                        $cookie_value = $session_id;
+                        setcookie($cookie_name, $cookie_value, $cookie_options);
+                    } else {
+                        $session_id = $_COOKIE[$cookie_name];
+                    }
+                ?>
+
+                <input type="hidden" value="<?php echo $session_id; ?>">
+                <form action="<?= esc_url(site_url('/checkout/' . $session_id)); ?>" method="post" id="session-form" onsubmit="return validateForm()">
+                    <div class="booking-group">
+                        <div class="booking-single">
+                            <div class="title">
+                                <h5>Enter Number of Participants <span class="required">*</span></h5>
+                            </div>
+                            <input type="hidden" name="OrderItem[preferredDate]" value="" id="selectedDate">
+                            <input type="hidden" name="OrderItem[productCode]" value="<?= $product->product->productCode; ?>" id="productCode">
+                            <input type="hidden" name="OrderItem[quantityRequiredMax]" class="quantityRequiredMax" value="<?= ($quantityRequiredMax) ? $quantityRequiredMax : ''; ?>" id="quantityRequiredMax">
+                            <div class="parent-form-flex">
+                                <?php foreach ($priceOptions as $key => $value) { ?>
+                                    <?php
+                                        $value_with_currency = convert_currency( $value->price );
+                                    ?>
+                                    <div class="form-flex shadow-box">
+                                        <div class="label-box">
+                                            <input type="hidden" class="priceOption_id" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][id]" id="" value="<?= $value->id; ?>">
+                                            <input type="hidden" class="priceOption_label" name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][priceOption][label]" id="" value="<?= $value->label; ?>">
+                                            <h6 class="priceOptionlabel"><?php echo ($value->label == 'Quantity') ? 'Everyone' : $value->label; ?></h6>
+                                            <p class="price option_price" data-currency-base="<?php echo $value_with_currency[0]; ?>" data-original-amount="<?php echo $value_with_currency[1]; ?>" data-value="<?= $value->id; ?>" data-label="<?php echo $value->label; ?>" data-converted="true"><?php echo $value_with_currency[0] . $value_with_currency[1]; ?></p>
+                                        </div>
+                                        <div class="options-box">
+                                            <select name="ItemQuantity[<?= $product->product->productCode; ?>][<?= $key; ?>][quantity]" id="" class="quantity">
+                                                <?php if ($quantityRequiredMax && $quantityRequiredMax <= 20) : ?>
+                                                    <?php for ($i = 0; $i <= $quantityRequiredMax; $i++) : ?>
+                                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                    <?php endfor; ?>
+                                                <?php else : ?>
+                                                    <?php for ($i = 0; $i <= 20; $i++) : ?>
+                                                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                                    <?php endfor; ?>
+                                                    <option value="21" data-value="21">>20</option>
+                                                <?php endif; ?>
+                                            </select>
+                                            <input type="number" name="" id="" class="quantity-input" style="display: none;">
+                                        </div>
+                                    </div>
+                                <?php  } ?>
+                            </div>
+                            <div class="booking-single">
+                                <div class="title">
+                                    <h5>Choose a Date <span class="required">*</span></h5>
+                                </div>
+                                <div class="choose-time-form form-flex ">
+                                    <div class="calendar datepicker-container position-relative">
+                                        <div id="datepicker" class="availabilitypicker">
+
+                                        </div>
+
+                                        <div class="rezdy-overlay-loader" style="display: none;">
+                                            <div class="loading-text">Loading...</div>
+                                        </div>
+
+                                    </div>
+                                    <div class="status-codes">
+                                        <div class="status-single">
+                                            <div class="status-bar today"></div>
+                                            <div class="text">- TODAY’S DATE</div>
+                                        </div>
+                                        <div class="status-single">
+                                            <div class="status-bar available"></div>
+                                            <div class="text">- AVAILABLE DATE</div>
+                                        </div>
+                                        <div class="status-single">
+                                            <div class="status-bar selected"></div>
+                                            <div class="text">- SELECTED DATE</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-single" id="selectTimeDiv">
+                                <div class="title">
+                                    <h5>Select Time <span class="required">*</span></h5>
+                                </div>
+                                <div class="choose-time-form form-flex">
+                                    <input type="hidden" class="schedule_timeInput" name="schedule_time" value="">
+                                    <div class="radio-group-list" id="availability">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price-box price-summary">
+                            <?php
+                                $toSymbol = convert_currency(0);
+                            ?>
+                            <h5><?php echo change_symbol_to_text($toSymbol[0]); ?></h5>
+                            <h4 class="total-price-value"><?php echo $toSymbol[0]; ?>0</h4>
+                        </div>
+                        <div class="btn-submit-box">
+                            <input type="hidden" name="tour_url" id="tour_url" value="">
+                            <button type="submit" class="btn-submit form-submit disabled" disabled>Book Now</button>
+                        </div>
+
+                        <!-- <div class="booking-feature-list">
+                            <div class="list-single">
+                                <div class="inner shadow-box">
+                                    <span class="icon">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <span class="text">Free 24hr cancellations</span>
+                                </div>
+                            </div>
+                            <div class="list-single">
+                                <div class="inner shadow-box">
+                                    <span class="icon">
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5.89467 14C5.89271 14 5.89043 14 5.88847 14C5.8075 13.9982 5.73111 13.9595 5.67626 13.8932L0.0783668 7.09603C-0.0176194 6.97936 -0.0264345 6.80364 0.0574718 6.67567C0.141378 6.54807 0.294172 6.50432 0.422807 6.5714L5.54632 9.25031C5.58941 9.27291 5.64034 9.26197 5.67332 9.22369L13.4887 0.102372C13.5945 -0.0212193 13.7675 -0.0347086 13.8876 0.0717475C14.0078 0.178204 14.0355 0.369241 13.9516 0.51252L6.17741 13.8115C6.16631 13.8308 6.15325 13.8483 6.13888 13.8647L6.1046 13.903C6.04877 13.965 5.97303 14 5.89467 14Z" fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <span class="text">prices are all - inclusive</span>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="form-note">
+                                <p><b>Please note:</b> After your purchase is confirmed we will email you a confirmation.</p>
+                            </div> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+        <?php if (public_is_klarna_available($product->product->productCode)) : ?>
+            <div class="booking-klarna booking-klarna--<?php echo $cc_picked_color; ?>">
+                <img src="<?php echo PLUGIN_URL . 'assets/images/Wordmark_Pink_And_Black 1.svg'; ?>" alt="Klarna Icon" />
+                <p>Buy now, pay later.</p>
+                <a href="https://www.klarna.com/uk/payments/">Learn more</a>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <script>
+        const form = document.querySelector('#session-form');
+
+        form.addEventListener('submit', function(e) {
+            if (typeof validateForm === 'function') {
+                const isValid = validateForm()
+                if (! isValid) {
+                    e.preventDefault()
+                    return
+                }
+            }
+
+            e.preventDefault()
+
+            const formData = {};
+            new FormData(form).forEach((value, key) => {
+                formData[key] = value;
+            });
+
+            // Send to parent
+            parent.postMessage({
+                action: 'privateBookingWidgetFrame',
+                formAction: form.action,
+                data: formData
+            }, '*');
+        });
+
+    </script>
+<?php endif; ?>
+
 <?php
 $dates = [];
 foreach ($availabilities as $key => $value) {
     $dates[] = date('Y-m-d', strtotime($value->startTimeLocal));
 }
-
 $dates = array_unique($dates);
-
 ?>
 
-<script src="<?php echo plugin_dir_url(__FILE__) . 'js/jquery-2.2.4.min.js'; ?>"></script>
-
 <script>
+    var rezdy_currency_text = '<?php echo $rezdy_currency_text; ?>'
+    var rezdy_currency_symbol = '<?php echo $rezdy_currency_symbol; ?>'
+
     $(function() {
 
         var checkedRadioButton = '';
@@ -314,7 +587,7 @@ $dates = array_unique($dates);
 
 
         function fetching_availabilities(checkedRadioButton) {
-            
+
             if (isMobileDevice()) {
                 jQuery('.form-submit').addClass('disabled');
                 jQuery('.form-submit').prop('disabled', true);
@@ -374,7 +647,10 @@ $dates = array_unique($dates);
                         for (const key in data.sessionTimeLabel) {
                             if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
                                 const value = data.sessionTimeLabel[key];
-                                var totalAvailable = value.split(' ')[2] + ' ' + value.split(' ')[3];
+                                // const availableNumber = value.split(' ')[2]
+                                // const availableText = value.split(' ')[3]
+                                // var totalAvailable =  (Number(availableNumber) < 9) ? ' - ' + availableNumber + ' ' + availableText : '';
+                                var totalAvailable = format_availability_label(value)
                                 var time = value.split(' ')[0];
                                 var [hour, minute] = time.split(':').map(Number);
                                 minute = (minute < 10 ? "0" + minute : minute);
@@ -407,7 +683,7 @@ $dates = array_unique($dates);
                                 label.classList.add('availableRadiolabel');
                                 var timeSpan = document.createElement('span');
                                 timeSpan.classList.add('time');
-                                timeSpan.textContent = time + ' - ' + totalAvailable;
+                                timeSpan.textContent = time + totalAvailable;
                                 label.appendChild(timeSpan);
                                 radioGroup.appendChild(inputRadio);
                                 radioGroup.appendChild(label);
@@ -429,7 +705,7 @@ $dates = array_unique($dates);
                                                         if (option_price.getAttribute('data-label') == optionLabel) {
                                                             option_price.setAttribute('data-original-amount', inputRadio.getAttribute('data-option-price' + '_' + index));
                                                             var basePrice = inputRadio.getAttribute('data-option-price' + '_' + index);
-                                                            var basePrice_text = '€' + basePrice + '.00';
+                                                            var basePrice_text = rezdy_currency_symbol + basePrice;
                                                             option_price.textContent = basePrice_text;
                                                         }
                                                     }
@@ -446,8 +722,8 @@ $dates = array_unique($dates);
                         }
                         if (checkedRadioButton != '') {
                             var checked_inputRadio = document.querySelector('#' + checkedRadioButton);
-                            if (checked_inputRadio){
-                                if(checked_inputRadio.getAttribute('data-disabled') == "true") {
+                            if (checked_inputRadio) {
+                                if (checked_inputRadio.getAttribute('data-disabled') == "true") {
                                     checked_inputRadio.checked = true;
                                     var options = document.querySelectorAll('.option_price');
                                     if (options.length > 0) {
@@ -461,7 +737,7 @@ $dates = array_unique($dates);
                                                     if (option_price.getAttribute('data-label') == optionLabel) {
                                                         option_price.setAttribute('data-original-amount', checked_inputRadio.getAttribute('data-option-price' + '_' + index));
                                                         var basePrice = checked_inputRadio.getAttribute('data-option-price' + '_' + index);
-                                                        var basePrice_text = '€' + basePrice + '.00';
+                                                        var basePrice_text = rezdy_currency_symbol + basePrice;
                                                         option_price.textContent = basePrice_text;
                                                     }
                                                 }
@@ -470,9 +746,9 @@ $dates = array_unique($dates);
                                         });
                                     }
                                 }
-                            } 
-                            
-                            
+                            }
+
+
                         }
                         var radioButtons = document.querySelectorAll('.availableRadiobutton');
                         radioButtons = Array.from(radioButtons).filter((button, index, array) => {
@@ -517,7 +793,7 @@ $dates = array_unique($dates);
                                                 buttonSubmit.setAttribute('disabled', 'true');
                                             }
                                         }
-                                        document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+                                        document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + selectedAttribute;
                                     }
                                 }
                             });
@@ -566,6 +842,18 @@ $dates = array_unique($dates);
                     return error;
                 });
         }
+
+        function format_availability_label(value) {
+            let label = ''
+            const availableNumber = value.split(' ')[2]
+            const availableText = value.split(' ')[3]
+
+            if (availableNumber == 'Sold' || Number(availableNumber) < 9) {
+                label = ' - ' + availableNumber + ' ' + availableText
+            }
+
+            return label
+        }
     });
 
     function validateForm() {
@@ -576,13 +864,19 @@ $dates = array_unique($dates);
         } else {
 
             var radioButtons = document.querySelectorAll('.availableRadiobutton');
+            var scheduleTimeInputs = document.querySelectorAll('.schedule_timeInput');
+
             if (radioButtons.length > 0) {
-                radioButtons.forEach(function(radioButton) {
-                    if (radioButton.checked) {
-                        var schedule_time = radioButton.getAttribute('data-session_time');
-                        document.querySelector(".schedule_timeInput").setAttribute("value", schedule_time);
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+                        var schedule_time = radioButtons[i].getAttribute('data-session_time');
+
+                        // Set the value for all schedule_timeInput inputs
+                        for (var j = 0; j < scheduleTimeInputs.length; j++) {
+                            scheduleTimeInputs[j].setAttribute("value", schedule_time);
+                        }
                     }
-                });
+                }
             }
             var currentURL = window.location.href;
             document.querySelector('#tour_url').value = currentURL;
@@ -597,14 +891,14 @@ $dates = array_unique($dates);
 
             return true;
         }
-        }
+    }
 
-        function isMobileDevice() {
+    function isMobileDevice() {
         return window.innerWidth <= 768; // Adjust the threshold as per your requirement
-        }
+    }
 
 
-        function incrementValue(btn) {
+    function incrementValue(btn) {
         var inputField = btn.parentNode.querySelector('.input-field');
         var qtyChangeSpans = btn.parentNode.querySelectorAll('.qtyChange');
         var value = parseInt(inputField.value, 10);
@@ -613,9 +907,9 @@ $dates = array_unique($dates);
         qtyChangeSpans.forEach(function(qtyChangeSpan) {
             qtyChangeSpan.setAttribute("data-qty", inputField.value);
         });
-        }
+    }
 
-        function decrementValue(btn) {
+    function decrementValue(btn) {
         var inputField = btn.parentNode.querySelector('.input-field');
         var qtyChangeSpans = btn.parentNode.querySelectorAll('.qtyChange');
         var value = parseInt(inputField.value, 10);
@@ -627,16 +921,16 @@ $dates = array_unique($dates);
             });
 
         }
-        }
+    }
 
 
-        function validateNumberInput(event) {
+    function validateNumberInput(event) {
         var inputValue = event.target.value;
         var numericValue = inputValue.replace(/\D/g, '');
         event.target.value = numericValue;
-        }
+    }
 
-        function getAllpriceOptionlabel() {
+    function getAllpriceOptionlabel() {
         var form_flex = document.querySelectorAll(".form-flex.shadow-box:not(.customGroupOption)");
 
         form_flex.forEach(form_flex_divs => {
@@ -740,6 +1034,54 @@ $dates = array_unique($dates);
                 }
             }
         });
+    }
+    getAllpriceOptionlabel();
+
+    window.addEventListener('message', function(e) {
+        if (e.data.action === 'privateBookingWidgetFrame') {
+            const actionUrl = e.data.formAction
+            const data = e.data.data
+            const form = document.createElement('form')
+            form.method = 'POST'
+            form.action = actionUrl
+            form.style.display = 'none'
+
+            Object.keys(data).forEach(key => {
+                const input = document.createElement('input')
+                input.type = 'hidden'
+                input.name = key
+                input.value = data[key]
+                form.appendChild(input)
+            })
+
+            document.body.appendChild(form)
+            form.submit()
+            form.remove()
         }
-        getAllpriceOptionlabel();
+    })
+
+    window.addEventListener('DOMContentLoaded', function () {
+        const iframe = document.getElementById('private-booking-widget-frame')
+
+        if ( iframe ) {
+            iframe.addEventListener("load", () => {
+                const doc = iframe.contentDocument || iframe.contentWindow.document
+        
+                const resize = () => {
+                    iframe.style.height = Math.max(
+                        doc.body.scrollHeight,
+                        doc.documentElement.scrollHeight,
+                        doc.body.offsetHeight,
+                        doc.documentElement.offsetHeight
+                    ) + "px"
+                }
+        
+                resize()
+        
+                const ro = new ResizeObserver(resize)
+                ro.observe(doc.body)
+                ro.observe(doc.documentElement)
+            })
+        }
+    })
 </script>

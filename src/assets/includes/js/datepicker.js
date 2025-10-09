@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    var rezdy_currency_symbol =  decodeURIComponent(window.getCookie('rezdy_currency_symbol'))
 
     var checkedRadioButton = '';
     var loading = document.querySelector('.rezdy-overlay-loader');
@@ -57,7 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     for (const key in data.sessionTimeLabel) {
                         if (Object.hasOwnProperty.call(data.sessionTimeLabel, key)) {
                             const value = data.sessionTimeLabel[key];
-                            var totalAvailable = value.split(' ')[2] + ' ' + value.split(' ')[3];
+                            // var totalAvailable = value.split(' ')[2] + ' ' + value.split(' ')[3];
+                            var totalAvailable = format_availability_label(value)
                             var time = value.split(' ')[0];
                             var [hour, minute] = time.split(':').map(Number);
                             minute = (minute < 10 ? "0" + minute : minute);
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             var timeSpan = document.createElement('span');
                             timeSpan.classList.add('time');
-                            timeSpan.textContent = time + ' - ' + totalAvailable;
+                            timeSpan.textContent = time + totalAvailable;
                             label.appendChild(timeSpan);
                             radioGroup.appendChild(inputRadio);
                             radioGroup.appendChild(label);
@@ -114,8 +116,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                                     if (option_price.getAttribute('data-label') == optionLabel) {
                                                         option_price.setAttribute('data-original-amount', inputRadio.getAttribute('data-option-price' + '_' + index));
                                                         var basePrice = inputRadio.getAttribute('data-option-price' + '_' + index);
-                                                        var basePrice_text = '€' + basePrice + '.00';
+                                                        var basePrice_text = rezdy_currency_symbol + basePrice;
                                                         option_price.textContent = basePrice_text;
+                                                        // var new_basePrice = window.convertCurrency(basePrice)
+                                                        // option_price.textContent = `${new_basePrice[0]}${new_basePrice[1]}`
                                                     }
                                                 }
                                             }
@@ -145,8 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                             if (option_price.getAttribute('data-label') == optionLabel) {
                                                 option_price.setAttribute('data-original-amount', checked_inputRadio.getAttribute('data-option-price' + '_' + index));
                                                 var basePrice = checked_inputRadio.getAttribute('data-option-price' + '_' + index);
-                                                var basePrice_text = '€' + basePrice + '.00';
+                                                var basePrice_text = rezdy_currency_symbol + basePrice;
                                                 option_price.textContent = basePrice_text;
+                                                // var new_basePrice = window.convertCurrency(basePrice)
+                                                // option_price.textContent = `${new_basePrice[0]}${new_basePrice[1]}`
                                             }
                                         }
                                     }
@@ -181,13 +187,19 @@ document.addEventListener('DOMContentLoaded', function () {
                                         buttonSubmit.setAttribute('disabled', 'true');
                                     }
                                 }
-                                document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+                                document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + selectedAttribute;
+                                // const newSelectedAttribute = window.convertCurrency(selectedAttribute)
+                                // document.querySelector('.total-price-value').textContent = `${newSelectedAttribute[0]}${newSelectedAttribute[1]}`
+                                // document.querySelector('.price-summary h5').textContent = `${window.change_symbol_to_text(newSelectedAttribute[0])}`
                             }
                             if (!foundChecked) {
                                 buttonSubmit.innerText = 'No availability';
                                 buttonSubmit.classList.add('disabled');
                                 buttonSubmit.setAttribute('disabled', 'true');
-                                document.querySelector('.total-price-value').textContent = '€0';
+                                document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + '0';
+                                // const newSelectedAttribute = window.convertCurrency(selectedAttribute)
+                                // document.querySelector('.total-price-value').textContent = `${newSelectedAttribute[0]}0`;
+                                // document.querySelector('.price-summary h5').textContent = `${window.change_symbol_to_text(newSelectedAttribute[0])}`
                             }
                         });
                     } else {
@@ -215,6 +227,18 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    function format_availability_label(value) {
+        let label = ''
+        const availableNumber = value.split(' ')[2]
+        const availableText = value.split(' ')[3]
+
+        if (availableNumber == 'Sold' || Number(availableNumber) < 9) {
+            label = ' - ' + availableNumber + ' ' + availableText
+        }
+
+        return label
+    }
+
     document.addEventListener('click', function (e) {
 
         var target = e.target;
@@ -239,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (option_price.getAttribute('data-label') == optionLabel) {
                                 option_price.setAttribute('data-original-amount', inputElement.getAttribute('data-option-price' + '_' + index));
                                 var basePrice = inputElement.getAttribute('data-option-price' + '_' + index);
-                                var basePrice_text = '€' + basePrice + '.00';
+                                var basePrice_text = window.rezdy_currency_symbol + basePrice
                                 option_price.textContent = basePrice_text;
                             }
                         }
@@ -250,10 +274,14 @@ document.addEventListener('DOMContentLoaded', function () {
             inputElement.checked = true;
 
             var selectedAttribute = inputElement.getAttribute('data-price');
+            // const newSelectedAttributeInitial = window.convertCurrency(selectedAttribute)
+            // const totalPriceValueNew = `${newSelectedAttributeInitial[0]}${newSelectedAttributeInitial[1]}`
+            // document.querySelector('.total-price-value').textContent = totalPriceValueNew
+            // document.querySelector('.price-summary h5').textContent = `${window.change_symbol_to_text(newSelectedAttributeInitial[0])}`
             if (data_disabled == 'true') {
-                document.querySelector('.total-price-value').textContent = '€' + selectedAttribute;
+                document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + selectedAttribute;
             } else {
-                document.querySelector('.total-price-value').textContent = '€0';
+                document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + '0';
             }
 
             if (selectedAttribute == 0 || selectedAttribute < 0) {
@@ -300,11 +328,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputElement.value = parseInt(21);
                 inputElement.focus();
 
-
                 optionSelectForGroupOption(selectedValue);
                 var radioButtons = document.querySelectorAll('.availableRadiobutton');
                 if (radioButtons.length > 0) {
-
                     radioButtons.forEach(function (radioButton) {
                         if (radioButton.checked) {
                             checkedRadioButton = radioButton.getAttribute('id');
@@ -315,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             } else if (selectedValue <= 0) {
-
                 var form_flex = document.querySelectorAll(".form-flex.shadow-box:not(.customGroupOption)");
                 var foundOptionSelected = false;
                 form_flex.forEach(form_flex_divs => {
@@ -328,7 +353,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     buttonSubmit.innerText = 'No availability';
                     buttonSubmit.classList.add('disabled');
                     buttonSubmit.setAttribute('disabled', 'true');
-                    document.querySelector('.total-price-value').textContent = '€' + selectedValue;
+                    // const newSelectedValue = window.convertCurrency(selectedValue)
+                    document.querySelector('.total-price-value').textContent = rezdy_currency_symbol + selectedValue;
+                    // document.querySelector('.total-price-value').textContent = `${newSelectedValue[0]}${newSelectedValue[1]}`
+                    // document.querySelector('.price-summary h5').textContent = `${window.change_symbol_to_text(newSelectedValue[0])}`
+
                     var radioButtons = document.querySelectorAll('.availableRadiobutton');
                     if (radioButtons.length > 0) {
                         radioButtons.forEach(function (radioButton) {
@@ -338,7 +367,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     var radioButtons = document.querySelectorAll('.availableRadiobutton');
                     if (radioButtons.length > 0) {
-
                         radioButtons.forEach(function (radioButton) {
                             if (radioButton.checked) {
                                 checkedRadioButton = radioButton.getAttribute('id');
@@ -352,12 +380,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
             } else {
-
                 var x = parseInt(target.value);
                 optionSelectForGroupOption(x);
                 var radioButtons = document.querySelectorAll('.availableRadiobutton');
                 if (radioButtons.length > 0) {
-
                     radioButtons.forEach(function (radioButton) {
                         if (radioButton.checked) {
                             checkedRadioButton = radioButton.getAttribute('id');
@@ -366,10 +392,83 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 fetching_availabilities(checkedRadioButton);
-
             }
+
+            // if (isForPrivateBooking()) {
+                const selectedOption = target.options[target.selectedIndex]
+                const isOptionForPrivate = selectedOption.getAttribute("data-option-private")
+
+                if (isOptionForPrivate && selectedOption.hasAttribute('data-option-private') && ! window.enquiryFormOpened) {
+                    const enquiryForm = window.themeSettings.privateEnquiryForm || 'https://forms.monday.com/forms/82c28ac1265613e8147497620524371a?r=use1'
+                    window.open(enquiryForm, '_blank')
+                    window.enquiryFormOpened = true
+                }
+            // }
         }
     });
+
+    function isForPrivateBooking() {
+        const params = new URLSearchParams(window.location.search)
+        const domainClassesMap = {
+            'romewithchef.com': [
+                'postid-7686',
+                'postid-10092',
+                'postid-7013',
+                'postid-7007',
+                'postid-9400',
+                'postid-9399'
+            ],
+            'thetipsytours.com': [
+                'postid-2681',
+                'postid-1190'
+            ],
+            'jackrippertour.com': [
+                'elementor-page-6139',
+                'elementor-page-5138'
+            ]
+        }
+        const requiredClasses = domainClassesMap[window.location.hostname] || []
+
+        return params.has("private_booking_rezdy") || requiredClasses.some(cls => document.body.classList.contains(cls))
+    }
+
+    // Add exceed option for private bookings
+    const observer = new MutationObserver(() => {
+        document.querySelectorAll("select.quantity").forEach(select => {
+            // if (! isForPrivateBooking()) return
+
+            if (select.dataset.processed) return
+            select.dataset.processed = "true"
+
+            const formFlex = select.closest(".form-flex")
+            if (! formFlex) return
+
+            const labelEl = formFlex.querySelector(".priceOptionlabel")
+            if (! labelEl) return
+
+            const labelText = labelEl.innerText.trim()
+            if (labelText === "Participants" || labelText === "Everyone" || labelText === "Adult" || labelText === "Adults") {
+                const options = select.querySelectorAll("option")
+                if (options.length === 0) return
+
+                const lastOption = options[options.length - 1]
+                const lastValue = lastOption.value
+                const lastText = lastOption.textContent.trim()
+
+                if (! lastText.startsWith(">")) {
+                    const newOption = document.createElement("option")
+                    newOption.value = lastValue
+                    newOption.textContent = ">" + lastText
+                    newOption.setAttribute("data-option-private", "true")
+                    select.appendChild(newOption)
+                } else {
+                    lastOption.setAttribute("data-option-private", "true")
+                }
+            }
+        })
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+    window.enquiryFormOpened = false
 
     function optionSelectForGroupOption(x) {
         var customGroupOption = document.querySelector('.customGroupOption');
@@ -377,7 +476,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var custom_label_box = customGroupOption.querySelector('.label-box');
             var custom_option_box = customGroupOption.querySelector('.options-box');
-
 
             var form_flex = document.querySelectorAll(".form-flex.shadow-box:not(.customGroupOption)");
             var found = false;
@@ -536,4 +634,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function updateLabels() {
+        const labels = document.querySelectorAll("#availability label.availableRadiolabel span.time")
+        const width = window.innerWidth
+
+        labels.forEach(span => {
+          const originalText = span.textContent.trim().replace(/\s*-\s*/g, " - ")
+
+          if (width >= 992 && width <= 1280) {
+            span.innerHTML = originalText.replace(" - ", " -<br>")
+          } else {
+            span.innerHTML = originalText
+          }
+        })
+    }
+
+    window.addEventListener("load", updateLabels)
+    window.addEventListener("resize", updateLabels)
 });

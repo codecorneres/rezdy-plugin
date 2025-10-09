@@ -1,0 +1,67 @@
+User: 2a01:827:24dd:be00:7c8b:5faa:28b2:fada - March 10, 2025, 5:42 pm
+Attempt: Airwallex payment started
+User name: patrice robinson
+User email: patriceevansrobinson@gmail.com
+Table inserted_id: 1563|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 2a01:827:24dd:be00:7c8b:5faa:28b2:fada - March 10, 2025, 5:42 pm
+Intent ID Created: int_nlpdrxh7zh5ct7z9zap
+User name: patrice robinson
+User email: patriceevansrobinson@gmail.com
+Table inserted_id: 1563|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 2a01:827:24dd:be00:7c8b:5faa:28b2:fada - March 10, 2025, 5:42 pm
+Payment status: Airewallex payment completed
+User name: patrice robinson
+User email: patriceevansrobinson@gmail.com
+Table inserted_id: 1563
+-------------------------
+User: 2a01:827:24dd:be00:7c8b:5faa:28b2:fada - March 10, 2025, 5:42 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: patrice robinson
+User email: patriceevansrobinson@gmail.com
+Table inserted_id: 1563
+-------------------------
+User: 2a09:bac3:41fe:4f0::7e:59 - March 10, 2025, 8:20 pm
+Attempt: Airwallex payment started
+User name: Jenny Stewatt
+User email: jenny.stewart@swat.aero
+Table inserted_id: 1564|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 2a09:bac3:41fe:4f0::7e:59 - March 10, 2025, 8:20 pm
+Intent ID Created: int_nlpdd48zhh5cxl840fr
+User name: Jenny Stewatt
+User email: jenny.stewart@swat.aero
+Table inserted_id: 1564|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 2a09:bac3:41fe:4f0::7e:59 - March 10, 2025, 8:23 pm
+Error Code: authentication_declined
+Error: You have failed to authenticate the payment. Try again and contact your card issuer or switch to a different payment method if your retry fails.
+User name: Jenny Stewatt
+User email: jenny.stewart@swat.aero
+Table inserted_id: 1564|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 174.197.68.136 - March 10, 2025, 8:26 pm
+Attempt: Airwallex payment started
+User name: Jennifer Martin
+User email: jnfrln@gmail.com
+Table inserted_id: 1565|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 174.197.68.136 - March 10, 2025, 8:26 pm
+Intent ID Created: int_nlpd22ft8h5cxrci5x2
+User name: Jennifer Martin
+User email: jnfrln@gmail.com
+Table inserted_id: 1565|PQYU0A|website ( carpediemtours )
+-------------------------
+User: 174.197.68.136 - March 10, 2025, 8:26 pm
+Payment status: Airewallex payment completed
+User name: Jennifer Martin
+User email: jnfrln@gmail.com
+Table inserted_id: 1565
+-------------------------
+User: 174.197.68.136 - March 10, 2025, 8:26 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Jennifer Martin
+User email: jnfrln@gmail.com
+Table inserted_id: 1565
+-------------------------

@@ -140,6 +140,7 @@ if ($token) {
         );
         $wpdb->delete($table_add_to_cart_data, $where);
 
+        tapfiliate_trigger($_ARRAY_SESSION[0]['inserted_id'], $amount_captured, $currency = 'EUR', $_ARRAY_SESSION[0]['paymentObject']['username'], $_ARRAY_SESSION[0]['paymentObject']['useremail'], $plugin_dir); ##For Tapfiliate
         session_destroy();
 
 
@@ -272,6 +273,128 @@ function updateRezdyOrder($rezdy_order_id, $rezdy_response_params, $rezdy_bookin
     }
     $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
     file_put_contents($fileName, $log, FILE_APPEND);
+}
+
+function tapfiliate_trigger($inserted_id, $amount, $currency, $userName, $email, $plugin_dir) ##For Tapfiliate
+{
+    if (isset($_COOKIE['tapfiliate_referral_code'])) {
+        $tapfiliate_api_key = get_option('cc_tapfiliate_api_key');
+        if ($tapfiliate_api_key) {
+
+            ##====Run Tapfiliate Click API====##
+            $tapfiliate_referral_code = esc_html($_COOKIE['tapfiliate_referral_code']);
+            $baseUrl = 'https://api.tapfiliate.com/1.6';
+            $apiUrl = $baseUrl . "/clicks/";
+            $post_data = '{
+                "referral_code": "' . $tapfiliate_referral_code . '"
+            }';
+            $request_type = 'POST';
+            $headers = [];
+            $headers[] = 'Content-Type: application/json';
+            $headers[] =  'X-Api-Key: ' . $tapfiliate_api_key;
+
+            $clickResponse = tapfiliate_CURL($apiUrl, $request_type, $post_data, $headers);
+            $clickResponseArray = json_decode($clickResponse, true);
+            if (isset($clickResponseArray['id'])) {
+
+                $click_id = $clickResponseArray['id'];
+                $is_conversion = false;
+                $attemps = 'Clicked ID received';
+                tapfiliate_trigger_log_and_db($inserted_id, $is_conversion, $tapfiliate_referral_code, $click_id, $tapfiliate_conversion_id = '', $tapfiliate_external_id = '', $attemps, $userName, $email, $plugin_dir);
+
+                ##====Run Tapfiliate Conversion API====##
+                $external_id = generateRandomString();
+                $apiUrl = $baseUrl . "/conversions/";
+                $post_data = '{
+                    "click_id": "' . $click_id . '",
+                    "external_id": "' . $external_id . '",
+                    "amount": ' . $amount . ',
+                    "currency": "' . $currency . '",
+                    "meta_data": {
+                        "order_id": ' . $inserted_id . ',
+                        "website_url": "' . home_url() . '"
+                    }
+                }';
+                $request_type = 'POST';
+                $headers = [];
+                $headers[] = 'Content-Type: application/json';
+                $headers[] =  'X-Api-Key: ' . $tapfiliate_api_key;
+
+                $conversionResponse = tapfiliate_CURL($apiUrl, $request_type, $post_data, $headers);
+                $conversionResponseArray = json_decode($conversionResponse, true);
+                if (isset($conversionResponseArray['id'])) {
+                    $tapfiliate_conversion_id = $conversionResponseArray['id'];
+                    $inserted_id = $conversionResponseArray['meta_data']['order_id'];
+                    $is_conversion = true;
+                    $attemps = 'Conversion ID received';
+                    tapfiliate_trigger_log_and_db($inserted_id, $is_conversion, $tapfiliate_referral_code, $click_id, $tapfiliate_conversion_id, $external_id, $attemps, $userName, $email, $plugin_dir);
+                }
+            }
+        }
+    }
+}
+function tapfiliate_CURL($apiUrl, $request_type, $post_data, $headers) ##For Tapfiliate
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_type);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
+function tapfiliate_trigger_log_and_db($inserted_id, $is_conversion, $tapfiliate_referral_code, $click_id, $tapfiliate_conversion_id, $tapfiliate_external_id, $attemps, $userName, $email, $plugin_dir) ##For Tapfiliate
+{
+    global $wpdb;
+    ##Update tapfiliate fields
+    $rezdy_plugin_transactions = $wpdb->prefix . 'rezdy_plugin_transactions';
+
+    if (!$is_conversion) {
+        $data_to_update = array(
+            'tapfiliate_ref_code' => $tapfiliate_referral_code,
+            "tapfiliate_click_id" => $click_id,
+        );
+    } else {
+        $data_to_update = array(
+            'tapfiliate_conversion_id' => $tapfiliate_conversion_id,
+            "tapfiliate_external_id" => $tapfiliate_external_id,
+        );
+    }
+
+
+    $where = array(
+        'id' => $inserted_id,
+    );
+
+    // Perform the update
+    $result = $wpdb->update($rezdy_plugin_transactions, $data_to_update, $where);
+
+
+    ##log file update
+    $log  = "User: " . $_SERVER['REMOTE_ADDR'] . ' - ' . date("F j, Y, g:i a") . PHP_EOL . "Tapfiliate status: " . $attemps . PHP_EOL . "User name: " . $userName . PHP_EOL . "User email: " . $email . PHP_EOL .  "Table inserted_id: " . $inserted_id . PHP_EOL . "-------------------------" . PHP_EOL;
+
+    $log_dir = $plugin_dir . 'src/payment_logs/paypal_logs/';
+    if (!file_exists($log_dir)) {
+        mkdir($log_dir, 0755, true);
+    }
+    $fileName = $log_dir . 'log_' . date("j.n.Y") . '.log';
+    file_put_contents($fileName, $log, FILE_APPEND);
+}
+
+function generateRandomString($length = 10) ##For Tapfiliate
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }
 
 ?>

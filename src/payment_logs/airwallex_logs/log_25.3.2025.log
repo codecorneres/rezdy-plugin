@@ -1,0 +1,67 @@
+User: 2a02:9130:1b6:10d9:15e0:a742:a1d0:6e9f - March 25, 2025, 6:29 pm
+Attempt: Airwallex payment started
+User name: Natalia Máiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1619|P09QZB|website ( carpediemtours )
+-------------------------
+User: 2a02:9130:1b6:10d9:15e0:a742:a1d0:6e9f - March 25, 2025, 6:29 pm
+Intent ID Created: int_nlpdn56bbh5tdy9hx7g
+User name: Natalia Máiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1619|P09QZB|website ( carpediemtours )
+-------------------------
+User: 2a02:9130:1b6:10d9:15e0:a742:a1d0:6e9f - March 25, 2025, 6:30 pm
+Error Code: issuer_declined
+Error: El emisor de su tarjeta ha rechazado esta transacción.
+User name: Natalia Máiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1619|P09QZB|website ( carpediemtours )
+-------------------------
+User: 2.38.29.107 - March 25, 2025, 9:51 pm
+Attempt: Airwallex payment started
+User name: Amanda  Rossello
+User email: arossello20@icloud.com
+Table inserted_id: 1620|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2.38.29.107 - March 25, 2025, 9:51 pm
+Intent ID Created: int_nlpdv5wrch5tji82yb4
+User name: Amanda  Rossello
+User email: arossello20@icloud.com
+Table inserted_id: 1620|PY1WWW|website ( carpediemtours )
+-------------------------
+User: 2.38.29.107 - March 25, 2025, 9:51 pm
+Payment status: Airewallex payment completed
+User name: Amanda  Rossello
+User email: arossello20@icloud.com
+Table inserted_id: 1620
+-------------------------
+User: 2.38.29.107 - March 25, 2025, 9:51 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Amanda  Rossello
+User email: arossello20@icloud.com
+Table inserted_id: 1620
+-------------------------
+User: 81.44.72.94 - March 25, 2025, 10:21 pm
+Attempt: Airwallex payment started
+User name: Natalia Maiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1621|P09QZB|website ( carpediemtours )
+-------------------------
+User: 81.44.72.94 - March 25, 2025, 10:21 pm
+Intent ID Created: int_nlpdn56bbh5tkclgomb
+User name: Natalia Maiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1621|P09QZB|website ( carpediemtours )
+-------------------------
+User: 81.44.72.94 - March 25, 2025, 10:22 pm
+Payment status: Airewallex payment completed
+User name: Natalia Maiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1621
+-------------------------
+User: 81.44.72.94 - March 25, 2025, 10:22 pm
+Rezdy booking status: Rezdy Booking Successfull
+User name: Natalia Maiz
+User email: nt.maiz@hotmail.com
+Table inserted_id: 1621
+-------------------------
