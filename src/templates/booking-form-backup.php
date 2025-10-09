@@ -10,21 +10,21 @@ $booking_request_here_url = function_exists('get_field') ? get_field('private_tu
     <div class="booking-inner availability-container">
         <div class="booking-form-list">
             <?php
-				$cookie_name = "CUSTOMSESSIONID";
-				$cookie_options = array(
-					'expires' => time() + (86400 * 30),
-                    'path' => '/',
-                    'secure' => is_ssl(),
-                    'httponly' => true,
-                    'samesite' => 'Lax'
-				);
-				if (! isset($_COOKIE[$cookie_name])) {
-					$session_id = session_id();
-					$cookie_value = $session_id;
-					setcookie($cookie_name, $cookie_value, $cookie_options);
-				} else {
-					$session_id = $_COOKIE[$cookie_name];
-				}
+            $cookie_name = "CUSTOMSESSIONID";
+            $cookie_options = array(
+                'expires' => time() + (86400 * 30),
+                'path' => '/',
+                'secure' => is_ssl(),
+                'httponly' => true,
+                'samesite' => 'Lax'
+            );
+            if (! isset($_COOKIE[$cookie_name])) {
+                $session_id = session_id();
+                $cookie_value = $session_id;
+                setcookie($cookie_name, $cookie_value, $cookie_options);
+            } else {
+                $session_id = $_COOKIE[$cookie_name];
+            }
             ?>
 
             <input type="hidden" value="<?php echo $session_id; ?>">
@@ -40,7 +40,7 @@ $booking_request_here_url = function_exists('get_field') ? get_field('private_tu
                         <div class="parent-form-flex">
                             <?php foreach ($priceOptions as $key => $value) { ?>
                                 <?php
-                                    $value_with_currency = convert_currency( $value->price );
+                                $value_with_currency = convert_currency($value->price);
                                 ?>
                                 <div class="form-flex shadow-box">
                                     <div class="label-box">
@@ -112,7 +112,7 @@ $booking_request_here_url = function_exists('get_field') ? get_field('private_tu
                     </div>
                     <div class="price-box price-summary">
                         <?php
-                            $toSymbol = convert_currency(0);
+                        $toSymbol = convert_currency(0);
                         ?>
                         <h5><?php echo change_symbol_to_text($toSymbol[0]); ?></h5>
                         <h4 class="total-price-value"><?php echo $toSymbol[0]; ?>0</h4>
@@ -162,7 +162,7 @@ $booking_request_here_url = function_exists('get_field') ? get_field('private_tu
 </div>
 <?php if (! empty($booking_request_here_url)) : ?>
     <?php
-        $booking_request_icon = ($cc_picked_color == 'theme-cdt') ? 'Orange_Isolation_Mode.svg' : 'Yellow_Isolation_Mode.svg';
+    $booking_request_icon = ($cc_picked_color == 'theme-cdt') ? 'Orange_Isolation_Mode.svg' : 'Yellow_Isolation_Mode.svg';
     ?>
 
     <div class="booking-request booking-request--<?php echo $cc_picked_color; ?>" data-action="booking-request" data-href="<?php echo $booking_request_here_url; ?>" style="cursor: pointer;">
@@ -175,9 +175,9 @@ $booking_request_here_url = function_exists('get_field') ? get_field('private_tu
         </p>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener('click', e => {
-            const el = e.target.closest('[data-action="booking-request"]')
+                const el = e.target.closest('[data-action="booking-request"]')
                 if (el) window.open(el.dataset.href, '_blank')
             })
         })

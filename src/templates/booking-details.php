@@ -343,12 +343,7 @@ function getGroupValue($value)
                                             Credit Card Surcharge: +€0.00
                                         </small> -->
                                             </div>
-<<<<<<< HEAD
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>"
-                                                alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
-=======
                                             <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/stripe.svg'; ?>" alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
->>>>>>> 1eca34be35d7d49302298de4cd59ac6efdc35e4a
                                         </label>
                                     </div>
                                 <?php endif; ?>
@@ -382,38 +377,6 @@ function getGroupValue($value)
                                 <!-- ======= End Airwallex ====== -->
                                 <?php if ((get_option('cc_paypal_enabled') == 'yes')) : ?>
                                     <div class="first">
-<<<<<<< HEAD
-                                        <input type="radio" id="PayPal" name="radio" class="PayPalPayment"
-                                            onclick="PayPalPayment(this)">
-                                        <label for="paymentOption" class="mls mls-2 PayPalPayment"
-                                            onclick="PayPalPayment(this)">
-                                            <div class="payment-content">
-                                                Pay with PayPal
-                                            </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/paypal.png'; ?>"
-                                                width="150" height="35" class="rezdy-checkout">
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
-
-                                <!-- ======== //GooglePay ===== -->
-                                <?php if ((get_option('cc_googlepay_enabled') == 'yes')) : ?>
-                                    <div class="first">
-                                        <input type="radio" id="googlePay" name="radio" class="googlepay_payment_card"
-                                            onclick="googlePayPaymentCard(this)">
-                                        <label for="paymentOption" class="mls googlepay_payment_card"
-                                            onclick="googlePayPaymentCard(this)">
-                                            <div class="payment-content">
-                                                Pay by GooglePay<br>
-
-                                            </div>
-                                            <img src="<?= trailingslashit(plugin_dir_url($this->appContext->getPluginFile())) . 'src/assets/images/googlepay_logo.svg'; ?>"
-                                                alt="RezdyPay payment" width="100" height="30" class="rezdy-checkout">
-                                        </label>
-                                    </div>
-                                <?php endif; ?>
-                                <!-- ======= End //GooglePay ====== -->
-=======
                                         <input type="radio" id="PayPal" name="radio" class="PayPalPayment" onclick="PayPalPayment(this)">
                                         <label for="paymentOption" class="mls mls-2 PayPalPayment" onclick="PayPalPayment(this)">
                                             <div class="payment-content">
@@ -423,7 +386,6 @@ function getGroupValue($value)
                                         </label>
                                     </div>
                                 <?php endif; ?>
->>>>>>> 1eca34be35d7d49302298de4cd59ac6efdc35e4a
                             </div>
                         </fieldset>
                         <div class="form-row stripe_card" style="display:none;">
@@ -2176,7 +2138,7 @@ function getGroupValue($value)
         let checkbox = document.getElementById('agreement_checkbox');
         document.getElementById('agreement_box-message').style.display = 'none';
 
-        if ( ! checkbox.checked ) {
+        if (!checkbox.checked) {
             document.getElementById('agreement_box-message').style.display = 'block';
         }
 
@@ -2197,7 +2159,7 @@ function getGroupValue($value)
             return false;
         }
 
-        if ( ! isAgreementChecked() ) {
+        if (!isAgreementChecked()) {
             return false;
         }
 
@@ -2343,7 +2305,7 @@ function getGroupValue($value)
             //========repetition_code start======
             var data = await payment_callback_ajax(form, priceValue, selectedcountryCode, method, session_id);
             if (data) {
-                if (data.isError || ! data.next) {
+                if (data.isError || !data.next) {
                     var alertClass = 'alert-danger';
                     var alertContent = data.error;
                     alertDiv(alertClass, alertContent);
@@ -2819,7 +2781,7 @@ function getGroupValue($value)
                                 </div>
                             </div>
                         `;
-                        console.log(window.rezdy_currency_symbol + window.convertCurrency(data.totalPaid, true))
+                            console.log(window.rezdy_currency_symbol + window.convertCurrency(data.totalPaid, true))
 
                             // Get all existing main-item divs
                             var mainItems = document.querySelectorAll('.main-item');
